@@ -33,7 +33,7 @@ namespace ObscuritasRiichiMahjong.Animations
                 var targetPosition =
                     parent.position + offset + tileWidth + spacingVector;
 
-                yield return tile.gameObject.PickUpAndMove(.1f, targetPosition, targetRotation,
+                yield return tile.gameObject.PickUpAndMove(.01f, targetPosition, targetRotation,
                     targetScale);
                 tile.SetParent(parent, true);
             }

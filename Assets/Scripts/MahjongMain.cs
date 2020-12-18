@@ -11,7 +11,8 @@ namespace ObscuritasRiichiMahjong
     public class MahjongMain : MonoBehaviour
     {
         private static MahjongTileComponent _activeTile;
-        public List<Transform> BankSpawnPoints;
+        public List<Transform> BankFirstRowSpawnPoints;
+        public List<Transform> BankSecondRowSpawnPoints;
         public List<Transform> HandSpawnPoints;
 
         public GameObject MahjongTileTemplate;
@@ -36,15 +37,27 @@ namespace ObscuritasRiichiMahjong
 
         private IEnumerator DealTiles()
         {
+            const float duration = 3f;
             foreach (var handSpawnPoint in HandSpawnPoints)
-                yield return MoveToParent(handSpawnPoint, 13);
-            foreach (var bankSpawnPoint in BankSpawnPoints)
-                yield return MoveToParent(bankSpawnPoint, 10);
-            yield return MoveToParent(UiPanel, 4,
+                StartCoroutine(MoveToParent(handSpawnPoint, 13, duration));
+
+            yield return new WaitForSeconds(duration);
+
+            foreach (var bankSpawnPoint in BankFirstRowSpawnPoints)
+                StartCoroutine(MoveToParent(bankSpawnPoint, 10, duration));
+
+            yield return new WaitForSeconds(duration);
+
+            foreach (var bankSpawnPoint in BankSecondRowSpawnPoints)
+                StartCoroutine(MoveToParent(bankSpawnPoint, 10, duration));
+
+            yield return new WaitForSeconds(duration);
+
+            yield return MoveToParent(UiPanel, 4, duration,
                 new Vector3(1.1f, 0), useScale: true);
         }
 
-        private IEnumerator MoveToParent(Transform parent, int tileNumber,
+        private IEnumerator MoveToParent(Transform parent, int tileNumber, float duration,
             Vector3 offset = default, float spacing = default, bool useScale = false)
         {
             var targetRotation = parent.rotation.eulerAngles;
@@ -55,6 +68,7 @@ namespace ObscuritasRiichiMahjong
 
                 var index = Random.Range(0, TileSpawnPoint.childCount);
                 var tile = TileSpawnPoint.GetChild(index);
+                tile.SetParent(null);
 
                 var spacingVector = parentDirection * handIndex * spacing;
                 var tileWidth = handIndex * parentDirection;
@@ -70,8 +84,8 @@ namespace ObscuritasRiichiMahjong
                 var targetPosition =
                     parent.position + offset + tileWidth + spacingVector;
 
-                yield return tile.gameObject.PickUpAndMove(.01f, targetPosition, targetRotation,
-                    targetScale);
+                yield return tile.gameObject.PickUpAndMove(duration / tileNumber, targetPosition,
+                    targetRotation, targetScale);
                 tile.SetParent(parent, true);
             }
         }
