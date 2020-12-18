@@ -19,8 +19,8 @@ namespace ObscuritasRiichiMahjong.Animations
                     target.transform.position + Vector3.up * 5,
                     Vector3.zero);
 
-            yield return target.InterpolationAnimation(duration, targetPosition, targetRotation,
-                targetScale);
+            yield return target.InterpolationAnimation(duration / 2f, targetPosition,
+                targetRotation, targetScale);
         }
     }
 }

@@ -66,6 +66,9 @@
     <Compile Include="Assets\Scripts\Components\PlayerHandComponent.cs" />
     <Compile Include="Assets\Scripts\Components\MahjongTileComponent.cs" />
     <Compile Include="Assets\Scripts\Animations\MoveToParentExtension.cs" />
+    <Compile Include="Assets\Scripts\Data\TransformEnumerable.cs" />
+    <Compile Include="Assets\Scripts\Data\TransformEnumerator.cs" />
+    <Compile Include="Assets\Scripts\Data\TransformToEnumerableExtension.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\rounded cube 3d model\readme.txt" />

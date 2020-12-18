@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Components;
+using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
@@ -38,56 +39,28 @@ namespace ObscuritasRiichiMahjong
         private IEnumerator DealTiles()
         {
             const float duration = 3f;
+            var transformList = TileSpawnPoint.ToEnumerable().ToList();
+
             foreach (var handSpawnPoint in HandSpawnPoints)
-                StartCoroutine(MoveToParent(handSpawnPoint, 13, duration));
+                StartCoroutine(transformList.MoveToParent(handSpawnPoint, duration,
+                    randomOrder: true, tileCount: 13));
 
             yield return new WaitForSeconds(duration);
 
             foreach (var bankSpawnPoint in BankFirstRowSpawnPoints)
-                StartCoroutine(MoveToParent(bankSpawnPoint, 10, duration));
+                StartCoroutine(transformList.MoveToParent(bankSpawnPoint, duration,
+                    randomOrder: true, tileCount: 10));
 
             yield return new WaitForSeconds(duration);
 
             foreach (var bankSpawnPoint in BankSecondRowSpawnPoints)
-                StartCoroutine(MoveToParent(bankSpawnPoint, 10, duration));
+                StartCoroutine(transformList.MoveToParent(bankSpawnPoint, duration,
+                    randomOrder: true, tileCount: 10));
 
             yield return new WaitForSeconds(duration);
 
-            yield return MoveToParent(UiPanel, 4, duration,
-                new Vector3(1.1f, 0), useScale: true);
-        }
-
-        private IEnumerator MoveToParent(Transform parent, int tileNumber, float duration,
-            Vector3 offset = default, float spacing = default, bool useScale = false)
-        {
-            var targetRotation = parent.rotation.eulerAngles;
-
-            for (var handIndex = 0; handIndex < tileNumber; handIndex++)
-            {
-                var parentDirection = parent.rotation * Vector3.right;
-
-                var index = Random.Range(0, TileSpawnPoint.childCount);
-                var tile = TileSpawnPoint.GetChild(index);
-                tile.SetParent(null);
-
-                var spacingVector = parentDirection * handIndex * spacing;
-                var tileWidth = handIndex * parentDirection;
-                var targetScale = tile.localScale;
-
-                if (useScale)
-                {
-                    spacingVector.Scale(parent.localScale);
-                    tileWidth.Scale(parent.localScale);
-                    targetScale.Scale(parent.localScale);
-                }
-
-                var targetPosition =
-                    parent.position + offset + tileWidth + spacingVector;
-
-                yield return tile.gameObject.PickUpAndMove(duration / tileNumber, targetPosition,
-                    targetRotation, targetScale);
-                tile.SetParent(parent, true);
-            }
+            yield return transformList.MoveToParent(UiPanel, 1f,
+                new Vector3(1.1f, 0), useScale: true, randomOrder: true, tileCount: 4);
         }
 
         private IEnumerator BuildBoard()

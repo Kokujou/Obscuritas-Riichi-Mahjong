@@ -32,7 +32,8 @@ namespace ObscuritasRiichiMahjong.Components
         {
             _tiles = _tiles.OrderBy(GetTileOrder).ToList();
 
-            yield return _tiles.Select(x => x.transform).ToList().MoveToParent(transform);
+            yield return _tiles.Select(x => x.transform).ToList()
+                .MoveToParent(transform, 1f);
         }
 
         private static int GetTileOrder(MahjongTileComponent tileComponent)

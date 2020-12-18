@@ -7,17 +7,24 @@ namespace ObscuritasRiichiMahjong.Animations
     public static class MoveToParentExtension
     {
         public static IEnumerator MoveToParent(this List<Transform> children, Transform parent,
-            Vector3 offset = default, float spacing = default, bool useScale = false,
-            bool randomOrder = false)
+            float duration, Vector3 offset = default, float spacing = default,
+            bool useScale = false, bool randomOrder = false, int tileCount = -1)
         {
             var targetRotation = parent.rotation.eulerAngles;
 
-            for (var handIndex = 0; handIndex < children.Count; handIndex++)
+            if (tileCount == -1)
+                tileCount = children.Count;
+
+            for (var handIndex = 0; handIndex < tileCount; handIndex++)
             {
                 var parentDirection = parent.rotation * Vector3.right;
 
-                var index = randomOrder ? Random.Range(0, parent.childCount) : handIndex;
+                var index = randomOrder
+                    ? Random.Range(0, children.Count)
+                    : tileCount - (handIndex + 1);
                 var tile = children[index];
+
+                children.RemoveAt(index);
 
                 var spacingVector = parentDirection * handIndex * spacing;
                 var tileWidth = handIndex * parentDirection;
@@ -33,8 +40,8 @@ namespace ObscuritasRiichiMahjong.Animations
                 var targetPosition =
                     parent.position + offset + tileWidth + spacingVector;
 
-                yield return tile.gameObject.PickUpAndMove(.01f, targetPosition, targetRotation,
-                    targetScale);
+                yield return tile.gameObject.PickUpAndMove(duration / tileCount,
+                    targetPosition, targetRotation, targetScale);
                 tile.SetParent(parent, true);
             }
         }
