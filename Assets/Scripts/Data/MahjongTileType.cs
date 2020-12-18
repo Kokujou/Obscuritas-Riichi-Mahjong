@@ -5,7 +5,7 @@
         Bamboo,
         Circle,
         Kanji,
-        Dragon,
-        Wind
+        Wind,
+        Dragon
     }
 }

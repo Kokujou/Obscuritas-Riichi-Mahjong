@@ -4,12 +4,11 @@
     <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>ObscuritasRiichiMahjong</RootNamespace>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>ObscuritasRiichiMahjong</RootNamespace>
     <ProjectGuid>{ED5BBED6-42A2-4E1E-6FEA-66BCB7BB5D4E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -59,9 +58,14 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\MahjongMain.cs" />
     <Compile Include="Assets\Scripts\Data\MahjongTileType.cs" />
+    <Compile Include="Assets\Scripts\Animations\PickUpAndMoveAnimationExtension.cs" />
     <Compile Include="Assets\CreateMaterials.cs" />
     <Compile Include="Assets\Scripts\Models\MahjongTile.cs" />
-    <Compile Include="Assets\Scripts\Animations\InterpolatedMovement.cs" />
+    <Compile Include="Assets\Scripts\Animations\InterpolationAnimationExtension.cs" />
+    <Compile Include="Assets\Scripts\Animations\SpawnAtExtension.cs" />
+    <Compile Include="Assets\Scripts\Components\PlayerHandComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\MahjongTileComponent.cs" />
+    <Compile Include="Assets\Scripts\Animations\MoveToParentExtension.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\rounded cube 3d model\readme.txt" />
