@@ -56,22 +56,56 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Data\TransformEnumerable.cs" />
+    <Compile Include="Assets\Scripts\Animations\SpawnAtExtension.cs" />
     <Compile Include="Assets\Scripts\MahjongMain.cs" />
     <Compile Include="Assets\Scripts\Data\MahjongTileType.cs" />
+    <Compile Include="Assets\Scripts\Data\TransformEnumerator.cs" />
     <Compile Include="Assets\Scripts\Animations\PickUpAndMoveAnimationExtension.cs" />
     <Compile Include="Assets\CreateMaterials.cs" />
     <Compile Include="Assets\Scripts\Models\MahjongTile.cs" />
-    <Compile Include="Assets\Scripts\Animations\InterpolationAnimationExtension.cs" />
-    <Compile Include="Assets\Scripts\Animations\SpawnAtExtension.cs" />
-    <Compile Include="Assets\Scripts\Components\PlayerHandComponent.cs" />
     <Compile Include="Assets\Scripts\Components\MahjongTileComponent.cs" />
-    <Compile Include="Assets\Scripts\Animations\MoveToParentExtension.cs" />
-    <Compile Include="Assets\Scripts\Data\TransformEnumerable.cs" />
-    <Compile Include="Assets\Scripts\Data\TransformEnumerator.cs" />
     <Compile Include="Assets\Scripts\Data\TransformToEnumerableExtension.cs" />
+    <Compile Include="Assets\Scripts\Animations\InterpolationAnimationExtension.cs" />
+    <Compile Include="Assets\Scripts\Animations\MoveToParentExtension.cs" />
+    <Compile Include="Assets\Scripts\Components\PlayerHandComponent.cs" />
+    <Compile Include="Assets\Scripts\Models\MahjongPlayer.cs" />
+    <Compile Include="Assets\Scripts\Data\CardinalPoint.cs" />
+    <Compile Include="Assets\Scripts\Rules\Interfaces\MahjongRule.cs" />
+    <Compile Include="Assets\Scripts\Models\MahjongBoard.cs" />
+    <Compile Include="Assets\Scripts\Rules\Extensions\CountSequencesExtension.cs" />
+    <Compile Include="Assets\Scripts\Data\WinningMoveType.cs" />
+    <Compile Include="Assets\Scripts\Data\MoveType.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\PureDoubleSequences.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\OneShot.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\HonorTiles.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\ReadyHand.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\DiscardPick.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\RobbingQuad.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\NoPointsHand.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\RedFive.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\SelfPick.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\DeadWallDraw.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\AllSimples.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\DoubleReady.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\TripleTriplets.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\ThreeQuads.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\AllTriplets.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\LittleThreeDragons.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\AllTerminalsAndHonors.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\SevenPairs.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\PureStraight.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\MixedTripleSequence.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\ThreeChainedTriplets.cs" />
+    <Compile Include="Assets\Scripts\Rules\ThreeHan\TwicePureDoubleSequence.cs" />
+    <Compile Include="Assets\Scripts\Rules\ThreeHan\TerminalInEachSet.cs" />
+    <Compile Include="Assets\Scripts\Rules\ThreeHan\HalfFlush.cs" />
+    <Compile Include="Assets\Scripts\Rules\SixHan\FullFlush.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\LastFromWall.cs" />
+    <Compile Include="Assets\Scripts\Rules\OneHan\LastDiscard.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\TerminalOrHonorInEachSet.cs" />
   </ItemGroup>
   <ItemGroup>
-     <None Include="Assets\rounded cube 3d model\readme.txt" />
      <None Include="Assets\Fonts\3DTextShader.shader" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Programme\Unity\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

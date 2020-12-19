@@ -38,7 +38,7 @@ namespace ObscuritasRiichiMahjong.Components
 
         private static int GetTileOrder(MahjongTileComponent tileComponent)
         {
-            return (int) tileComponent.Tile.Type * 20 + tileComponent.Tile.Number;
+            return tileComponent.Tile.GetTileOrder();
         }
     }
 }

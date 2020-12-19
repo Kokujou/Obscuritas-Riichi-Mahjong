@@ -1,0 +1,24 @@
+﻿using ObscuritasRiichiMahjong.Data;
+using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Interfaces;
+
+namespace ObscuritasRiichiMahjong.Rules.OneHan
+{
+    public class DeadWallDraw : MahjongRule
+    {
+        public override string Name => "Dead wall draw";
+        public override string JapName => "Rinshan Kaihou";
+        public override string KanjiName => "嶺上開花";
+
+        public override string Description =>
+            "Completing the hand with the winning tile being drawn from the dead wall after a Kan.";
+
+        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        {
+            if (board.WinningMoveType == WinningMoveType.Kan)
+                return true;
+
+            return false;
+        }
+    }
+}
