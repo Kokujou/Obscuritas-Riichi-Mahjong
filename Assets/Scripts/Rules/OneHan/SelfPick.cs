@@ -7,9 +7,9 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
 {
     public class SelfPick : MahjongRule
     {
-        public override int OpenHandPunishment => 1;
+        public override bool AcceptOpenHand => false;
         public override string Name => "Self-Pick";
-        public override string JapName => "SelfPick";
+        public override string JapName => "Tsumo";
         public override string KanjiName => "自摸";
 
         public override string Description =>

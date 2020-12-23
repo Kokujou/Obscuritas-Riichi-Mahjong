@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3b88e1ad5fb718418f9f5bfa121c920, type: 3}
   m_Name: Green Dragon
   m_EditorClassIdentifier: 
-  Number: 10
-  Type: 3
-  Name: Green Dragon
+  Green: 1
   Material: {fileID: 2100000, guid: 5a923e9b1b2ec9e4683959e8eab691ab, type: 2}
+  Name: Green Dragon
+  Number: 10
   Red: 0
+  Type: 3

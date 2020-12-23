@@ -10,6 +10,7 @@ namespace ObscuritasRiichiMahjong.Rules
             CollectedYaku = new List<MahjongRule>();
         }
 
+        public int Yakuman { get; set; }
         public int Han { get; set; }
         public int Fu { get; set; }
         public int TotalPoints { get; set; }
@@ -24,6 +25,9 @@ namespace ObscuritasRiichiMahjong.Rules
         private string GetPointsDescription()
         {
             var description = $"{Han} Han / {Fu} Fu";
+
+            if (Yakuman > 0)
+                description = $"{Yakuman}x Yakuman";
 
             return description;
         }

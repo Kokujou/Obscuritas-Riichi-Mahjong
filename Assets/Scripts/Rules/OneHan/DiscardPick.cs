@@ -8,7 +8,7 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
     public class DiscardPick : MahjongRule
     {
         public override string Name => "DiscardPick";
-        public override string JapName => "DiscardPick";
+        public override string JapName => "Ron";
         public override string KanjiName => "栄";
 
         public override string Description =>

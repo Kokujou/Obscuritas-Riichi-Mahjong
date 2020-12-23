@@ -7,7 +7,7 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
     public class OneShot : MahjongRule
     {
         public override string Name => "One Shot";
-        public override string JapName => "OneShot";
+        public override string JapName => "Ippatsu";
         public override string KanjiName => "一発";
 
         public override string Description =>

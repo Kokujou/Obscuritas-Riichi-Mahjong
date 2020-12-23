@@ -38,6 +38,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation
                 tile.gameObject.GetComponent<Button>().interactable = false;
             if (handCount < 4)
                 Player.Hand.Add(clickedTile.Tile);
+            Board.WinningTile = clickedTile.Tile;
 
             Player.Hand = Player.Hand.OrderBy(x => x.GetTileOrder()).ToList();
 
@@ -85,6 +86,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation
         // Start is called before the first frame update
         private void Start()
         {
+            Board.WinningMoveType = WinningMoveType.Tsumo;
             Tiles = Tiles.OrderBy(x => x.Type).ToList();
             foreach (var tile in Tiles)
             {

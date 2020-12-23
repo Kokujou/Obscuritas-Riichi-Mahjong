@@ -7,7 +7,7 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
     public class ReadyHand : MahjongRule
     {
         public override string Name => "Ready hand";
-        public override string JapName => "ReadyHand";
+        public override string JapName => "Riichi";
         public override string KanjiName => "立直";
 
         public override string Description =>

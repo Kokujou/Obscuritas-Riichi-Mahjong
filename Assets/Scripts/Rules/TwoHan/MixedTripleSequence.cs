@@ -9,7 +9,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
     public class MixedTripleSequence : MahjongRule
     {
         public override int OpenHandPunishment => 1;
-        public override int Han => 2;
+        public override int Han { get; set; } = 2;
         public override string Name => "Mixed Triple Sequence";
         public override string JapName => "Sanshoku Doujun";
         public override string KanjiName => "– 三色同順";

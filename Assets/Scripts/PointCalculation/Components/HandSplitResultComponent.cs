@@ -10,11 +10,13 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
 {
     public class HandSplitResultComponent : MonoBehaviour
     {
-        public Text FuListing;
+        public Text FuNameListing;
+        public Text FuPointsListing;
         public Transform HandSplitsParent;
         public Text ResultName;
         public Text ResultPoints;
-        public Text YakuListing;
+        public Text YakuNameListing;
+        public Text YakuPointsListing;
 
         public void Load(List<List<MahjongTile>> handSplit, MahjongPlayer player,
             MahjongBoard board)
@@ -39,7 +41,20 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
             ResultName.text = pointResult.PointsDescription;
             ResultPoints.text = $"{pointResult.TotalPoints} pts.\n" +
                                 $"{(pointResult.FromAll ? "from all" : "")}";
-            YakuListing.text = string.Join("\n", pointResult.CollectedYaku);
+
+            var yakuman = pointResult.CollectedYaku.Where(x => x.Yakuman > 0).ToList();
+            if (yakuman.Count > 0)
+            {
+                YakuNameListing.text = string.Join("\n", yakuman);
+                YakuPointsListing.text = string.Join("\n",
+                    yakuman.Select(x => $"{(x.Yakuman == 2 ? "Double" : "")} Yakuman"));
+            }
+            else
+            {
+                YakuNameListing.text = string.Join("\n", pointResult.CollectedYaku);
+                YakuPointsListing.text = string.Join("\n",
+                    pointResult.CollectedYaku.Select(x => $"{x.Han} Han"));
+            }
         }
     }
 }

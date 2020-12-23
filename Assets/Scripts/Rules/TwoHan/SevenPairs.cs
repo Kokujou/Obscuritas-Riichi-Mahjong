@@ -7,7 +7,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
 {
     public class SevenPairs : MahjongRule
     {
-        public override int Han => 2;
+        public override int Han { get; set; } = 2;
         public override bool AcceptOpenHand => false;
         public override string Name => "Seven Pairs";
         public override string JapName => "Chiitoitsu";

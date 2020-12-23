@@ -6,7 +6,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
 {
     public class DoubleReady : MahjongRule
     {
-        public override int Han => 2;
+        public override int Han {get; set;} = 2;
         public override string Name => "Double Ready";
         public override string JapName => "Double Riichi";
         public override string KanjiName => "ダブルリーチ";

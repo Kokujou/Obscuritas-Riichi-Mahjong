@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
@@ -27,7 +26,7 @@ namespace ObscuritasRiichiMahjong.Rules.Yakuman
                 return false;
 
             var pair = handSplit.First(x => x.Count == 2);
-            if (board.WinningMoveType == WinningMoveType.Ron && board.WinningTile == pair.First())
+            if (board.WinningTile == pair.First())
                 return true;
 
             return false;

@@ -9,7 +9,7 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
     public class NoPointsHand : MahjongRule
     {
         public override string Name => "No-points hand";
-        public override string JapName => "NoPointsHand";
+        public override string JapName => "Pinfu";
         public override string KanjiName => "平和";
 
         public override string Description =>

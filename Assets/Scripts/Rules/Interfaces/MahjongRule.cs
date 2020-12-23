@@ -6,7 +6,7 @@ namespace ObscuritasRiichiMahjong.Rules.Interfaces
     public abstract class MahjongRule
     {
         public virtual bool AcceptOpenHand => true;
-        public virtual int Han => 1;
+        public virtual int Han { get; set; } = 1;
         public virtual int OpenHandPunishment => 0;
         public abstract string Name { get; }
         public abstract string JapName { get; }
@@ -24,14 +24,14 @@ namespace ObscuritasRiichiMahjong.Rules.Interfaces
                 return 0;
 
             if (Fulfilled(handSplit, board, player))
-                return Han - OpenHandPunishment;
+                return Han - (player.HandOpen ? OpenHandPunishment : 0);
 
             return 0;
         }
 
         public override string ToString()
         {
-            return $"{JapName}({KanjiName})\t\t\t{Han} Han";
+            return $"{JapName}({KanjiName}) - {Name}";
         }
     }
 }

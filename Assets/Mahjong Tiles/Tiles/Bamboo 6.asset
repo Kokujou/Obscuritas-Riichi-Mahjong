@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3b88e1ad5fb718418f9f5bfa121c920, type: 3}
   m_Name: Bamboo 6
   m_EditorClassIdentifier: 
-  Number: 6
-  Type: 0
-  Name: Bamboo 6
+  Green: 1
   Material: {fileID: 2100000, guid: 4b5301d5278d00e47b5d7b551863a495, type: 2}
+  Name: Bamboo 6
+  Number: 6
   Red: 0
+  Type: 0

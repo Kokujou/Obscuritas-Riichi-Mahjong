@@ -8,7 +8,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
 {
     public class AllTerminalsAndHonors : MahjongRule
     {
-        public override int Han => 2;
+        public override int Han {get; set;} = 2;
         public override string Name => "All Terminals";
         public override string JapName => "Honrou";
         public override string KanjiName => "混老";

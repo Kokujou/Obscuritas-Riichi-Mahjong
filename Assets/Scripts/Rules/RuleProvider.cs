@@ -26,11 +26,16 @@ namespace ObscuritasRiichiMahjong.Rules
             foreach (var yaku in rules)
             {
                 var han = yaku.GetHan(handSplit, board, player);
-                if (han > 0)
-                {
-                    pointResult.CollectedYaku.Add(yaku);
+                yaku.Han = han;
+
+                if (han <= 0) continue;
+
+                pointResult.CollectedYaku.Add(yaku);
+
+                if (yaku.Yakuman > 0)
+                    pointResult.Yakuman += yaku.Yakuman;
+                else
                     pointResult.Han += han;
-                }
             }
 
             if (board.WinningMoveType == WinningMoveType.Tsumo)

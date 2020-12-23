@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Extensions;
@@ -24,6 +25,10 @@ namespace ObscuritasRiichiMahjong.Rules.Yakuman
                 return false;
 
             var allClosedTriplets = handSplit.GetTripletsOrQuads();
+
+            var pair = handSplit.First(x => x.Count == 2);
+            if (board.WinningTile == pair.First())
+                return false;
 
             if (allClosedTriplets.Count >= 4)
                 return true;

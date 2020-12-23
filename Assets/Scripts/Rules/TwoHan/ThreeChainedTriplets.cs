@@ -8,7 +8,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
 {
     public class ThreeChainedTriplets : MahjongRule
     {
-        public override int Han => 2;
+        public override int Han { get; set; } = 2;
         public override string Name => "Three Chained Triplets";
         public override string JapName => "Sanrenkou";
         public override string KanjiName => "三連刻";

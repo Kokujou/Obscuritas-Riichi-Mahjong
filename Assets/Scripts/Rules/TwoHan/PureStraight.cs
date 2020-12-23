@@ -8,7 +8,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
 {
     public class PureStraight : MahjongRule
     {
-        public override int Han => 2;
+        public override int Han { get; set; } = 2;
         public override int OpenHandPunishment => 1;
         public override string Name => "Straight";
         public override string JapName => "Ittsuu";
