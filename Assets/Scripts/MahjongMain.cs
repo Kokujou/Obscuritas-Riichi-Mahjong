@@ -4,7 +4,6 @@ using System.Linq;
 using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Components;
 using ObscuritasRiichiMahjong.Models;
-using ObscuritasRiichiMahjong.Rules;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong
@@ -84,8 +83,6 @@ namespace ObscuritasRiichiMahjong
                 TileSet.AddRange(nonRedFives);
 
             StartCoroutine(BuildBoard());
-
-            var mahjongRules = RuleProvider.Rules;
         }
 
         public void Update()

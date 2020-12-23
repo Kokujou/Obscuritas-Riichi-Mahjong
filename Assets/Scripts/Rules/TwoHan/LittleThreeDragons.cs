@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
@@ -15,19 +17,13 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override string Description =>
             "Two triplets or quads of dragons, plus a pair of the third.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            var dragons = player.Hand
-                .Where(x => x.Type == MahjongTileType.Dragon).ToList();
+            var dragonTripletsOrQuads = handSplit.EnrichSplittedHand(player)
+                .Where(group => group.Any(x => x.Type == MahjongTileType.Dragon)).ToList();
 
-            if (dragons.Count != 8)
-                return false;
-
-            var groupedDragons = dragons.GroupBy(x => x.name)
-                .Select(x => x.Count()).ToList();
-
-            if (groupedDragons.Count(x => x == 2) == 1
-                && groupedDragons.Count(x => x == 3) >= 2)
+            if (dragonTripletsOrQuads.Count >= 3 && dragonTripletsOrQuads.Any(x => x.Count == 2))
                 return true;
 
             return false;

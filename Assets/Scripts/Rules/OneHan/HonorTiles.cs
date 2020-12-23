@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.OneHan
@@ -14,24 +16,36 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public override string Description =>
             "One or more sets (min. 3x) of a dragon tile, a seat wind or a round wind.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            return GetHan(board, player) > 0;
+            return GetHan(handSplit, board, player) > 0;
         }
 
-        public override int GetHan(MahjongBoard board, MahjongPlayer player)
+        public override int GetHan(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            var dragonTiles =
-                player.Hand.GroupBy(x => x.Type)
-                    .Where(x =>
-                        x.Count() == 3 && (x.Key == MahjongTileType.Dragon
-                                           || x.Key == MahjongTileType.Wind));
+            var allTriplets = handSplit.EnrichSplittedHand(player).GetTriplets();
+            var dragonTilesCount =
+                allTriplets.Count(x => IsValidHonorTile(x.First(), player, board));
 
-            var han = dragonTiles.Where(x => x.Key == MahjongTileType.Dragon
-                                             || x.First().Name == board.CardinalPoint.ToString()
-                                             || x.First().Name == player.CardinalPoint.ToString())
-                .Count(x => x.Count() > 3);
-            return han;
+            return dragonTilesCount * Han;
+        }
+
+        public static bool IsValidHonorTile(MahjongTile tile, MahjongPlayer player,
+            MahjongBoard board)
+        {
+            if (tile.Type == MahjongTileType.Dragon)
+                return true;
+
+            if (tile.Type != MahjongTileType.Wind)
+                return false;
+
+            if (tile.Name == board.CardinalPoint.ToString() ||
+                tile.name == player.CardinalPoint.ToString())
+                return true;
+
+            return false;
         }
     }
 }

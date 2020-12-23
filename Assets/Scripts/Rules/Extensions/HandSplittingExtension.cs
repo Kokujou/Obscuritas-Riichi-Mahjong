@@ -7,18 +7,13 @@ namespace ObscuritasRiichiMahjong.Rules.Extensions
 {
     public static class HandSplittingExtension
     {
-        public static List<List<List<MahjongTile>>> GetValidHands(this MahjongPlayer player)
+        public static List<List<MahjongTile>> EnrichSplittedHand(
+            this List<List<MahjongTile>> handSplit, MahjongPlayer player)
         {
-            var validHands = player.Hand.GetValidHands();
-            for (var index = 0; index < validHands.Count; index++)
-                validHands[index] = validHands[index].Union(player.ExposedHand)
-                    .Union(player.HiddenKan)
-                    .ToList();
-
-            return validHands;
+            return handSplit.Concat(player.ExposedHand).Concat(player.HiddenKan).ToList();
         }
 
-        private static List<List<List<MahjongTile>>> GetValidHands(this List<MahjongTile> hand)
+        public static List<List<List<MahjongTile>>> GetValidHands(this List<MahjongTile> hand)
         {
             if (hand.Count < 2 || (hand.Count - 2) % 3 != 0)
                 return null;

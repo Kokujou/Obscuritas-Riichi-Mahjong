@@ -1,4 +1,5 @@
-﻿using ObscuritasRiichiMahjong.Data;
+﻿using System.Collections.Generic;
+using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
@@ -13,7 +14,8 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public override string Description =>
             "Completing the hand with the winning tile being drawn from the dead wall after a Kan.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
             if (board.WinningMoveType == WinningMoveType.Kan)
                 return true;

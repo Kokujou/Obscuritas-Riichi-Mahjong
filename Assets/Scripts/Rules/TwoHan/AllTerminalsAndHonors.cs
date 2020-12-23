@@ -1,4 +1,7 @@
-﻿using ObscuritasRiichiMahjong.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
@@ -13,9 +16,11 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override string Description =>
             "Each Set of tiles must contain at least one terminal.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            if (player.Hand.Exists(x => !x.IsTerminal()))
+            var allTiles = handSplit.EnrichSplittedHand(player).SelectMany(x => x);
+            if (allTiles.Any(x => !x.IsTerminal()))
                 return false;
 
             return true;

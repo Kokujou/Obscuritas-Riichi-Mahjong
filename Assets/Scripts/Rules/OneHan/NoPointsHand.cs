@@ -17,9 +17,10 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
 
         public override bool AcceptOpenHand => false;
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            var sequences = player.Hand.GetSequences();
+            var sequences = handSplit.GetSequences();
             if (sequences.Count == 4 && TileCompletesSequence(board.WinningTile, sequences))
                 return true;
 

@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
@@ -15,11 +17,15 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override string Description =>
             "Three Triplets of the same number in all three suits.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            for (var i = 1; i <= 9; i++)
-                if (player.Hand.Count(x => x.Number == i) == 9)
-                    return true;
+            var tripletsByNumber = handSplit.EnrichSplittedHand(player).GetTriplets()
+                .Where(x => x.First().Number > 0 && x.First().Number < 10)
+                .GroupBy(x => x.First().Number);
+
+            if (tripletsByNumber.Any(x => x.Count() >= 3))
+                return true;
 
             return false;
         }

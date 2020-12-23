@@ -1,5 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
@@ -12,11 +13,12 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override string KanjiName => "三槓子";
         public override string Description => "Three quads of any color.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            for (var i = 1; i <= 9; i++)
-                if (player.Hand.Count(x => x.Number == i) >= 12)
-                    return true;
+            var quads = handSplit.EnrichSplittedHand(player).GetQuads();
+            if (quads.Count >= 3)
+                return true;
 
             return false;
         }

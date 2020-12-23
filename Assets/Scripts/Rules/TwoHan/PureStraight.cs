@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
@@ -11,19 +13,24 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override string Name => "Straight";
         public override string JapName => "Ittsuu";
         public override string KanjiName => "一通";
-        public override string Description => "All numbers from 1-9 in the same suit.";
+        public override string Description => "Contains 1-2-3, 4-5-6, 7-8-9 in the same suit.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            var groupedHand = player.Hand.Where(x => !x.IsTerminal())
-                .GroupBy(x => x.Type);
+            var sequences = handSplit.EnrichSplittedHand(player).GetSequences();
 
-            var groupedTileNumbers = from grouping in groupedHand
-                select grouping.OrderBy(x => x.Number).ToList()
-                into groupContent
-                where groupContent.Count >= 9
-                select groupContent.Aggregate("", (current, tile) => current + tile.Number);
-            if (groupedTileNumbers.Any(numbers => numbers.Contains("123456789")))
+            var biggestSuitGroups =
+                sequences.GroupBy(x => x.First().Type).First(x => x.Count() >= 3);
+
+            var numberGroups = new List<string> {"123", "456", "789"};
+            foreach (var sequence in biggestSuitGroups)
+            {
+                var sequenceString = string.Join("", sequence.Select(x => x.Number.ToString()));
+                numberGroups.Remove(sequenceString);
+            }
+
+            if (numberGroups.Count == 0)
                 return true;
 
             return false;

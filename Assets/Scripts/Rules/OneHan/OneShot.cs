@@ -1,4 +1,5 @@
-﻿using ObscuritasRiichiMahjong.Models;
+﻿using System.Collections.Generic;
+using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.OneHan
@@ -12,7 +13,8 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public override string Description =>
             "Complete the Hand the first round after declaring ReadyHand.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
             if (player.Ippatsu)
                 return true;

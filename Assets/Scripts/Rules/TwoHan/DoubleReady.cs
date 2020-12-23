@@ -1,4 +1,5 @@
-﻿using ObscuritasRiichiMahjong.Models;
+﻿using System.Collections.Generic;
+using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
@@ -11,7 +12,8 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override string KanjiName => "ダブルリーチ";
         public override string Description => "Declare Riichi in the first round of the game.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
             if (player.Riichi && board.CurrentRound == 1)
                 return true;

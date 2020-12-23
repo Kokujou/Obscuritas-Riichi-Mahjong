@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.OneHan
@@ -11,9 +13,11 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public override string KanjiName => "断么";
         public override string Description => "A hand composed only of numbered tiles from 2-8.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            if (player.Hand.Any(x => x.IsTerminal()))
+            var allTiles = handSplit.EnrichSplittedHand(player).SelectMany(x => x);
+            if (allTiles.Any(x => x.IsTerminal()))
                 return false;
 
             return true;

@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.SixHan
@@ -13,9 +15,11 @@ namespace ObscuritasRiichiMahjong.Rules.SixHan
         public override string KanjiName => "清一";
         public override string Description => "All tiles in the hand beyond to the same suit";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            if (player.Hand.GroupBy(x => x.Type).Count() > 1)
+            var allTiles = handSplit.EnrichSplittedHand(player).SelectMany(x => x);
+            if (allTiles.GroupBy(x => x.Type).Count() > 1)
                 return false;
 
             return true;

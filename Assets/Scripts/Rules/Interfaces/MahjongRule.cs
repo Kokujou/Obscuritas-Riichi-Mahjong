@@ -1,4 +1,5 @@
-﻿using ObscuritasRiichiMahjong.Models;
+﻿using System.Collections.Generic;
+using ObscuritasRiichiMahjong.Models;
 
 namespace ObscuritasRiichiMahjong.Rules.Interfaces
 {
@@ -12,17 +13,24 @@ namespace ObscuritasRiichiMahjong.Rules.Interfaces
         public abstract string KanjiName { get; }
         public abstract string Description { get; }
 
-        public abstract bool Fulfilled(MahjongBoard board, MahjongPlayer player);
+        public abstract bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player);
 
-        public virtual int GetHan(MahjongBoard board, MahjongPlayer player)
+        public virtual int GetHan(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
             if (!AcceptOpenHand && player.HandOpen)
                 return 0;
 
-            if (Fulfilled(board, player))
+            if (Fulfilled(handSplit, board, player))
                 return Han - OpenHandPunishment;
 
             return 0;
+        }
+
+        public override string ToString()
+        {
+            return $"{JapName}({KanjiName})\t\t\t{Han} Han";
         }
     }
 }

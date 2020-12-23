@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
@@ -13,7 +14,8 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override string KanjiName => "七対子";
         public override string Description => "A hand consisting of only pairs (2x) of any tile.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
             var groupedHand = player.Hand.GroupBy(x => x.name);
 

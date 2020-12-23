@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using ObscuritasRiichiMahjong.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
@@ -15,19 +15,13 @@ namespace ObscuritasRiichiMahjong.Rules.ThreeHan
         public override string KanjiName => "純チャン";
         public override string Description => "Every set of the hand contains at least one 1 or 9.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            var sequences = player.Hand.GetSequences();
+            var groups = handSplit.EnrichSplittedHand(player);
 
-            if (sequences.Any(group => group.All(tile => tile.Number != 9 && tile.Number != 1)))
+            if (groups.Any(group => group.All(tile => tile.Number != 9 && tile.Number != 1)))
                 return false;
-
-            var nonTerminalSuits =
-                new[] {MahjongTileType.Bamboo, MahjongTileType.Circle, MahjongTileType.Kanji};
-            for (var i = 2; i < 9; i++)
-                foreach (var suit in nonTerminalSuits)
-                    if (player.Hand.Count(x => x.Number == i && x.Type == suit) >= 2)
-                        return false;
 
             return true;
         }

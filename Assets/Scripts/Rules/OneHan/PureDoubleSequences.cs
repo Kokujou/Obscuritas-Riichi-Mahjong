@@ -14,9 +14,10 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public override string KanjiName => "一盃口";
         public override string Description => "Two times the same sequence in the same suit.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            var sequences = player.Hand.GetSequences();
+            var sequences = handSplit.GetSequences();
             var numberSequences = sequences.Select(GetTilesAsNumber).ToList();
             foreach (var sequence in numberSequences)
                 if (numberSequences.Count(x => x == sequence) >= 2)

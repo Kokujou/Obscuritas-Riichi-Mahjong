@@ -1,4 +1,5 @@
-﻿using ObscuritasRiichiMahjong.Data;
+﻿using System.Collections.Generic;
+using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
@@ -13,7 +14,8 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public override string Description =>
             "Declaring SelfPick with the last tile from the own wall";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
             if (player.Wall.Count == 0 && board.WinningMoveType == WinningMoveType.Tsumo)
                 return true;

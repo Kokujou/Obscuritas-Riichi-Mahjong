@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
@@ -14,9 +15,10 @@ namespace ObscuritasRiichiMahjong.Rules.ThreeHan
         public override string KanjiName => "二盃口";
         public override string Description => "Two independent pairs of identical sequences.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            var numberSequences = player.Hand.GetSequences()
+            var numberSequences = handSplit.GetSequences()
                 .Select(x => x.Aggregate($"{x.First().Type.ToString()[0]}",
                     (text, tile) => text + tile.Number)).ToList();
 

@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
@@ -14,17 +16,19 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override string Description =>
             "Three triplets of successive numbers of the same suit.";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            var targetSuit = player.Hand.GroupBy(x => x.Type)
-                .First(x => x.Count() >= 9).ToList();
-            var tripletNumbers =
-                targetSuit.Where(x => targetSuit.Count(y => x.Number == y.Number) >= 3)
-                    .Select(x => x.Number).OrderBy(x => x).ToList();
+            var allTriplets = handSplit.EnrichSplittedHand(player).GetTriplets()
+                .Where(x => x.First().Number > 0 && x.First().Number < 10);
+            var biggestSuitGroups =
+                allTriplets.GroupBy(x => x.First().Type).First(x => x.Count() >= 3);
+            var biggestSuitNumbers =
+                biggestSuitGroups.Select(x => x.First().Number).Distinct().OrderBy(x => x).ToList();
 
-            for (var i = 1; i < tripletNumbers.Count - 1; i++)
-                if (tripletNumbers[i - 1] == tripletNumbers[i] - 1 &&
-                    tripletNumbers[i + 1] == tripletNumbers[i] + 1)
+            for (var i = 1; i < biggestSuitNumbers.Count - 1; i++)
+                if (biggestSuitNumbers[i] == biggestSuitNumbers[i - 1] - 1 &&
+                    biggestSuitNumbers[i] == biggestSuitNumbers[i + 1] + 1)
                     return true;
 
             return false;

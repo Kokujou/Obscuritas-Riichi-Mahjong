@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ObscuritasRiichiMahjong.Components
+namespace ObscuritasRiichiMahjong.PointCalculation.Components
 {
     public class MahjongTile2DComponent : MonoBehaviour
     {
@@ -22,12 +22,14 @@ namespace ObscuritasRiichiMahjong.Components
 
         public void AddToHand()
         {
-            PointCalculator.AddToHand(gameObject.GetComponent<MahjongTile2DComponent>());
+            FindObjectOfType<PointCalculator>()
+                .AddToHand(gameObject.GetComponent<MahjongTile2DComponent>());
         }
 
         public void RemoveFromHand()
         {
-            PointCalculator.RemoveFromHand(gameObject.GetComponent<MahjongTile2DComponent>());
+            FindObjectOfType<PointCalculator>()
+                .RemoveFromHand(gameObject.GetComponent<MahjongTile2DComponent>());
         }
 
         public static MahjongTile2DComponent AddToObject(GameObject target, MahjongTile tile)

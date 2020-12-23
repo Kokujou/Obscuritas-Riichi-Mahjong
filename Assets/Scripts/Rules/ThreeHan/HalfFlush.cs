@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.ThreeHan
@@ -12,11 +14,15 @@ namespace ObscuritasRiichiMahjong.Rules.ThreeHan
         public override string Name => "Half Flush";
         public override string JapName => "Hon'itsu";
         public override string KanjiName => "混一 ";
-        public override string Description => "";
 
-        public override bool Fulfilled(MahjongBoard board, MahjongPlayer player)
+        public override string Description =>
+            "A hand consisting of only honor tiles and one more suit.";
+
+        public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
+            MahjongPlayer player)
         {
-            if (player.Hand
+            var allTiles = handSplit.EnrichSplittedHand(player).SelectMany(x => x);
+            if (allTiles
                 .Where(x => x.Type != MahjongTileType.Wind && x.Type != MahjongTileType.Dragon)
                 .GroupBy(x => x.Type)
                 .Count() <= 1)
