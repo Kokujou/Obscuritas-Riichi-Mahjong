@@ -109,9 +109,22 @@
     <Compile Include="Assets\Scripts\PointCalculation\Components\MahjongTile2DComponent.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\HandSplitResultComponent.cs" />
     <Compile Include="Assets\Scripts\Rules\PointResult.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\FourTriplets.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\FourTripletsSingleWait.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\ThirteenOrphans.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\ThirteenOrphans13Wait.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\BigThreeDragons.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\LittleFourWinds.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\BigFourWinds.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\AllHonors.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\AllTerminals.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\AllGreen.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\NineGates.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\NineGates9Wait.cs" />
+    <Compile Include="Assets\Scripts\Rules\Yakuman\FourKans.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Fonts\3DTextShader.shader" />
+     <None Include="Assets\Fonts\3DTextShader.shader" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Programme\Unity\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>
@@ -738,7 +751,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\Scripts\Rules\Yakuman\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

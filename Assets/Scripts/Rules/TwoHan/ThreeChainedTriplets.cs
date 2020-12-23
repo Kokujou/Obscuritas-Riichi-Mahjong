@@ -22,7 +22,10 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
             var allTriplets = handSplit.EnrichSplittedHand(player).GetTriplets()
                 .Where(x => x.First().Number > 0 && x.First().Number < 10);
             var biggestSuitGroups =
-                allTriplets.GroupBy(x => x.First().Type).First(x => x.Count() >= 3);
+                allTriplets.GroupBy(x => x.First().Type).SingleOrDefault(x => x.Count() >= 3);
+
+            if (biggestSuitGroups == default) return false;
+
             var biggestSuitNumbers =
                 biggestSuitGroups.Select(x => x.First().Number).Distinct().OrderBy(x => x).ToList();
 

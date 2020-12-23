@@ -6,6 +6,7 @@ namespace ObscuritasRiichiMahjong.Models
 {
     public class MahjongTile : ScriptableObject, IEquatable<MahjongTile>
     {
+        public bool Green;
         public Material Material;
         public string Name;
         public byte Number = 0;

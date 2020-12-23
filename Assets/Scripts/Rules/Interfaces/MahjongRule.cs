@@ -12,6 +12,7 @@ namespace ObscuritasRiichiMahjong.Rules.Interfaces
         public abstract string JapName { get; }
         public abstract string KanjiName { get; }
         public abstract string Description { get; }
+        public virtual int Yakuman => 0;
 
         public abstract bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
             MahjongPlayer player);

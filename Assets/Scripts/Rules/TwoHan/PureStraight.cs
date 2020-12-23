@@ -21,7 +21,10 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
             var sequences = handSplit.EnrichSplittedHand(player).GetSequences();
 
             var biggestSuitGroups =
-                sequences.GroupBy(x => x.First().Type).First(x => x.Count() >= 3);
+                sequences.GroupBy(x => x.First().Type).SingleOrDefault(x => x.Count() >= 3);
+
+            if (biggestSuitGroups == default)
+                return false;
 
             var numberGroups = new List<string> {"123", "456", "789"};
             foreach (var sequence in biggestSuitGroups)
