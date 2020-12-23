@@ -21,7 +21,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
                     return false;
             }
 
-            return 2;
+            return true;
         }
     }
 }

@@ -10,3 +10,6 @@
 /obj/Debug
 /Temp
 /UserSettings
+obj
+bin
+*.meta

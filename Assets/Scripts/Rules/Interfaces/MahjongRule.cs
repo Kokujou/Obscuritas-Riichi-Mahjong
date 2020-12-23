@@ -17,12 +17,12 @@ namespace ObscuritasRiichiMahjong.Rules.Interfaces
         public virtual int GetHan(MahjongBoard board, MahjongPlayer player)
         {
             if (!AcceptOpenHand && player.HandOpen)
-                return false;
+                return 0;
 
             if (Fulfilled(board, player))
                 return Han - OpenHandPunishment;
 
-            return false;
+            return 0;
         }
     }
 }

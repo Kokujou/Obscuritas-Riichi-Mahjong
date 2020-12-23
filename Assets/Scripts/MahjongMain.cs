@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Components;
-using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong
@@ -39,7 +39,7 @@ namespace ObscuritasRiichiMahjong
         private IEnumerator DealTiles()
         {
             const float duration = 3f;
-            var transformList = TileSpawnPoint.ToEnumerable().ToList();
+            var transformList = TileSpawnPoint.Cast<Transform>().ToList();
 
             foreach (var handSpawnPoint in HandSpawnPoints)
                 StartCoroutine(transformList.MoveToParent(handSpawnPoint, duration,
@@ -84,6 +84,8 @@ namespace ObscuritasRiichiMahjong
                 TileSet.AddRange(nonRedFives);
 
             StartCoroutine(BuildBoard());
+
+            var mahjongRules = RuleProvider.Rules;
         }
 
         public void Update()
