@@ -56,10 +56,6 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Rules\Fu\BasePoints - Kopieren %282%29.cs" />
-    <Compile Include="Assets\Scripts\Rules\Fu\BasePoints - Kopieren %283%29.cs" />
-    <Compile Include="Assets\Scripts\Rules\Fu\BasePoints - Kopieren %284%29.cs" />
-    <Compile Include="Assets\Scripts\Rules\Fu\ClosedRon.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\AllTerminalsAndHonors.cs" />
     <Compile Include="Assets\Scripts\Rules\ThreeHan\TerminalInEachSet.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\PureDoubleSequences.cs" />
@@ -134,12 +130,21 @@
     <Compile Include="Assets\Scripts\PointCalculation\Services\ChiSelectionService.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Services\KanSelectionService.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Services\NormalSelectionService.cs" />
-    <Compile Include="Assets\Scripts\Rules\FuCalculator.cs" />
-    <Compile Include="Assets\Scripts\Rules\Interfaces\MahjongFuRule.cs" />
+    <Compile Include="Assets\Scripts\Rules\Interfaces\IMahjongFuRule.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\BasePoints.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\ClosedRon.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\OpenTriplet.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\ClosedTriplet.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\OpenQuad.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\ClosedQuad.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\HonorPair.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\SequenceMiddleWait.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\HonorPairWait.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\Tsumo.cs" />
+    <Compile Include="Assets\Scripts\Rules\Fu\TerminalSequenceOuterWait.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Fonts\3DTextShader.shader" />
+     <None Include="Assets\Fonts\3DTextShader.shader" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Programme\Unity\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

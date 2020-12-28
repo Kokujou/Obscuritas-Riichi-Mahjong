@@ -22,8 +22,7 @@ namespace ObscuritasRiichiMahjong.Rules.Extensions
         public static List<List<MahjongTile>> GetQuads(
             this IEnumerable<List<MahjongTile>> handSplit)
         {
-            return handSplit.Where(group => group.All(x => x == group.First()) && group.Count == 4)
-                .ToList();
+            return handSplit.Where(group => group.Count == 4).ToList();
         }
 
         public static List<List<MahjongTile>> GetTripletsOrQuads(

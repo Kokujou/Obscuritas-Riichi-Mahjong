@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
@@ -19,7 +20,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
             MahjongPlayer player)
         {
-            if (handSplit.All(group => group.Any(x => x.IsTerminal())))
+            if (handSplit.EnrichSplittedHand(player).All(group => group.Any(x => x.IsTerminal())))
                 return true;
 
             return false;

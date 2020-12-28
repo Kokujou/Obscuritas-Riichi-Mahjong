@@ -5,7 +5,7 @@ using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules.Yakuman
 {
-    public class FourKans : MahjongRule
+    public class FourQuads : MahjongRule
     {
         public override int Yakuman => 1;
         public override string Name => "Four Kans";
