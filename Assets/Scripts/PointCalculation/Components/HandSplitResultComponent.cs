@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,14 +22,15 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
         public void Load(List<List<MahjongTile>> handSplit, MahjongPlayer player,
             MahjongBoard board)
         {
-            if (handSplit.Count != 5)
+            var enrichedHand = handSplit.EnrichSplittedHand(player);
+            if (enrichedHand.Count != 5)
                 throw new NotImplementedException("The hand has an invalid number of groups != 5");
 
             var transforms = HandSplitsParent.Cast<Transform>().ToList();
             for (var index = 0; index < transforms.Count; index++)
             {
                 var currentGroup = transforms[index];
-                foreach (var tile in handSplit[index])
+                foreach (var tile in enrichedHand[index])
                 {
                     var tileObject = new GameObject(tile.Name);
                     tileObject.transform.SetParent(currentGroup);

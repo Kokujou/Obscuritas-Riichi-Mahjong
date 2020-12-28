@@ -3,6 +3,8 @@ using System.Linq;
 using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.PointCalculation.Components;
+using ObscuritasRiichiMahjong.PointCalculation.Services;
+using ObscuritasRiichiMahjong.PointCalculation.Services.Interfaces;
 using ObscuritasRiichiMahjong.Rules.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +13,8 @@ namespace ObscuritasRiichiMahjong.PointCalculation
 {
     public class PointCalculator : MonoBehaviour
     {
+        public static readonly Color TileBackColor = new Color(0.7450981f, 0.5686275f, 0.2117647f);
+
         public MahjongBoard Board = new MahjongBoard();
         public Button Calculate;
         public Transform CalculatedHandsParent;
@@ -25,21 +29,58 @@ namespace ObscuritasRiichiMahjong.PointCalculation
         public GameObject ResultsViewTemplate;
         public List<MahjongTile> Tiles;
 
+        public ButtonGroup ActionButtonGroup;
+        public Button ChiButton;
+        public Button PonButton;
+        public Button KanButton;
+        public Button OpenKanButton;
+
+        private ITileSelectionService _tileSelectionService;
+
+        private PonSelectionService _ponSelectionService;
+        private ChiSelectionService _chiSelectionService;
+        private KanSelectionService _kanSelectionService;
+        private OpenKanSelectionService _openKanSelectionService;
+        private NormalSelectionService _normalSelectionService;
+
+        public void ChangeTileSelectionType(Button selection)
+        {
+            if (selection == null)
+                _tileSelectionService = _normalSelectionService;
+            else if (selection.GetInstanceID() == ChiButton.GetInstanceID())
+                _tileSelectionService = _chiSelectionService;
+            else if (selection.GetInstanceID() == PonButton.GetInstanceID())
+                _tileSelectionService = _ponSelectionService;
+            else if (selection.GetInstanceID() == KanButton.GetInstanceID())
+                _tileSelectionService = _kanSelectionService;
+            else if (selection.GetInstanceID() == OpenKanButton.GetInstanceID())
+                _tileSelectionService = _openKanSelectionService;
+
+            UpdateSelectableTiles();
+        }
+
+        public void UpdateSelectableTiles()
+        {
+            var selectableTiles = PoolParent
+                .Cast<Transform>()
+                .Select(child => child.gameObject.GetComponent<MahjongTile2DComponent>());
+
+            foreach (var tile in selectableTiles)
+                tile.GetComponent<Button>().interactable =
+                    _tileSelectionService.CanSelect(tile.Tile);
+        }
+
         public void AddToHand(MahjongTile2DComponent tile)
         {
-            var newObject = Instantiate(tile.gameObject, HandParent);
-            var clickedTile = newObject.GetComponent<MahjongTile2DComponent>();
-            var button = newObject.GetComponent<Button>();
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => clickedTile.RemoveFromHand());
+            _tileSelectionService.AddToHand(tile, HandParent);
+            UpdateSelectableTiles();
+            SortHand();
+            if (_normalSelectionService.HandTileCount == 14)
+                Calculate.interactable = true;
+        }
 
-            var handCount = Player.Hand.Count(x => x.Name == clickedTile.Tile.Name);
-            if (handCount >= 3)
-                tile.gameObject.GetComponent<Button>().interactable = false;
-            if (handCount < 4)
-                Player.Hand.Add(clickedTile.Tile);
-            Board.WinningTile = clickedTile.Tile;
-
+        public void SortHand()
+        {
             Player.Hand = Player.Hand.OrderBy(x => x.GetTileOrder()).ToList();
 
             var children = HandParent
@@ -47,16 +88,6 @@ namespace ObscuritasRiichiMahjong.PointCalculation
                 .Select(child => child.gameObject.GetComponent<MahjongTile2DComponent>()).ToList();
             foreach (var tileComponent in children)
                 tileComponent.transform.SetSiblingIndex(Player.Hand.IndexOf(tileComponent.Tile));
-
-            if (Player.Hand.Count < 14) return;
-
-            foreach (Transform child in PoolParent)
-            {
-                var tileButton = child.gameObject.GetComponent<Button>();
-                if (tileButton)
-                    tileButton.interactable = false;
-                Calculate.interactable = true;
-            }
         }
 
         public void RemoveFromHand(MahjongTile2DComponent tile)
@@ -86,6 +117,8 @@ namespace ObscuritasRiichiMahjong.PointCalculation
         // Start is called before the first frame update
         private void Start()
         {
+            ActionButtonGroup.OnSelectionChange = ChangeTileSelectionType;
+
             Board.WinningMoveType = WinningMoveType.Tsumo;
             Tiles = Tiles.OrderBy(x => x.Type).ToList();
             foreach (var tile in Tiles)
@@ -94,6 +127,13 @@ namespace ObscuritasRiichiMahjong.PointCalculation
                 tileObject.transform.parent = PoolParent;
                 MahjongTile2DComponent.AddToObject(tileObject, tile);
             }
+
+            _ponSelectionService = new PonSelectionService(Player, Board);
+            _chiSelectionService = new ChiSelectionService(Player, Board);
+            _kanSelectionService = new KanSelectionService(Player, Board);
+            _openKanSelectionService = new OpenKanSelectionService(Player, Board);
+            _normalSelectionService = new NormalSelectionService(Player, Board);
+            _tileSelectionService = _normalSelectionService;
         }
     }
 }
