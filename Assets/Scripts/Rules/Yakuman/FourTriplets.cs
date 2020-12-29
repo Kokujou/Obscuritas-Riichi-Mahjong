@@ -12,7 +12,7 @@ namespace ObscuritasRiichiMahjong.Rules.Yakuman
         public override bool AcceptOpenHand => false;
         public override int Yakuman => 1;
         public override string Name => "Four Concealed Triplets";
-        public override string JapName => "Suu ClosedTriplet";
+        public override string JapName => "Suu Ankou";
         public override string KanjiName => "四暗刻";
 
         public override string Description =>

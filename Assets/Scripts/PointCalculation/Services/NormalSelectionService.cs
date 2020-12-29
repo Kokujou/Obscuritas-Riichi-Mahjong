@@ -17,10 +17,6 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Services
             .Concat(Player.ExposedHand.SelectMany(x => x))
             .Concat(Player.HiddenKan.SelectMany(x => x));
 
-        public int HandTileCount => Player.Hand.Count
-                                    + Player.HiddenKan.Count * 3
-                                    + Player.ExposedHand.Count * 3;
-
         public NormalSelectionService(MahjongPlayer player, MahjongBoard board)
         {
             Player = player;
@@ -49,7 +45,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Services
 
         public virtual bool CanSelect(MahjongTile tile)
         {
-            if (HandTileCount >= 14)
+            if (Player.HandTileCount >= 14)
                 return false;
 
             var handCount = AllTiles.Count(x => x.Name == tile.Name);

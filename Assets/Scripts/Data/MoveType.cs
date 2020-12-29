@@ -4,7 +4,8 @@
     {
         Normal,
         Riichi,
-        Kan,
+        HiddenKan,
+        OpenKan,
         Pon,
         Chi
     }

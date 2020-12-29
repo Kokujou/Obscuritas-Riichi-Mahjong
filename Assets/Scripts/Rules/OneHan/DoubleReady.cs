@@ -2,11 +2,11 @@
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
-namespace ObscuritasRiichiMahjong.Rules.TwoHan
+namespace ObscuritasRiichiMahjong.Rules.OneHan
 {
     public class DoubleReady : MahjongRule
     {
-        public override int Han {get; set;} = 2;
+        public override int Han { get; set; } = 1;
         public override string Name => "Double Ready";
         public override string JapName => "Double Riichi";
         public override string KanjiName => "ダブルリーチ";

@@ -19,6 +19,7 @@ namespace ObscuritasRiichiMahjong.Rules
         public bool FromAll { get; set; }
 
         public List<MahjongRule> CollectedYaku { get; set; }
+        public List<IMahjongFuRule> CollectedFu { get; set; }
 
         // Missing: Fu Calculation List
 
@@ -29,12 +30,40 @@ namespace ObscuritasRiichiMahjong.Rules
             CollectedYaku = new List<MahjongRule>();
         }
 
+        public string GetTotalPointsString(bool ron, bool isDealer)
+        {
+            var totalPoints = TotalPoints;
+
+            if (isDealer)
+                totalPoints = (int) (totalPoints * 1.5);
+
+            if (ron)
+                return $"{totalPoints} pts.";
+
+            if (isDealer)
+                return $"{TotalPoints / 3} pts.\nfrom All";
+
+            return $"{TotalPoints / 4} / {TotalPoints / 2} pts.";
+        }
+
         private string GetPointsDescription()
         {
             var description = $"{Han} Han / {Fu} Fu";
 
             if (Yakuman > 0)
-                description = $"{Yakuman}x Yakuman";
+                return $"{Yakuman}x Yakuman";
+
+            var totalPoints = CalculateTotalPoints();
+            if (totalPoints == YakumanPoints)
+                description += "\nCalculated Yakuman";
+            else if (totalPoints == SanbaimanPoints)
+                description += "\nSanbaiman";
+            else if (totalPoints == BaimanPoints)
+                description += "\nBaiman";
+            else if (totalPoints == HanemanPoints)
+                description += "\nHaneman";
+            else if (totalPoints == ManganPoints)
+                description += "\nMangan";
 
             return description;
         }

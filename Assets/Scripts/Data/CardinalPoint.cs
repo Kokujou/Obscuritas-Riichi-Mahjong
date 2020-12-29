@@ -1,10 +1,13 @@
-﻿namespace ObscuritasRiichiMahjong.Data
+﻿using System;
+
+namespace ObscuritasRiichiMahjong.Data
 {
+    [Serializable]
     public enum CardinalPoint
     {
-        North,
-        West,
         East,
-        South
+        South,
+        West,
+        North
     }
 }

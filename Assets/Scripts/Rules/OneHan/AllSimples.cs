@@ -9,7 +9,7 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
     public class AllSimples : MahjongRule
     {
         public override string Name => "All Simples";
-        public override string JapName => "Tan'Yao";
+        public override string JapName => "Tan'yao";
         public override string KanjiName => "断么";
         public override string Description => "A hand composed only of numbered tiles from 2-8.";
 

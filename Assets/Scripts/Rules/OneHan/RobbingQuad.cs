@@ -17,7 +17,8 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
             MahjongPlayer player)
         {
-            if (board.LastMoveType == MoveType.Kan && board.WinningMoveType == WinningMoveType.Ron)
+            if (board.LastMoveType == MoveType.OpenKan &&
+                board.WinningMoveType == WinningMoveType.Ron)
                 return true;
 
             return false;

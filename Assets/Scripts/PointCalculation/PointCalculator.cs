@@ -15,48 +15,42 @@ namespace ObscuritasRiichiMahjong.PointCalculation
     {
         public static readonly Color TileBackColor = new Color(0.7450981f, 0.5686275f, 0.2117647f);
 
-        public MahjongBoard Board = new MahjongBoard();
-        public Button Calculate;
-        public Transform CalculatedHandsParent;
-
-        public Transform HandParent;
-
         public MahjongPlayer Player =
             new MahjongPlayer(new List<MahjongTile>(), CardinalPoint.East);
 
+        public MahjongBoard Board = new MahjongBoard();
+
+        public ITileSelectionService TileSelectionService;
+
+        public Transform CalculatedHandsParent;
+        public Transform HandParent;
         public Transform PoolParent;
+
+        public Button Calculate;
 
         public GameObject ResultsViewTemplate;
         public List<MahjongTile> Tiles;
 
-        public ButtonGroup ActionButtonGroup;
-        public Button ChiButton;
-        public Button PonButton;
-        public Button KanButton;
-        public Button OpenKanButton;
-
-        private ITileSelectionService _tileSelectionService;
-
-        private PonSelectionService _ponSelectionService;
-        private ChiSelectionService _chiSelectionService;
-        private KanSelectionService _kanSelectionService;
-        private OpenKanSelectionService _openKanSelectionService;
-        private NormalSelectionService _normalSelectionService;
-
-        public void ChangeTileSelectionType(Button selection)
+        private void Start()
         {
-            if (selection == null)
-                _tileSelectionService = _normalSelectionService;
-            else if (selection.GetInstanceID() == ChiButton.GetInstanceID())
-                _tileSelectionService = _chiSelectionService;
-            else if (selection.GetInstanceID() == PonButton.GetInstanceID())
-                _tileSelectionService = _ponSelectionService;
-            else if (selection.GetInstanceID() == KanButton.GetInstanceID())
-                _tileSelectionService = _kanSelectionService;
-            else if (selection.GetInstanceID() == OpenKanButton.GetInstanceID())
-                _tileSelectionService = _openKanSelectionService;
+            InitializeBoard();
+        }
 
-            UpdateSelectableTiles();
+        private void InitializeBoard()
+        {
+            Player.Wall.Add(new MahjongTile());
+            Board.CurrentRound = 2;
+            Board.WinningMoveType = WinningMoveType.Tsumo;
+
+            Tiles = Tiles.OrderBy(x => x.Type).ToList();
+            foreach (var tile in Tiles)
+            {
+                var tileObject = new GameObject();
+                tileObject.transform.SetParent(PoolParent, false);
+                MahjongTile2DComponent.AddToObject(tileObject, tile);
+            }
+
+            TileSelectionService = new NormalSelectionService(Player, Board);
         }
 
         public void UpdateSelectableTiles()
@@ -67,15 +61,15 @@ namespace ObscuritasRiichiMahjong.PointCalculation
 
             foreach (var tile in selectableTiles)
                 tile.GetComponent<Button>().interactable =
-                    _tileSelectionService.CanSelect(tile.Tile);
+                    TileSelectionService.CanSelect(tile.Tile);
         }
 
         public void AddToHand(MahjongTile2DComponent tile)
         {
-            _tileSelectionService.AddToHand(tile, HandParent);
+            TileSelectionService.AddToHand(tile, HandParent);
             UpdateSelectableTiles();
             SortHand();
-            if (_normalSelectionService.HandTileCount == 14)
+            if (Player.HandTileCount == 14)
                 Calculate.interactable = true;
         }
 
@@ -92,16 +86,13 @@ namespace ObscuritasRiichiMahjong.PointCalculation
 
         public void RemoveFromHand(MahjongTile2DComponent tile)
         {
+            foreach (Transform handSplitResultComponent in CalculatedHandsParent)
+                Destroy(handSplitResultComponent.gameObject);
+
             Destroy(tile.gameObject);
             Player.Hand.Remove(tile.Tile);
 
-            foreach (Transform child in PoolParent)
-            {
-                var tileButton = child.gameObject.GetComponent<Button>();
-                if (tileButton)
-                    tileButton.interactable = Player.Hand.Count(x => x.Name == tile.Tile.Name) < 4;
-                Calculate.interactable = false;
-            }
+            UpdateSelectableTiles();
         }
 
         public void CalculatePoints()
@@ -114,26 +105,21 @@ namespace ObscuritasRiichiMahjong.PointCalculation
             }
         }
 
-        // Start is called before the first frame update
-        private void Start()
+        public void ClearBoard()
         {
-            ActionButtonGroup.OnSelectionChange = ChangeTileSelectionType;
+            foreach (Transform handSplitResultComponent in CalculatedHandsParent)
+                Destroy(handSplitResultComponent.gameObject);
 
-            Board.WinningMoveType = WinningMoveType.Tsumo;
-            Tiles = Tiles.OrderBy(x => x.Type).ToList();
-            foreach (var tile in Tiles)
-            {
-                var tileObject = new GameObject();
-                tileObject.transform.parent = PoolParent;
-                MahjongTile2DComponent.AddToObject(tileObject, tile);
-            }
+            foreach (Transform child in HandParent)
+                Destroy(child.gameObject);
 
-            _ponSelectionService = new PonSelectionService(Player, Board);
-            _chiSelectionService = new ChiSelectionService(Player, Board);
-            _kanSelectionService = new KanSelectionService(Player, Board);
-            _openKanSelectionService = new OpenKanSelectionService(Player, Board);
-            _normalSelectionService = new NormalSelectionService(Player, Board);
-            _tileSelectionService = _normalSelectionService;
+            foreach (Transform child in PoolParent)
+                Destroy(child.gameObject);
+
+            Player = new MahjongPlayer(new List<MahjongTile>(), CardinalPoint.East);
+            Board = new MahjongBoard();
+
+            InitializeBoard();
         }
     }
 }

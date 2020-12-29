@@ -10,8 +10,8 @@ namespace ObscuritasRiichiMahjong.Rules.Yakuman
     {
         public override bool AcceptOpenHand => false;
         public override int Yakuman => 2;
-        public override string Name => "Four Concealed Triplets (Single Wait)";
-        public override string JapName => "Suu ClosedTriplet Tanki";
+        public override string Name => "Four Triplets (Single Wait)";
+        public override string JapName => "Suu Ankou Tanki";
         public override string KanjiName => "四暗刻単騎";
 
         public override string Description =>

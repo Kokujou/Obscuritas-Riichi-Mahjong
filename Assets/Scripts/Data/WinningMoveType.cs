@@ -3,7 +3,6 @@
     public enum WinningMoveType
     {
         Tsumo,
-        Ron,
-        Kan
+        Ron
     }
 }

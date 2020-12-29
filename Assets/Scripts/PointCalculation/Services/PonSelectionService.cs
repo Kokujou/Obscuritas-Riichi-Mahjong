@@ -25,7 +25,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Services
 
         public override bool CanSelect(MahjongTile tile)
         {
-            if (HandTileCount > 11)
+            if (Player.HandTileCount > 11)
                 return false;
 
             var handCount = AllTiles.Count(x => x.Name == tile.Name);

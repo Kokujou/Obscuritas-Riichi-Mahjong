@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules;
 using ObscuritasRiichiMahjong.Rules.Extensions;
@@ -22,18 +23,19 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
         public void Load(List<List<MahjongTile>> handSplit, MahjongPlayer player,
             MahjongBoard board)
         {
-            var enrichedHand = handSplit.EnrichSplittedHand(player);
+            var enrichedHand = handSplit.EnrichSplittedHand(player).OrderByDescending(x => x.Count)
+                .ToList();
             if (enrichedHand.Count != 5)
                 throw new NotImplementedException("The hand has an invalid number of groups != 5");
 
-            var transforms = HandSplitsParent.Cast<Transform>().ToList();
-            for (var index = 0; index < transforms.Count; index++)
+            var grids = HandSplitsParent.GetComponentsInChildren<GridLayoutGroup>();
+            for (var index = 0; index < grids.Length; index++)
             {
-                var currentGroup = transforms[index];
+                var currentGroup = grids[index];
                 foreach (var tile in enrichedHand[index])
                 {
                     var tileObject = new GameObject(tile.Name);
-                    tileObject.transform.SetParent(currentGroup);
+                    tileObject.transform.SetParent(currentGroup.transform, false);
                     var image = tileObject.AddComponent<RawImage>();
                     image.texture = tile.Material.mainTexture;
                 }
@@ -41,8 +43,9 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
 
             var pointResult = RuleProvider.CalculatePoints(handSplit, player, board);
             ResultName.text = pointResult.PointsDescription;
-            ResultPoints.text = $"{pointResult.TotalPoints} pts.\n" +
-                                $"{(pointResult.FromAll ? "from all" : "")}";
+            ResultPoints.text =
+                pointResult.GetTotalPointsString(
+                    board.WinningMoveType == WinningMoveType.Ron, player.Dealer);
 
             var yakuman = pointResult.CollectedYaku.Where(x => x.Yakuman > 0).ToList();
             if (yakuman.Count > 0)
