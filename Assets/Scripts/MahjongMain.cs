@@ -25,6 +25,7 @@ namespace ObscuritasRiichiMahjong
             foreach (var tile in TileSet)
             {
                 var tileObject = MahjongTileTemplate.SpawnAtRandom(TileSpawnPoint);
+                tileObject.name = tile.Name;
                 MahjongTileComponent.AddToObject(tileObject, tile);
                 var tileFace = tileObject.transform.Find("Top");
                 tileFace.GetComponent<MeshRenderer>().material = tile.Material;
@@ -96,7 +97,10 @@ namespace ObscuritasRiichiMahjong
 
             if (!Physics.Raycast(ray, out var hit, 1000f, ~LayerMask.NameToLayer("MahjongTile")))
             {
-                _activeTile?.HandleMouseOut();
+                if (!_activeTile)
+                    return;
+
+                _activeTile.HandleMouseOut();
                 _activeTile = null;
                 return;
             }

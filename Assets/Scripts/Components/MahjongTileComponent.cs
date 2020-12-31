@@ -1,4 +1,5 @@
-﻿using ObscuritasRiichiMahjong.Models;
+﻿using System.Linq;
+using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Components
@@ -18,14 +19,18 @@ namespace ObscuritasRiichiMahjong.Components
         public void HandleInput()
         {
             if (!Selectable) return;
-            foreach (var side in transform.GetComponentsInChildren<Transform>())
+
+            foreach (var side in transform.GetComponentsInChildren<Transform>()
+                .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
                 side.gameObject.layer = LayerMask.NameToLayer("HoveredTile");
         }
 
         public void HandleMouseOut()
         {
             if (!Selectable) return;
-            foreach (var side in transform.GetComponentsInChildren<Transform>())
+
+            foreach (var side in transform.GetComponentsInChildren<Transform>()
+                .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
                 side.gameObject.layer = 0;
         }
 

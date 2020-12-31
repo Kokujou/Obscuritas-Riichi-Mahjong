@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using ObscuritasRiichiMahjong.Animations;
 using UnityEngine;
 
@@ -8,7 +6,7 @@ namespace ObscuritasRiichiMahjong.Components
 {
     public class PlayerHandComponent : MonoBehaviour
     {
-        private List<MahjongTileComponent> _tiles = new List<MahjongTileComponent>();
+        private readonly List<MahjongTileComponent> _tiles = new List<MahjongTileComponent>();
 
         public void Initialize()
         {
@@ -25,20 +23,7 @@ namespace ObscuritasRiichiMahjong.Components
                     mahjongTile.Selectable = true;
             }
 
-            StartCoroutine(SortHand());
-        }
-
-        private IEnumerator SortHand()
-        {
-            _tiles = _tiles.OrderByDescending(GetTileOrder).ToList();
-
-            yield return _tiles.Select(x => x.transform).ToList()
-                .MoveToParent(transform, 1f);
-        }
-
-        private static int GetTileOrder(MahjongTileComponent tileComponent)
-        {
-            return tileComponent.Tile.GetTileOrder();
+            StartCoroutine(transform.SortHand());
         }
     }
 }

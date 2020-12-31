@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3b88e1ad5fb718418f9f5bfa121c920, type: 3}
   m_Name: West
   m_EditorClassIdentifier: 
-  Number: 10
-  Type: 4
-  Name: West
+  Green: 0
   Material: {fileID: 2100000, guid: f7ca6749f8b544241a5447ca20f71ab4, type: 2}
+  Name: West
+  Number: 11
   Red: 0
+  Type: 4
