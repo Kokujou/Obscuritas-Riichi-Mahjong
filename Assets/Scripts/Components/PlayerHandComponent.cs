@@ -30,7 +30,7 @@ namespace ObscuritasRiichiMahjong.Components
 
         private IEnumerator SortHand()
         {
-            _tiles = _tiles.OrderBy(GetTileOrder).ToList();
+            _tiles = _tiles.OrderByDescending(GetTileOrder).ToList();
 
             yield return _tiles.Select(x => x.transform).ToList()
                 .MoveToParent(transform, 1f);

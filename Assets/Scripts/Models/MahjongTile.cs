@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ObscuritasRiichiMahjong.Data;
 using UnityEngine;
 
@@ -9,16 +10,9 @@ namespace ObscuritasRiichiMahjong.Models
         public bool Green;
         public Material Material;
         public string Name;
-        public byte Number = 0;
+        public byte Number;
         public bool Red;
         public MahjongTileType Type;
-
-        public bool Equals(MahjongTile other)
-        {
-            if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) && Name == other.Name;
-        }
 
         public static bool operator ==(MahjongTile a, MahjongTile b)
         {
@@ -67,6 +61,21 @@ namespace ObscuritasRiichiMahjong.Models
         public override string ToString()
         {
             return Name;
+        }
+
+        public string GetTileLetter()
+        {
+            if (Number > 0 && Number < 10)
+                return Number.ToString();
+
+            return Name.First().ToString();
+        }
+
+        public bool Equals(MahjongTile other)
+        {
+            if (other is null) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Name == other.Name;
         }
     }
 }

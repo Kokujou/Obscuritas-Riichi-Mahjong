@@ -29,6 +29,11 @@ namespace ObscuritasRiichiMahjong
                 var tileFace = tileObject.transform.Find("Top");
                 tileFace.GetComponent<MeshRenderer>().material = tile.Material;
 
+                var tileLabel = tileFace.GetComponentInChildren<TextMesh>();
+                tileLabel.text = tile.GetTileLetter();
+                if (tile.Red)
+                    tileLabel.color = Color.black;
+
                 yield return new WaitForSeconds(0.01f);
             }
 

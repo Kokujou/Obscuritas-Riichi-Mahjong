@@ -18,14 +18,14 @@ namespace ObscuritasRiichiMahjong.Components
         public void HandleInput()
         {
             if (!Selectable) return;
-            foreach (Transform side in transform)
+            foreach (var side in transform.GetComponentsInChildren<Transform>())
                 side.gameObject.layer = LayerMask.NameToLayer("HoveredTile");
         }
 
         public void HandleMouseOut()
         {
             if (!Selectable) return;
-            foreach (Transform side in transform)
+            foreach (var side in transform.GetComponentsInChildren<Transform>())
                 side.gameObject.layer = 0;
         }
 
