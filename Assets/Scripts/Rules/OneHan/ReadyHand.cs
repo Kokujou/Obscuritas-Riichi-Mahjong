@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
@@ -16,7 +17,7 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
             MahjongPlayer player)
         {
-            if (player.Riichi)
+            if (player.Riichi == RiichiType.Riichi)
                 return true;
 
             return false;

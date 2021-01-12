@@ -5,7 +5,9 @@ namespace ObscuritasRiichiMahjong.Models
 {
     public class MahjongBoard
     {
-        public List<MahjongPlayer> Players { get; set; }
+        public Dictionary<CardinalPoint, MahjongPlayer> Players { get; set; } =
+            new Dictionary<CardinalPoint, MahjongPlayer>(4);
+
         public CardinalPoint CardinalPoint { get; set; }
         public int MaxRounds { get; set; }
         public int CurrentRound { get; set; } = 1;
@@ -13,5 +15,6 @@ namespace ObscuritasRiichiMahjong.Models
         public WinningMoveType WinningMoveType { get; set; }
         public MahjongTile LastDiscardedTile { get; set; }
         public MahjongTile WinningTile { get; set; }
+        public CardinalPoint CurrentRoundWind { get; set; }
     }
 }

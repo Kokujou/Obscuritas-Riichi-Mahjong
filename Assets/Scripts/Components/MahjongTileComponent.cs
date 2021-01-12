@@ -9,6 +9,8 @@ namespace ObscuritasRiichiMahjong.Components
         public bool Selectable;
         public MahjongTile Tile;
 
+        private bool _selected;
+
         public void Initialize(MahjongTile tile)
         {
             Tile = tile;
@@ -19,15 +21,31 @@ namespace ObscuritasRiichiMahjong.Components
         public void HandleInput()
         {
             if (!Selectable) return;
+            if (Input.GetMouseButtonDown(0))
+                _selected = true;
 
             foreach (var side in transform.GetComponentsInChildren<Transform>()
                 .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
                 side.gameObject.layer = LayerMask.NameToLayer("HoveredTile");
+
+            if (_selected && Input.GetMouseButtonUp(0))
+                HandleTileClick();
+        }
+
+        private void HandleTileClick()
+        {
+            var playerHand = GetComponentInParent<MahjongPlayerComponent>();
+
+            if (!playerHand)
+                return;
+
+            playerHand.DiscardTile(this);
         }
 
         public void HandleMouseOut()
         {
             if (!Selectable) return;
+            _selected = false;
 
             foreach (var side in transform.GetComponentsInChildren<Transform>()
                 .Where(x => x.GetInstanceID() != transform.GetInstanceID()))

@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Components;
+using ObscuritasRiichiMahjong.Components.Interface;
+using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
@@ -19,6 +22,9 @@ namespace ObscuritasRiichiMahjong
         public List<MahjongTile> TileSet;
         public Transform TileSpawnPoint;
         public Transform UiPanel;
+
+        private MahjongPlayer _player;
+        private MahjongBoard _board;
 
         private IEnumerator DropTiles()
         {
@@ -74,12 +80,27 @@ namespace ObscuritasRiichiMahjong
 
             yield return DealTiles();
 
-            FindObjectOfType<PlayerHandComponent>().Initialize();
+            var mahjongPlayers = FindObjectsOfType<MahjongPlayerComponentBase>();
+            var availableWinds = new List<CardinalPoint>
+                {CardinalPoint.South, CardinalPoint.East, CardinalPoint.West, CardinalPoint.North};
+
+            foreach (var player in mahjongPlayers)
+            {
+                player.Initialize(ref availableWinds);
+                _board.Players.Add(player.Player.CardinalPoint, player.Player);
+            }
+
+            Task.Run(() =>
+            {
+                while(_board.CurrentRound <= _board.MaxRounds)
+            });
         }
 
         // Start is called before the first frame update
         public void Start()
         {
+            _board = new MahjongBoard();
+
             var tilesToMultiply = TileSet.Where(x => x.Number != 5).ToList();
             var nonRedFives = TileSet.Where(x => x.Number == 5 && !x.Red).ToList();
             for (var i = 0; i < 3; i++)
@@ -88,7 +109,7 @@ namespace ObscuritasRiichiMahjong
             for (var i = 0; i < 2; i++)
                 TileSet.AddRange(nonRedFives);
 
-            StartCoroutine(BuildBoard());
+            StartCoroutine(BuildBoard());   
         }
 
         public void Update()
@@ -108,8 +129,7 @@ namespace ObscuritasRiichiMahjong
             var objectHit = hit.transform;
             var mahjongTileComponent = objectHit.GetComponent<MahjongTileComponent>();
 
-            if (_activeTile == mahjongTileComponent)
-                return;
+            if (_activeTile == mahjongTileComponent) return;
 
             _activeTile?.HandleMouseOut();
 

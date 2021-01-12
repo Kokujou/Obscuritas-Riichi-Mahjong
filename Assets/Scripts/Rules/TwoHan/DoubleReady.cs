@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
+using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
 
-namespace ObscuritasRiichiMahjong.Rules.OneHan
+namespace ObscuritasRiichiMahjong.Rules.TwoHan
 {
     public class DoubleReady : MahjongRule
     {
-        public override int Han { get; set; } = 1;
+        public override int Han { get; set; } = 2;
         public override string Name => "Double Ready";
         public override string JapName => "Double Riichi";
         public override string KanjiName => "ダブルリーチ";
@@ -15,7 +16,7 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
             MahjongPlayer player)
         {
-            if (player.Riichi && board.CurrentRound == 1)
+            if (player.Riichi == RiichiType.DoubleRiichi)
                 return true;
 
             return false;

@@ -22,45 +22,29 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
 
         private bool IsRiichi()
         {
-            return PointCalculator.Player.Riichi && PointCalculator.Board.CurrentRound != 1;
+            return PointCalculator.Player.Riichi == RiichiType.Riichi;
         }
 
         private bool IsDoubleRiichi()
         {
-            return PointCalculator.Player.Riichi && PointCalculator.Board.CurrentRound == 1;
+            return PointCalculator.Player.Riichi == RiichiType.DoubleRiichi;
         }
 
         private bool IsIppatsu()
         {
-            return PointCalculator.Player.Riichi &&
+            return PointCalculator.Player.Riichi != RiichiType.NoRiichi &&
                    PointCalculator.Player.LastMoveType == MoveType.Riichi;
         }
 
         public void SetRiichi()
         {
-            if (IsRiichi())
-            {
-                PointCalculator.Player.Riichi = false;
-            }
-            else
-            {
-                PointCalculator.Player.Riichi = true;
-                PointCalculator.Board.CurrentRound = 2;
-            }
+            PointCalculator.Player.Riichi = IsRiichi() ? RiichiType.NoRiichi : RiichiType.Riichi;
         }
 
         public void SetDoubleRiichi()
         {
-            if (IsDoubleRiichi())
-            {
-                PointCalculator.Player.Riichi = false;
-                PointCalculator.Board.CurrentRound = 2;
-            }
-            else
-            {
-                PointCalculator.Player.Riichi = true;
-                PointCalculator.Board.CurrentRound = 1;
-            }
+            PointCalculator.Player.Riichi =
+                IsDoubleRiichi() ? RiichiType.NoRiichi : RiichiType.DoubleRiichi;
         }
 
         public void SetIppatsu()
@@ -71,7 +55,8 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
             }
             else
             {
-                PointCalculator.Player.Riichi = true;
+                if (PointCalculator.Player.Riichi == RiichiType.NoRiichi)
+                    PointCalculator.Player.Riichi = RiichiType.Riichi;
                 PointCalculator.Player.LastMoveType = MoveType.Riichi;
             }
         }

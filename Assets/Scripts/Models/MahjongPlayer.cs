@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Data;
 
 namespace ObscuritasRiichiMahjong.Models
 {
     public class MahjongPlayer
     {
-        public bool Riichi { get; set; } = false;
+        public RiichiType Riichi { get; set; }
         public bool Dealer => CardinalPoint == CardinalPoint.East;
         public CardinalPoint CardinalPoint { get; set; }
         public bool HandOpen { get; set; } = false;
@@ -28,10 +29,10 @@ namespace ObscuritasRiichiMahjong.Models
                                     + HiddenKan.Count * 3
                                     + ExposedHand.Count * 3;
 
-        public MahjongPlayer(List<MahjongTile> hand, CardinalPoint cardinalPoint)
+        public MahjongPlayer(IEnumerable<MahjongTile> hand, CardinalPoint cardinalPoint)
         {
             CardinalPoint = cardinalPoint;
-            Hand = hand;
+            Hand = hand.ToList();
         }
 
         public bool IsTenpai()

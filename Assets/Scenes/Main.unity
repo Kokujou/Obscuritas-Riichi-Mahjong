@@ -234,6 +234,7 @@ GameObject:
   m_Component:
   - component: {fileID: 63803615}
   - component: {fileID: 63803616}
+  - component: {fileID: 63803617}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -268,6 +269,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 13, y: 1.5, z: 0.6}
   m_Center: {x: 6, y: 0, z: -0.2}
+--- !u!114 &63803617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63803614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495e87c7040d8b948aed9d89dac70a75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &68105237
 GameObject:
   m_ObjectHideFlags: 0

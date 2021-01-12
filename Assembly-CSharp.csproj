@@ -81,7 +81,6 @@
     <Compile Include="Assets\Scripts\Rules\OneHan\ReadyHand.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\LittleThreeDragons.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\ThirteenOrphans13Wait.cs" />
-    <Compile Include="Assets\Scripts\Rules\OneHan\DoubleReady.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Services\ChiSelectionService.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\LastDiscard.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\DiscardPick.cs" />
@@ -136,7 +135,7 @@
     <Compile Include="Assets\Scripts\Data\CardinalPoint.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\SelectableButton.cs" />
     <Compile Include="Assets\Scripts\Animations\MoveToParentExtension.cs" />
-    <Compile Include="Assets\Scripts\Components\PlayerHandComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\MahjongPlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\ClosedTriplet.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Services\NormalSelectionService.cs" />
     <Compile Include="Assets\Scripts\Rules\Extensions\HandSplittingExtension.cs" />
@@ -149,6 +148,10 @@
     <Compile Include="Assets\Scripts\Rules\TwoHan\MixedTripleSequence.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\OpenQuad.cs" />
     <Compile Include="Assets\Scripts\Animations\SortHandExtension.cs" />
+    <Compile Include="Assets\Scripts\Data\RiichiType.cs" />
+    <Compile Include="Assets\Scripts\Rules\TwoHan\DoubleReady.cs" />
+    <Compile Include="Assets\Scripts\Components\Interface\MahjongPlayerComponentBase.cs" />
+    <Compile Include="Assets\Scripts\Components\MahjongOpponentComponent.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Fonts\3DTextShader.shader" />
