@@ -1,5 +1,5 @@
-﻿using ObscuritasRiichiMahjong.Models;
-using System.Linq;
+﻿using System.Linq;
+using ObscuritasRiichiMahjong.Models;
 using UnityEditor;
 using UnityEngine;
 
@@ -23,8 +23,7 @@ namespace ObscuritasRiichiMahjong
 
                 var selected = o as Texture2D;
 
-                var material = new Material(Shader.Find("Standard"));
-                material.mainTexture = (Texture)o;
+                var material = new Material(Shader.Find("Standard")) {mainTexture = (Texture) o};
 
                 var savePath = AssetDatabase.GetAssetPath(selected);
                 savePath = savePath.Substring(0, savePath.LastIndexOf('/') + 1);
@@ -62,8 +61,8 @@ namespace ObscuritasRiichiMahjong
                     asset.Number = 10;
                 }
 
-
-                AssetDatabase.CreateAsset(asset, $"Assets/Mahjong Tiles/Tiles/{material.name}.asset");
+                AssetDatabase.CreateAsset(asset,
+                    $"Assets/Mahjong Tiles/Tiles/{material.name}.asset");
                 AssetDatabase.SaveAssets();
 
                 EditorUtility.FocusProjectWindow();
