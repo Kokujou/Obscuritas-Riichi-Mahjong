@@ -15,6 +15,6 @@ MonoBehaviour:
   Green: 1
   Material: {fileID: 2100000, guid: 5a923e9b1b2ec9e4683959e8eab691ab, type: 2}
   Name: Green Dragon
-  Number: 10
+  Number: 11
   Red: 0
   Type: 3

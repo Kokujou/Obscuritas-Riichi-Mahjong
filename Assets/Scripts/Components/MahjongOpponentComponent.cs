@@ -1,15 +1,25 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ObscuritasRiichiMahjong.Components.Interface;
-using ObscuritasRiichiMahjong.Models;
+using Random = UnityEngine.Random;
 
 namespace ObscuritasRiichiMahjong.Components
 {
     public class MahjongOpponentComponent : MahjongPlayerComponentBase
     {
-        public override Task<MahjongTile> MakeTurn()
+        public override async Task<MahjongTileComponent> MakeTurn()
         {
-            throw new NotImplementedException();
+            UnityEngine.Debug.Log("opponent turn");
+            await Task.Yield();
+
+            DrawTile();
+
+            var hand = HandParent.GetComponentsInChildren<MahjongTileComponent>();
+            var selectedTile = hand[Random.Range(0, hand.Length)];
+
+            DiscardTile(selectedTile);
+
+            return selectedTile;
         }
 
         public override void Pon()

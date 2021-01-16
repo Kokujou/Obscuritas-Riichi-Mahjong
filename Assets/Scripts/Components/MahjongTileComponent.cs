@@ -14,6 +14,14 @@ namespace ObscuritasRiichiMahjong.Components
         public void Initialize(MahjongTile tile)
         {
             Tile = tile;
+            name = tile.Name;
+            var tileFace = transform.Find("Top");
+            tileFace.GetComponent<MeshRenderer>().material = tile.Material;
+
+            var tileLabel = tileFace.GetComponentInChildren<TextMesh>();
+            tileLabel.text = tile.GetTileLetter();
+            if (tile.Red)
+                tileLabel.color = Color.black;
 
             gameObject.layer = LayerMask.NameToLayer("MahjongTile");
         }

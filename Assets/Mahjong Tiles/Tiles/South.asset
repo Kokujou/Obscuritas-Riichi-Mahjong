@@ -15,6 +15,6 @@ MonoBehaviour:
   Green: 0
   Material: {fileID: 2100000, guid: eeb26ac165998b347a3c3995b74267ad, type: 2}
   Name: South
-  Number: 12
+  Number: 11
   Red: 0
   Type: 4

@@ -11,19 +11,19 @@ namespace ObscuritasRiichiMahjong.Components
 {
     public class MahjongPlayerComponent : MahjongPlayerComponentBase
     {
-        private MahjongTile _lastTile;
+        private MahjongTileComponent _lastTile;
 
-        public void DiscardTile(MahjongTileComponent tile)
+        public override void DiscardTile(MahjongTileComponent tile)
         {
-            _lastTile = tile.Tile;
+            _lastTile = tile;
         }
 
-        public override void Initialize(ref List<CardinalPoint> availableWinds)
+        public override void Initialize(ref List<CardinalPoint> availableWinds, MahjongBoard board)
         {
-            base.Initialize(ref availableWinds);
-            transform.Rotate(45, 0, 0);
+            base.Initialize(ref availableWinds, board);
+            HandParent.Rotate(45, 0, 0);
 
-            foreach (Transform child in transform)
+            foreach (Transform child in HandParent)
             {
                 var mahjongTile = child.GetComponent<MahjongTileComponent>();
 
@@ -32,11 +32,9 @@ namespace ObscuritasRiichiMahjong.Components
                 if (mahjongTile)
                     mahjongTile.Selectable = true;
             }
-
-            StartCoroutine(transform.SortHand());
         }
 
-        public override async Task<MahjongTile> MakeTurn()
+        public override async Task<MahjongTileComponent> MakeTurn()
         {
             while (!_lastTile)
                 await Task.Yield();
