@@ -15,8 +15,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation
     {
         public static readonly Color TileBackColor = new Color(0.7450981f, 0.5686275f, 0.2117647f);
 
-        public MahjongPlayer Player =
-            new MahjongPlayer(new List<MahjongTile>(), CardinalPoint.East);
+        public MahjongPlayer Player = new MahjongPlayer(CardinalPoint.East);
 
         public MahjongBoard Board = new MahjongBoard();
 
@@ -116,7 +115,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation
             foreach (Transform child in PoolParent)
                 Destroy(child.gameObject);
 
-            Player = new MahjongPlayer(new List<MahjongTile>(), CardinalPoint.East);
+            Player = new MahjongPlayer(CardinalPoint.East);
             Board = new MahjongBoard();
 
             InitializeBoard();

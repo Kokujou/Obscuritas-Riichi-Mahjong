@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading.Tasks;
+using System.Collections;
 using ObscuritasRiichiMahjong.Components.Interface;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -8,19 +8,15 @@ namespace ObscuritasRiichiMahjong.Components
 {
     public class MahjongOpponentComponent : MahjongPlayerComponentBase
     {
-        public override async Task<MahjongTileComponent> MakeTurn()
+        public override IEnumerator MakeTurn()
         {
-            Debug.Log("opponent turn");
-            await Task.Yield();
-
             DrawTile();
+            yield return new WaitForSeconds(1);
 
             var hand = HandParent.GetComponentsInChildren<MahjongTileComponent>();
             var selectedTile = hand[Random.Range(0, hand.Length)];
 
             DiscardTile(selectedTile);
-
-            return selectedTile;
         }
 
         public override void Pon()

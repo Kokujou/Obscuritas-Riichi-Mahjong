@@ -1,19 +1,16 @@
-﻿using System;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace ObscuritasRiichiMahjong.Components.Interface
 {
     public abstract class MahjongPlayerComponentBase : MonoBehaviour
     {
         public Transform HandParent;
-        public Transform BankParent;
         public Transform DiscardedTilesParent;
         public Transform ExposedTilesParent;
 
@@ -22,22 +19,20 @@ namespace ObscuritasRiichiMahjong.Components.Interface
         public MahjongBoard Board { get; set; }
         public MahjongPlayer Player { get; set; }
 
-        public virtual void Initialize(ref List<CardinalPoint> availableWinds, MahjongBoard board)
+        public virtual void Initialize(CardinalPoint wind, MahjongBoard board)
         {
-            if (availableWinds == null || availableWinds.Count == 0)
-                throw new ArgumentException("The list of available seat winds must not be empty");
-
             Board = board;
 
-            var hand = transform.GetComponentsInChildren<MahjongTileComponent>()
-                .Select(x => x.Tile);
-
-            var randomWindIndex = Random.Range(0, availableWinds.Count);
-            var cardinalPoint = availableWinds[randomWindIndex];
-            Player = new MahjongPlayer(hand, cardinalPoint);
-            availableWinds.Remove(cardinalPoint);
-
+            var cardinalPoint = wind;
             SeatWindPanel.text = $"{cardinalPoint.ToString().First()}";
+            Player = new MahjongPlayer(cardinalPoint);
+        }
+
+        public virtual void ScanHand()
+        {
+            var hand = transform.GetComponentsInChildren<MahjongTileComponent>()
+                .Select(x => x.GetComponent<MahjongTileComponent>().Tile);
+            Player.Hand.AddRange(hand);
         }
 
         public virtual void DiscardTile(MahjongTileComponent tile)
@@ -46,17 +41,16 @@ namespace ObscuritasRiichiMahjong.Components.Interface
 
         public void DrawTile()
         {
-            var firstFromBank = BankParent.GetComponentsInChildren<MahjongTileComponent>().Last();
+            var firstFromBank = MahjongTileComponent.FromTile(Board.Wall.First());
+            firstFromBank.transform.GetComponent<Rigidbody>().isKinematic = true;
 
             Player.Wall.Remove(firstFromBank.Tile);
             Player.Hand.Add(firstFromBank.Tile);
 
-            StartCoroutine(new List<Transform> {firstFromBank.transform}.MoveToParent(HandParent,
-                1f,
-                Vector3.right * 1.1f, useScale: true));
+            StartCoroutine(new List<MahjongTileComponent> {firstFromBank}.SpawnAtParent(HandParent, 1f));
         }
 
-        public abstract Task<MahjongTileComponent> MakeTurn();
+        public abstract IEnumerator MakeTurn();
 
         public abstract void Pon();
         public abstract void Chi();

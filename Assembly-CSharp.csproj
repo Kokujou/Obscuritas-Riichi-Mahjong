@@ -155,10 +155,10 @@
     <Compile Include="Assets\Scripts\Rules\TwoHan\MixedTripleSequence.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\OpenQuad.cs" />
     <Compile Include="Assets\Scripts\Animations\FlipDoraExtension.cs" />
+    <Compile Include="Assets\Scripts\Core\Extensions\EnumExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".editorconfig" />
-    <None Include="Assets\Fonts\3DTextShader.shader" />
+     <None Include="Assets\Fonts\3DTextShader.shader" />
     <Reference Include="UnityEngine">
       <HintPath>D:\Programme\Unity\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
     </Reference>

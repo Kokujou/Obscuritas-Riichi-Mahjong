@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ObscuritasRiichiMahjong.Data;
 
 namespace ObscuritasRiichiMahjong.Models
@@ -11,7 +10,7 @@ namespace ObscuritasRiichiMahjong.Models
         public CardinalPoint CardinalPoint { get; set; }
         public bool HandOpen { get; set; } = false;
 
-        public List<MahjongTile> Hand { get; set; }
+        public List<MahjongTile> Hand { get; set; } = new List<MahjongTile>(14);
 
         public List<List<MahjongTile>> ExposedHand { get; set; }
             = new List<List<MahjongTile>>(4);
@@ -31,10 +30,9 @@ namespace ObscuritasRiichiMahjong.Models
 
         public int Points { get; set; } = 20000;
 
-        public MahjongPlayer(IEnumerable<MahjongTile> hand, CardinalPoint cardinalPoint)
+        public MahjongPlayer(CardinalPoint cardinalPoint)
         {
             CardinalPoint = cardinalPoint;
-            Hand = hand.ToList();
         }
 
         public bool IsTenpai()

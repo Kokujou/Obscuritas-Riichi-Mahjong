@@ -13,12 +13,13 @@ namespace ObscuritasRiichiMahjong.Animations
             var index = 0;
             var componentList = components.ToList();
             var componentCount = componentList.Count;
+            var globalOffset = 1 + parent.Cast<Transform>().LastOrDefault()?.localPosition.x ?? 0;
             foreach (var component in componentList)
             {
                 component.transform.SetParent(parent, true);
 
                 component.transform.localRotation = Quaternion.Euler(Vector3.zero);
-                component.transform.localPosition = index * Vector3.right + Vector3.up;
+                component.transform.localPosition = (index + globalOffset) * Vector3.right + Vector3.up;
 
                 var subDuration = duration / componentCount;
                 component.StartCoroutine(component.FadeIn(subDuration));

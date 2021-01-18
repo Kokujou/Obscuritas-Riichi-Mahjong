@@ -11,8 +11,8 @@ namespace ObscuritasRiichiMahjong.Models
         public List<MahjongTile> Wall { get; set; } = new List<MahjongTile>(70);
         public List<MahjongTile> KanDora { get; set; } = new List<MahjongTile>(5);
         public List<MahjongTile> UraDora { get; set; } = new List<MahjongTile>(5);
+        public List<MahjongTile> KanWall { get; set; } = new List<MahjongTile>(4);
 
-        public int KanCalls { get; set; }
         public CardinalPoint CardinalPoint { get; set; }
         public int MaxRounds { get; set; }
         public int CurrentRound { get; set; }

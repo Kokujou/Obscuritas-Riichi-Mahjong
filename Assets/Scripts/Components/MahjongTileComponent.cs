@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
@@ -6,10 +7,10 @@ namespace ObscuritasRiichiMahjong.Components
 {
     public class MahjongTileComponent : MonoBehaviour
     {
+        public static GameObject MahjongTileTemplate;
+
         public bool Selectable;
         public MahjongTile Tile;
-
-        private bool _selected;
 
         public void Initialize(MahjongTile tile)
         {
@@ -26,45 +27,41 @@ namespace ObscuritasRiichiMahjong.Components
             gameObject.layer = LayerMask.NameToLayer("MahjongTile");
         }
 
-        public void HandleInput()
+        public void Hover()
         {
-            if (!Selectable) return;
-            if (Input.GetMouseButtonDown(0))
-                _selected = true;
-
             foreach (var side in transform.GetComponentsInChildren<Transform>()
                 .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
                 side.gameObject.layer = LayerMask.NameToLayer("HoveredTile");
-
-            if (_selected && Input.GetMouseButtonUp(0))
-                HandleTileClick();
         }
 
-        private void HandleTileClick()
+        public void Unhover()
         {
-            var playerHand = GetComponentInParent<MahjongPlayerComponent>();
-
-            if (!playerHand)
-                return;
-
-            playerHand.DiscardTile(this);
-        }
-
-        public void HandleMouseOut()
-        {
-            if (!Selectable) return;
-            _selected = false;
-
             foreach (var side in transform.GetComponentsInChildren<Transform>()
                 .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
                 side.gameObject.layer = 0;
         }
 
-        public static MahjongTileComponent AddToObject(GameObject target, MahjongTile tile)
+        public static MahjongTileComponent FromTile(MahjongTile tile)
         {
-            var component = target.AddComponent<MahjongTileComponent>();
-            component.Initialize(tile);
-            return component;
+            if (!MahjongTileTemplate)
+                throw new ArgumentException(
+                    "before using this component, please initialize the MahjongTileTemplate property");
+
+            try
+            {
+                lock (MahjongTileTemplate)
+                {
+                    var tileObject = Instantiate(MahjongTileTemplate);
+                    var component = tileObject.AddComponent<MahjongTileComponent>();
+                    component.Initialize(tile);
+                    return component;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+                throw e;
+            }
         }
     }
 }
