@@ -8,7 +8,7 @@ namespace ObscuritasRiichiMahjong.Rules.SixHan
 {
     public class FullFlush : MahjongRule
     {
-        public override int Han {get; set;} =6;
+        public override int Han { get; set; } = 6;
         public override int OpenHandPunishment => 1;
         public override string Name => "Full Flush";
         public override string JapName => "Chin'itsu";

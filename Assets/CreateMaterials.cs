@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using ObscuritasRiichiMahjong.Models;
 using UnityEditor;
 using UnityEngine;
@@ -28,6 +29,9 @@ namespace ObscuritasRiichiMahjong
                 var savePath = AssetDatabase.GetAssetPath(selected);
                 savePath = savePath.Substring(0, savePath.LastIndexOf('/') + 1);
 
+                if (selected is null)
+                    throw new ArgumentException("given object is not a Texture2D");
+
                 var newAssetName = savePath + selected.name + ".mat";
 
                 AssetDatabase.CreateAsset(material, newAssetName);
@@ -47,7 +51,9 @@ namespace ObscuritasRiichiMahjong
                     continue;
                 }
 
-                var material = o as Material;
+                if (!(o is Material material))
+                    throw new ArgumentException("selected object is not a Material");
+
                 var asset = ScriptableObject.CreateInstance<MahjongTile>();
                 asset.Material = material;
                 asset.Name = material.name;

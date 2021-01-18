@@ -19,11 +19,7 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         {
             var sequences = handSplit.GetSequences();
             var numberSequences = sequences.Select(GetTilesAsNumber).ToList();
-            foreach (var sequence in numberSequences)
-                if (numberSequences.Count(x => x == sequence) >= 2)
-                    return true;
-
-            return false;
+            return numberSequences.Any(sequence => numberSequences.Count(x => x == sequence) >= 2);
         }
 
         public static string GetTilesAsNumber(List<MahjongTile> tiles)

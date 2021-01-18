@@ -30,11 +30,7 @@ namespace ObscuritasRiichiMahjong.Rules.OneHan
         public static bool TileCompletesSequence(MahjongTile tile,
             List<List<MahjongTile>> sequences)
         {
-            foreach (var sequence in sequences)
-                if (tile == sequence.Last() || tile == sequence.First())
-                    return true;
-
-            return false;
+            return sequences.Any(sequence => tile == sequence.Last() || tile == sequence.First());
         }
     }
 }

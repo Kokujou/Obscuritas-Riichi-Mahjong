@@ -8,7 +8,7 @@ namespace ObscuritasRiichiMahjong.Rules.ThreeHan
 {
     public class TerminalInEachSet : MahjongRule
     {
-        public override int Han {get; set;} = 3;
+        public override int Han { get; set; } = 3;
         public override int OpenHandPunishment => 1;
         public override string Name => "Fully Outside Hand";
         public override string JapName => "Junchan";

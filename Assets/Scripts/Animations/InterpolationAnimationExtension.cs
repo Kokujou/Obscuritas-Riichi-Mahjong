@@ -14,13 +14,12 @@ namespace ObscuritasRiichiMahjong.Animations
         }
 
         public static IEnumerator InterpolationAnimation<T>(this T target, float duration,
-         Vector3? targetPosition = null, Vector3? targetRotation = null,
-         Vector3? targetScale = null) where T : MonoBehaviour
+            Vector3? targetPosition = null, Vector3? targetRotation = null,
+            Vector3? targetScale = null) where T : MonoBehaviour
         {
             yield return target.transform.InterpolationAnimation(duration, targetPosition,
                 targetRotation, targetScale);
         }
-
 
         public static IEnumerator InterpolationAnimation(this Transform target, float duration,
             Vector3? targetPosition = null, Vector3? targetRotation = null,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ObscuritasRiichiMahjong.Data;
 using UnityEngine;
@@ -26,10 +27,7 @@ namespace ObscuritasRiichiMahjong.Models
 
         public bool IsTerminal()
         {
-            if (Type == MahjongTileType.Dragon)
-                return true;
-            if (Type == MahjongTileType.Wind)
-                return true;
+            if (Type == MahjongTileType.Dragon || Type == MahjongTileType.Wind) return true;
 
             if (Number == 1 || Number == 9)
                 return true;
@@ -50,6 +48,7 @@ namespace ObscuritasRiichiMahjong.Models
             return Equals((MahjongTile) obj);
         }
 
+        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
         public override int GetHashCode()
         {
             unchecked

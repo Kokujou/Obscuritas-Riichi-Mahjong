@@ -26,8 +26,8 @@ namespace ObscuritasRiichiMahjong.Models
         public MoveType LastMoveType { get; set; }
 
         public int HandTileCount => Hand.Count
-                                    + (HiddenKan.Count * 3)
-                                    + (ExposedHand.Count * 3);
+                                    + HiddenKan.Count * 3
+                                    + ExposedHand.Count * 3;
 
         public int Points { get; set; } = 20000;
 

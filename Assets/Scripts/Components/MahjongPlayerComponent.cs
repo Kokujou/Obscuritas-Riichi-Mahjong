@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
@@ -11,6 +10,7 @@ namespace ObscuritasRiichiMahjong.Components
 {
     public class MahjongPlayerComponent : MahjongPlayerComponentBase
     {
+        private static MahjongTileComponent _activeTile;
         private MahjongTileComponent _lastTile;
 
         public override void DiscardTile(MahjongTileComponent tile)
@@ -43,6 +43,34 @@ namespace ObscuritasRiichiMahjong.Components
             _lastTile = null;
 
             return tile;
+        }
+
+        public void Update()
+        {
+            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (!Physics.Raycast(ray, out var hit, 1000f, ~LayerMask.NameToLayer("MahjongTile")))
+            {
+                if (!_activeTile)
+                    return;
+
+                _activeTile.HandleMouseOut();
+                _activeTile = null;
+                return;
+            }
+
+            var objectHit = hit.transform;
+            var mahjongTileComponent = objectHit.GetComponent<MahjongTileComponent>();
+
+            if (_activeTile == mahjongTileComponent) return;
+
+            _activeTile?.HandleMouseOut();
+
+            if (!mahjongTileComponent)
+                return;
+
+            mahjongTileComponent.HandleInput();
+            _activeTile = mahjongTileComponent;
         }
 
         public override void Pon()

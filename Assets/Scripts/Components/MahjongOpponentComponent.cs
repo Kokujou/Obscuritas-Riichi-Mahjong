@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ObscuritasRiichiMahjong.Components.Interface;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace ObscuritasRiichiMahjong.Components
@@ -9,7 +10,7 @@ namespace ObscuritasRiichiMahjong.Components
     {
         public override async Task<MahjongTileComponent> MakeTurn()
         {
-            UnityEngine.Debug.Log("opponent turn");
+            Debug.Log("opponent turn");
             await Task.Yield();
 
             DrawTile();
