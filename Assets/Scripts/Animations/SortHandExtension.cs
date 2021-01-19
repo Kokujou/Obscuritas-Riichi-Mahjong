@@ -8,35 +8,37 @@ namespace ObscuritasRiichiMahjong.Animations
 {
     public static class SortHandExtension
     {
-        public static IEnumerator SortHand(this Transform parent)
+        public static IEnumerator SortHand(this Transform parent, float duration)
         {
             var hand = parent.GetComponentsInChildren<MahjongTileComponent>()
-                .OrderByDescending(x => x.Tile.GetTileOrder()).ToList();
+                .OrderBy(x => x.Tile.GetTileOrder()).ToList();
+            var perTileDuration = duration / hand.Count;
 
-            foreach (var tile in hand)
+            for (var index = 0; index < hand.Count; index++)
             {
-                yield return new[] {tile.transform}.ToList()
-                    .MoveToParent(parent, .1f, Vector3.left);
+                var tile = hand[index];
+                yield return tile.transform.MoveToParent(parent, perTileDuration / 3f,
+                    ignoreChildren: true);
 
-                yield return new WaitForSeconds(.1f);
+                yield return new WaitForSeconds(perTileDuration / 3f);
 
-                var children = hand.OrderBy(x => x.transform.position.x);
-                yield return MoveChildren(children, Vector3.right);
+                var children = hand.OrderByDescending(x => x.transform.localPosition.x);
+                yield return children.Move(parent.rotation * Vector3.left, perTileDuration / 3f);
+                tile.transform.SetSiblingIndex(index);
             }
         }
 
-        private static IEnumerator MoveChildren(IEnumerable<MahjongTileComponent> parent,
-            Vector3 movement)
+        public static IEnumerator Move<T>(this IEnumerable<T> tiles, Vector3 movement, float duration)
+            where T : MonoBehaviour
         {
-            const float duration = .1f;
-            var children = parent.ToList();
+            var children = tiles.ToList();
 
             for (var index = 0; index < children.Count; index++)
             {
                 var child = children[index];
                 var nextChild = index == children.Count - 1 ? child : children[index + 1];
 
-                child.StartCoroutine(child.transform.InterpolationAnimation(duration,
+                child.StartCoroutine(child.InterpolationAnimation(duration,
                     child.transform.position + movement));
 
                 if (Vector3.Distance(child.transform.position, nextChild.transform.position) >

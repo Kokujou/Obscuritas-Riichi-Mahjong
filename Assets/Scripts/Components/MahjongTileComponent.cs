@@ -9,7 +9,6 @@ namespace ObscuritasRiichiMahjong.Components
     {
         public static GameObject MahjongTileTemplate;
 
-        public bool Selectable;
         public MahjongTile Tile;
 
         public void Initialize(MahjongTile tile)
@@ -47,21 +46,10 @@ namespace ObscuritasRiichiMahjong.Components
                 throw new ArgumentException(
                     "before using this component, please initialize the MahjongTileTemplate property");
 
-            try
-            {
-                lock (MahjongTileTemplate)
-                {
-                    var tileObject = Instantiate(MahjongTileTemplate);
-                    var component = tileObject.AddComponent<MahjongTileComponent>();
-                    component.Initialize(tile);
-                    return component;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-                throw e;
-            }
+            var tileObject = Instantiate(MahjongTileTemplate);
+            var component = tileObject.AddComponent<MahjongTileComponent>();
+            component.Initialize(tile);
+            return component;
         }
     }
 }

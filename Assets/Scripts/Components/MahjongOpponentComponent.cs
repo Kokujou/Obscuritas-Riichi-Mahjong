@@ -10,13 +10,12 @@ namespace ObscuritasRiichiMahjong.Components
     {
         public override IEnumerator MakeTurn()
         {
-            DrawTile();
             yield return new WaitForSeconds(1);
 
             var hand = HandParent.GetComponentsInChildren<MahjongTileComponent>();
             var selectedTile = hand[Random.Range(0, hand.Length)];
 
-            DiscardTile(selectedTile);
+            yield return DiscardTile(selectedTile);
         }
 
         public override void Pon()

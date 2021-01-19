@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Data;
@@ -35,11 +34,13 @@ namespace ObscuritasRiichiMahjong.Components.Interface
             Player.Hand.AddRange(hand);
         }
 
-        public virtual void DiscardTile(MahjongTileComponent tile)
+        public virtual IEnumerator DiscardTile(MahjongTileComponent tile)
         {
+            yield return tile.MoveToParent(DiscardedTilesParent, 1f);
+            tile.transform.SetParent(DiscardedTilesParent, true);
         }
 
-        public void DrawTile()
+        public virtual IEnumerator DrawTile(float duration)
         {
             var firstFromBank = MahjongTileComponent.FromTile(Board.Wall.First());
             firstFromBank.transform.GetComponent<Rigidbody>().isKinematic = true;
@@ -47,7 +48,8 @@ namespace ObscuritasRiichiMahjong.Components.Interface
             Player.Wall.Remove(firstFromBank.Tile);
             Player.Hand.Add(firstFromBank.Tile);
 
-            StartCoroutine(new List<MahjongTileComponent> {firstFromBank}.SpawnAtParent(HandParent, 1f));
+            yield return firstFromBank.SpawnAtParent(HandParent, duration);
+            firstFromBank.transform.SetParent(HandParent, true);
         }
 
         public abstract IEnumerator MakeTurn();

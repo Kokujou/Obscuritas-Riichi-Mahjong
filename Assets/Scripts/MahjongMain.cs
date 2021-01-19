@@ -100,7 +100,14 @@ namespace ObscuritasRiichiMahjong
                 Board.CurrentRound++;
                 var currentPlayer = CurrentPlayer;
 
+                yield return currentPlayer.DrawTile(1f);
+                yield return new WaitForSeconds(.5f);
+
                 yield return currentPlayer.MakeTurn();
+                yield return new WaitForSeconds(.5f);
+
+                yield return currentPlayer.HandParent.SortHand(2f);
+                yield return new WaitForSeconds(.5f);
 
                 Board.CurrentRoundWind = Board.CurrentRoundWind.Next();
             }

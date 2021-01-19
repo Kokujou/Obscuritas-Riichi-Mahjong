@@ -1,19 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Animations
 {
     public static class MoveToParentExtension
     {
-        public static IEnumerator MoveToParent(this List<Transform> children, Transform parent,
+        public static IEnumerator MoveToParent(this MonoBehaviour child, Transform parent,
             float duration, Vector3 offset = default, float spacing = default,
-            bool useScale = false, bool randomOrder = false, int tileCount = -1)
+            bool useScale = false, int tileCount = -1, bool ignoreChildren = false)
+        {
+            yield return new List<Transform> {child.transform}.MoveToParent(parent, duration, offset, spacing, useScale,
+                false, tileCount);
+        }
+
+        public static IEnumerator MoveToParent(this Transform child, Transform parent,
+            float duration, Vector3 offset = default, float spacing = default,
+            bool useScale = false, int tileCount = -1, bool ignoreChildren = false)
+        {
+            yield return new List<Transform> {child}.MoveToParent(parent, duration, offset, spacing, useScale,
+                false, tileCount);
+        }
+
+        public static IEnumerator MoveToParent(this List<Transform> children, Transform parent,
+            float duration, Vector3 globalOffset = default, float spacing = default,
+            bool useScale = false, bool randomOrder = false, int tileCount = -1, bool ignoreChildren = false)
         {
             var targetRotation = parent.rotation.eulerAngles;
 
             if (tileCount == -1)
                 tileCount = children.Count;
+
+            var existingTilesOffset =
+                1 + parent.Cast<Transform>().OrderBy(x => x.localPosition.x).LastOrDefault()?.localPosition.x ?? 0;
+            if (ignoreChildren)
+                existingTilesOffset = 0;
 
             for (var handIndex = 0; handIndex < tileCount; handIndex++)
             {
@@ -27,18 +49,19 @@ namespace ObscuritasRiichiMahjong.Animations
                 children.RemoveAt(index);
 
                 var spacingVector = parentDirection * handIndex * spacing;
-                var tileWidth = handIndex * parentDirection;
+                var tileOffset = handIndex * parentDirection;
                 var targetScale = tile.localScale;
 
                 if (useScale)
                 {
                     spacingVector.Scale(parent.localScale);
-                    tileWidth.Scale(parent.localScale);
+                    tileOffset.Scale(parent.localScale);
                     targetScale.Scale(parent.localScale);
                 }
 
                 var targetPosition =
-                    parent.position + offset + tileWidth + spacingVector;
+                    parent.position + globalOffset + tileOffset + spacingVector
+                    + existingTilesOffset * parentDirection;
 
                 yield return tile.gameObject.PickUpAndMove(duration / tileCount,
                     targetPosition, targetRotation, targetScale);

@@ -76,7 +76,6 @@
     <Compile Include="Assets\Scripts\Rules\TwoHan\PureStraight.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\PointCalculator.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\OneShot.cs" />
-    <Compile Include="Assets\Scripts\Animations\SpawnAtExtension.cs" />
     <Compile Include="Assets\Scripts\MahjongMain.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\HonorTiles.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Services\OpenKanSelectionService.cs" />
@@ -84,6 +83,7 @@
     <Compile Include="Assets\Scripts\Rules\TwoHan\LittleThreeDragons.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\ThirteenOrphans13Wait.cs" />
     <Compile Include="Assets\Scripts\Components\Interface\MahjongPlayerComponentBase.cs" />
+    <Compile Include="Assets\Scripts\Animations\FlipDoraExtension.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Services\ChiSelectionService.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\LastDiscard.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\DiscardPick.cs" />
@@ -143,6 +143,7 @@
     <Compile Include="Assets\Scripts\Animations\MoveToParentExtension.cs" />
     <Compile Include="Assets\Scripts\Components\MahjongPlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\ClosedTriplet.cs" />
+    <Compile Include="Assets\Scripts\Core\Extensions\EnumExtensions.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Services\NormalSelectionService.cs" />
     <Compile Include="Assets\Scripts\Rules\Extensions\HandSplittingExtension.cs" />
     <Compile Include="Assets\Scripts\Data\RiichiType.cs" />
@@ -154,8 +155,6 @@
     <Compile Include="Assets\Scripts\Rules\TwoHan\TripleTriplets.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\MixedTripleSequence.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\OpenQuad.cs" />
-    <Compile Include="Assets\Scripts\Animations\FlipDoraExtension.cs" />
-    <Compile Include="Assets\Scripts\Core\Extensions\EnumExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Fonts\3DTextShader.shader" />

@@ -7,13 +7,19 @@ namespace ObscuritasRiichiMahjong.Animations
 {
     public static class SpawnAtParentExtension
     {
+        public static IEnumerator SpawnAtParent(this MonoBehaviour component, Transform parent, float duration)
+        {
+            yield return new[] {component}.SpawnAtParent(parent, duration);
+        }
+
         public static IEnumerator SpawnAtParent<T>(this IEnumerable<T> components, Transform parent,
             float duration) where T : MonoBehaviour
         {
             var index = 0;
             var componentList = components.ToList();
             var componentCount = componentList.Count;
-            var globalOffset = 1 + parent.Cast<Transform>().LastOrDefault()?.localPosition.x ?? 0;
+            var globalOffset =
+                1 + parent.Cast<Transform>().OrderBy(x => x.localPosition.x).LastOrDefault()?.localPosition.x ?? 0;
             foreach (var component in componentList)
             {
                 component.transform.SetParent(parent, true);
@@ -24,7 +30,7 @@ namespace ObscuritasRiichiMahjong.Animations
                 var subDuration = duration / componentCount;
                 component.StartCoroutine(component.FadeIn(subDuration));
                 component.StartCoroutine(component.InterpolationAnimation(subDuration,
-                    component.transform.position - Vector3.up, parent.rotation.eulerAngles));
+                    component.transform.position - parent.rotation * Vector3.up, parent.rotation.eulerAngles));
 
                 yield return new WaitForSeconds(subDuration);
                 index++;
