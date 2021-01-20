@@ -42,7 +42,7 @@ namespace ObscuritasRiichiMahjong
 
             yield return new WaitForSeconds(firstDuration);
 
-            KanDora = RandomSubsetSpawns(KanDora.Capacity);
+            KanDora = RandomSubsetSpawns(KanDora.Capacity).ToList();
             for (var i = 0; i < KanDora.Count; i++)
             {
                 var tile = KanDora[i];
@@ -60,21 +60,14 @@ namespace ObscuritasRiichiMahjong
             Board.Wall.AddRange(TileSet.RandomSubset(70));
         }
 
-        private List<MahjongTileComponent> RandomSubsetSpawns(int count)
+        private IEnumerable<MahjongTileComponent> RandomSubsetSpawns(int count)
         {
-            var subset = new List<MahjongTileComponent>(count);
-            for (var i = 0; i < count; i++)
+            return TileSet.TransformRandomSubset(count, mahjongTile =>
             {
-                var index = Random.Range(0, TileSet.Count);
-                var mahjongTile = TileSet[index];
-
                 var mahjongTileComponent = MahjongTileComponent.FromTile(mahjongTile);
                 mahjongTileComponent.transform.GetComponent<Rigidbody>().isKinematic = true;
-
-                subset.Add(mahjongTileComponent);
-            }
-
-            return subset;
+                return mahjongTileComponent;
+            });
         }
 
         private IEnumerator BuildBoard()
