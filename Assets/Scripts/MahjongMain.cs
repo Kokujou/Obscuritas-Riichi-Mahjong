@@ -5,8 +5,8 @@ using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Components;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Extensions;
-using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Services;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong
@@ -15,18 +15,12 @@ namespace ObscuritasRiichiMahjong
     {
         public List<Transform> HandSpawnPoints;
         public List<MahjongPlayerComponentBase> MahjongPlayerComponents;
-
-        public GameObject MahjongTileTemplate;
         public List<MahjongTile> TileSet;
+        public GameObject MahjongTileTemplate;
         public Transform UiPanel;
 
-        public MahjongBoard Board = new MahjongBoard();
-
-        public readonly Dictionary<CardinalPoint, MahjongPlayerComponentBase> PlayerComponents =
-            new Dictionary<CardinalPoint, MahjongPlayerComponentBase>();
-
-        public MahjongPlayerComponentBase CurrentPlayer =>
-            PlayerComponents[Board.CurrentRoundWind];
+        private readonly MahjongBoard _board = new MahjongBoard();
+        private GameInputLoopService _inputLoopService;
 
         public List<MahjongTileComponent> KanDora { get; set; }
             = new List<MahjongTileComponent>(5);
@@ -54,10 +48,10 @@ namespace ObscuritasRiichiMahjong
                                                * Vector3.right;
             }
 
-            Board.KanDora.AddRange(KanDora.Select(x => x.Tile));
-            Board.UraDora.AddRange(TileSet.RandomSubset(5));
-            Board.KanWall.AddRange(TileSet.RandomSubset(4));
-            Board.Wall.AddRange(TileSet.RandomSubset(70));
+            _board.KanDora.AddRange(KanDora.Select(x => x.Tile));
+            _board.UraDora.AddRange(TileSet.RandomSubset(5));
+            _board.KanWall.AddRange(TileSet.RandomSubset(4));
+            _board.Wall.AddRange(TileSet.RandomSubset(70));
         }
 
         private IEnumerable<MahjongTileComponent> RandomSubsetSpawns(int count)
@@ -72,8 +66,6 @@ namespace ObscuritasRiichiMahjong
 
         private IEnumerator BuildBoard()
         {
-            InitializePlayers();
-
             yield return DealTiles(6f);
             yield return new WaitForSeconds(1);
             yield return KanDora[0].FlipDora();
@@ -81,50 +73,14 @@ namespace ObscuritasRiichiMahjong
             foreach (var player in MahjongPlayerComponents)
                 player.ScanHand();
 
-            StartCoroutine(PlayerInputLoop());
-        }
-
-        private IEnumerator PlayerInputLoop()
-        {
-            Board.CurrentRoundWind = CardinalPoint.East;
-
-            while (Board.CurrentRound <= Board.MaxRounds)
-            {
-                Board.CurrentRound++;
-                var currentPlayer = CurrentPlayer;
-
-                yield return currentPlayer.DrawTile(1f);
-                yield return new WaitForSeconds(.5f);
-
-                yield return currentPlayer.MakeTurn();
-                yield return new WaitForSeconds(.5f);
-
-                yield return currentPlayer.HandParent.SortHand(2f);
-                yield return new WaitForSeconds(.5f);
-
-                Board.CurrentRoundWind = Board.CurrentRoundWind.Next();
-            }
-        }
-
-        private void InitializePlayers()
-        {
-            var availableWinds = new List<CardinalPoint>
-                {CardinalPoint.South, CardinalPoint.East, CardinalPoint.West, CardinalPoint.North};
-
-            var randomWindIndex = Random.Range(0, 4);
-            var playerCardinal = availableWinds[randomWindIndex];
-            foreach (var player in MahjongPlayerComponents)
-            {
-                player.Initialize(playerCardinal, Board);
-                Board.Players.Add(player.Player.CardinalPoint, player.Player);
-                PlayerComponents.Add(player.Player.CardinalPoint, player);
-                playerCardinal = playerCardinal.Next();
-            }
+            StartCoroutine(_inputLoopService.PlayerInputLoop());
         }
 
         public void Start()
         {
             MahjongTileComponent.MahjongTileTemplate = MahjongTileTemplate;
+            _inputLoopService = new GameInputLoopService(_board, MahjongPlayerComponents);
+
             BuildTileSetFromTiles();
             StartCoroutine(BuildBoard());
         }
