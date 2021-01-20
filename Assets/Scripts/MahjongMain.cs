@@ -81,19 +81,7 @@ namespace ObscuritasRiichiMahjong
             MahjongTileComponent.MahjongTileTemplate = MahjongTileTemplate;
             _inputLoopService = new GameInputLoopService(_board, MahjongPlayerComponents);
 
-            BuildTileSetFromTiles();
             StartCoroutine(BuildBoard());
-        }
-
-        public void BuildTileSetFromTiles()
-        {
-            var tilesToMultiply = TileSet.Where(x => x.Number != 5).ToList();
-            var nonRedFives = TileSet.Where(x => x.Number == 5 && !x.Red).ToList();
-            for (var i = 0; i < 3; i++)
-                TileSet.AddRange(tilesToMultiply);
-
-            for (var i = 0; i < 2; i++)
-                TileSet.AddRange(nonRedFives);
         }
     }
 }
