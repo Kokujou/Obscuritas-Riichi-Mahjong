@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ObscuritasRiichiMahjong.Animations;
+using ObscuritasRiichiMahjong.Components;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Extensions;
 using ObscuritasRiichiMahjong.Data;
@@ -48,7 +50,8 @@ namespace ObscuritasRiichiMahjong.Services
                 yield return currentPlayer.MakeTurn();
                 yield return new WaitForSeconds(.5f);
 
-                yield return currentPlayer.HandParent.SortHand(2f);
+                var drawnTile = currentPlayer.HandParent.GetComponentsInChildren<MahjongTileComponent>().Last();
+                yield return drawnTile.InsertTile(currentPlayer.HandParent, 2f);
                 yield return new WaitForSeconds(.5f);
 
                 _board.CurrentRoundWind = _board.CurrentRoundWind.Next();

@@ -1,52 +1,36 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using ObscuritasRiichiMahjong.Components;
+using ObscuritasRiichiMahjong.Core.Extensions;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Animations
 {
     public static class SortHandExtension
     {
-        public static IEnumerator SortHand(this Transform parent, float duration)
+        public static IEnumerator InsertTile(this MahjongTileComponent tile, Transform parent, float duration)
         {
-            var hand = parent.GetComponentsInChildren<MahjongTileComponent>()
+            var tilesByPosition = parent.GetComponentsInChildren<MahjongTileComponent>()
                 .OrderBy(x => x.Tile.GetTileOrder()).ToList();
-            var perTileDuration = duration / hand.Count;
 
-            for (var index = 0; index < hand.Count; index++)
+            for (var index = 0; index < tilesByPosition.Count; index++)
             {
-                var tile = hand[index];
-                yield return tile.transform.MoveToParent(parent, perTileDuration / 3f,
-                    ignoreChildren: true);
+                var child = tilesByPosition[index];
 
-                yield return new WaitForSeconds(perTileDuration / 3f);
+                if (child == tile) continue;
+                if (child.transform.localPosition.x.AboutEquals(index))
+                    continue;
 
-                var children = hand.OrderByDescending(x => x.transform.localPosition.x);
-                yield return children.Move(parent.rotation * Vector3.left, perTileDuration / 3f);
-                tile.transform.SetSiblingIndex(index);
-            }
-        }
-
-        public static IEnumerator Move<T>(this IEnumerable<T> tiles, Vector3 movement, float duration)
-            where T : MonoBehaviour
-        {
-            var children = tiles.ToList();
-
-            for (var index = 0; index < children.Count; index++)
-            {
-                var child = children[index];
-                var nextChild = index == children.Count - 1 ? child : children[index + 1];
-
-                child.StartCoroutine(child.InterpolationAnimation(duration,
-                    child.transform.position + movement));
-
-                if (Vector3.Distance(child.transform.position, nextChild.transform.position) >
-                    movement.magnitude * 1.5)
-                    break;
+                var targetPosition = parent.position + parent.rotation * Vector3.right * index;
+                child.StartCoroutine(child.InterpolationAnimation(duration / 2f, targetPosition));
             }
 
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(duration / 2f);
+
+            var insertedTileIndex = tilesByPosition.IndexOf(tile);
+            if (tile.transform.localPosition.x.AboutEquals(insertedTileIndex)) yield break;
+            var insertedTargetPosition = parent.position + parent.rotation * Vector3.right * insertedTileIndex;
+            yield return tile.gameObject.PickUpAndMove(duration / 2f, insertedTargetPosition);
         }
     }
 }

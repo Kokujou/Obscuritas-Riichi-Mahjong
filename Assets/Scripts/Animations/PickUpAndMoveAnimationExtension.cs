@@ -6,7 +6,7 @@ namespace ObscuritasRiichiMahjong.Animations
     public static class PickUpAndMoveAnimationExtension
     {
         public static IEnumerator PickUpAndMove(this GameObject target, float duration,
-            Vector3 targetPosition, Vector3 targetRotation, Vector3 targetScale)
+            Vector3 targetPosition, Vector3? targetRotation = null, Vector3? targetScale = null)
         {
             var rigidBody = target.GetComponent<Rigidbody>();
             var collider = target.GetComponent<Collider>();
