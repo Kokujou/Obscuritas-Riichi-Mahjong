@@ -39,27 +39,38 @@ namespace ObscuritasRiichiMahjong.Animations
             yield return null;
         }
 
-        public static IEnumerator FadeIn(this MonoBehaviour target, float duration)
+        private static IEnumerator FadeIn(this Component target, float duration)
         {
-            var renderers = target.GetComponentsInChildren<MeshRenderer>();
+            var materials = target.GetComponentsInChildren<MeshRenderer>()
+                .Select(x => x.material).Cast<dynamic>();
+            var textMeshs = target.GetComponentsInChildren<TextMesh>();
+            var coloredObjects = materials
+                .Union(textMeshs);
+
+            yield return coloredObjects.FadeColors(duration);
+        }
+
+        private static IEnumerator FadeColors(this IEnumerable<dynamic> objects, float duration)
+        {
+            var coloredObjects = objects.ToList();
             var startTime = Time.time;
             while (Time.time <= startTime + duration)
             {
                 var newAlpha = (Time.time - startTime) / duration;
 
-                foreach (var renderer in renderers)
+                foreach (var coloredObject in coloredObjects)
                 {
-                    var color = renderer.material.color;
-                    renderer.material.color = new Color(color.r, color.g, color.b, newAlpha);
+                    var color = coloredObject.color;
+                    coloredObject.color = new Color(color.r, color.g, color.b, newAlpha);
                 }
 
                 yield return null;
             }
 
-            foreach (var renderer in renderers)
+            foreach (var coloredObject in coloredObjects)
             {
-                var color = renderer.material.color;
-                renderer.material.color = new Color(color.r, color.g, color.b, 1);
+                var color = coloredObject.color;
+                coloredObject.color = new Color(color.r, color.g, color.b, 1);
             }
         }
     }
