@@ -44,15 +44,14 @@ namespace ObscuritasRiichiMahjong.Services
                 _board.CurrentRound++;
                 var currentPlayer = CurrentPlayer;
 
-                yield return currentPlayer.DrawTile(1f);
-                yield return new WaitForSeconds(.5f);
+                yield return currentPlayer.DrawTile(.5f);
+                yield return new WaitForSeconds(.1f);
 
                 yield return currentPlayer.MakeTurn();
-                yield return new WaitForSeconds(.5f);
+                yield return new WaitForSeconds(.1f);
 
                 var drawnTile = currentPlayer.HandParent.GetComponentsInChildren<MahjongTileComponent>().Last();
-                yield return drawnTile.InsertTile(currentPlayer.HandParent, 2f);
-                yield return new WaitForSeconds(.5f);
+                drawnTile.StartCoroutine(drawnTile.InsertTile(currentPlayer.HandParent, 1f));
 
                 _board.CurrentRoundWind = _board.CurrentRoundWind.Next();
             }

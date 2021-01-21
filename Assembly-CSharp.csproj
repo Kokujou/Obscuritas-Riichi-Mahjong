@@ -98,9 +98,11 @@
     <Compile Include="Assets\Scripts\Rules\Fu\HonorPairWait.cs" />
     <Compile Include="Assets\Scripts\Rules\RuleProvider.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\AllTerminals.cs" />
+    <Compile Include="Assets\Scripts\Core\Extensions\RoundingExtensions.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Data\TileSelectionType.cs" />
     <Compile Include="Assets\Scripts\Rules\Interfaces\IMahjongFuRule.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\DoubleReady.cs" />
+    <Compile Include="Assets\Scripts\Services\GameInputLoopService.cs" />
     <Compile Include="Assets\Scripts\Components\MahjongOpponentComponent.cs" />
     <Compile Include="Assets\Scripts\Animations\PickUpAndMoveAnimationExtension.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\BigFourWinds.cs" />
@@ -155,6 +157,7 @@
     <Compile Include="Assets\Scripts\Rules\TwoHan\TripleTriplets.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\MixedTripleSequence.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\OpenQuad.cs" />
+    <Compile Include="Assets\SuperSampling.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Fonts\3DTextShader.shader" />
@@ -713,8 +716,14 @@
     <Reference Include="Unity.VSCode.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VSCode.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.VectorGraphics">
+      <HintPath>Library\ScriptAssemblies\Unity.VectorGraphics.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.2D.SpriteShape.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.SpriteShape.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEditorBridge.003">
+      <HintPath>Library\ScriptAssemblies\Unity.InternalAPIEditorBridge.003.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.TextMeshPro.Editor.dll</HintPath>
@@ -736,6 +745,9 @@
     </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.VectorGraphics.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.VectorGraphics.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics">
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.dll</HintPath>
@@ -766,6 +778,9 @@
     </Reference>
     <Reference Include="Unity.VisualStudio.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.VisualStudio.Editor.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InternalAPIEngineBridge.003">
+      <HintPath>Library\ScriptAssemblies\Unity.InternalAPIEngineBridge.003.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Mathematics.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Mathematics.Editor.dll</HintPath>

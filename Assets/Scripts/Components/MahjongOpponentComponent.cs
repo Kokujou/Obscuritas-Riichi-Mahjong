@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using ObscuritasRiichiMahjong.Components.Interface;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace ObscuritasRiichiMahjong.Components
@@ -10,8 +9,6 @@ namespace ObscuritasRiichiMahjong.Components
     {
         public override IEnumerator MakeTurn()
         {
-            yield return new WaitForSeconds(1);
-
             var hand = HandParent.GetComponentsInChildren<MahjongTileComponent>();
             var selectedTile = hand[Random.Range(0, hand.Length)];
 
