@@ -25,6 +25,20 @@ namespace ObscuritasRiichiMahjong
         public List<MahjongTileComponent> KanDora { get; set; }
             = new List<MahjongTileComponent>(5);
 
+        public static IEnumerable<MahjongTileComponent> GetSameTiles(MahjongTileComponent tile)
+        {
+            var referenceSet = new List<MahjongTileComponent> {tile};
+
+            var players = FindObjectsOfType<MahjongPlayerComponentBase>();
+            foreach (var player in players)
+            {
+                referenceSet.AddRange(player.ExposedTilesParent.GetComponentsInChildren<MahjongTileComponent>());
+                referenceSet.AddRange(player.DiscardedTilesParent.GetComponentsInChildren<MahjongTileComponent>());
+            }
+
+            return referenceSet.Where(x => x.Tile == tile.Tile);
+        }
+
         private IEnumerator DealTiles(float duration)
         {
             var firstDuration = duration / 2f;

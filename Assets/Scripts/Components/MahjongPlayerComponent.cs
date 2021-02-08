@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using ObscuritasRiichiMahjong.Components.Interface;
 using UnityEngine;
 
@@ -59,12 +60,16 @@ namespace ObscuritasRiichiMahjong.Components
         {
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+            var activeSameTiles = Enumerable.Empty<MahjongTileComponent>();
+            if (_activeTile)
+                activeSameTiles = MahjongMain.GetSameTiles(_activeTile);
+
             if (!Physics.Raycast(ray, out var hit, 1000f, ~LayerMask.NameToLayer("MahjongTile")))
             {
                 if (!_activeTile)
                     return;
 
-                _activeTile.Unhover();
+                foreach (var tile in activeSameTiles) tile.Unhover();
                 _clickedTile = null;
                 _activeTile = null;
                 return;
@@ -72,17 +77,18 @@ namespace ObscuritasRiichiMahjong.Components
 
             var objectHit = hit.transform;
             var mahjongTileComponent = objectHit.GetComponent<MahjongTileComponent>();
+            var currentSameTiles = MahjongMain.GetSameTiles(mahjongTileComponent);
 
             if (_activeTile == mahjongTileComponent ||
                 mahjongTileComponent.transform.parent != HandParent) return;
 
-            _activeTile?.Unhover();
+            foreach (var tile in activeSameTiles) tile.Unhover();
             _clickedTile = null;
 
             if (!mahjongTileComponent)
                 return;
 
-            mahjongTileComponent.Hover();
+            foreach (var tile in currentSameTiles) tile.Hover();
             _activeTile = mahjongTileComponent;
         }
 
