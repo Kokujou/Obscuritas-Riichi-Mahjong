@@ -1,4 +1,4 @@
-﻿namespace ObscuritasRiichiMahjong.Data
+﻿namespace ObscuritasRiichiMahjong.Core.Data
 {
     public enum RiichiType
     {

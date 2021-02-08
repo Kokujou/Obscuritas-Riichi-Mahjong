@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using ObscuritasRiichiMahjong.Animations;
-using ObscuritasRiichiMahjong.Data;
+using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
@@ -38,6 +39,7 @@ namespace ObscuritasRiichiMahjong.Components.Interface
         {
             yield return tile.MoveToParent(DiscardedTilesParent, 1f);
             tile.transform.SetParent(DiscardedTilesParent, true);
+            Board.LastDiscardedTile = tile.Tile;
         }
 
         public virtual IEnumerator DrawTile(float duration)
@@ -52,14 +54,43 @@ namespace ObscuritasRiichiMahjong.Components.Interface
             firstFromBank.transform.SetParent(HandParent, true);
         }
 
+        public abstract IEnumerator ReactOnDiscard(MahjongTile lastDiscardedTile);
+
         public abstract IEnumerator MakeTurn();
 
-        public abstract void Pon();
-        public abstract void Chi();
-        public abstract void OpenKan();
-        public abstract void HiddenKan();
-        public abstract void Ron();
-        public abstract void Tsumo();
-        public abstract void Riichi();
+        public IEnumerator Pon()
+        {
+            yield return DoPonAnimation();
+        }
+
+        public IEnumerator Chi()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator OpenKan()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator HiddenKan()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator Ron()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator Tsumo()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator Riichi()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

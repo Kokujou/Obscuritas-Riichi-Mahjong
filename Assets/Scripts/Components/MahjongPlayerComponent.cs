@@ -1,7 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using ObscuritasRiichiMahjong.Components.Interface;
+using ObscuritasRiichiMahjong.Core.Data;
+using ObscuritasRiichiMahjong.Global;
+using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Components
@@ -107,39 +110,43 @@ namespace ObscuritasRiichiMahjong.Components
             StartCoroutine(DiscardTile(_clickedTile));
         }
 
-        public override void Pon()
+        public override IEnumerator ReactOnDiscard(MahjongTile lastDiscardedTile)
         {
-            throw new NotImplementedException();
-        }
+            yield return null;
+            var possibleCalls = new List<CallType> {CallType.Skip};
 
-        public override void Chi()
-        {
-            throw new NotImplementedException();
-        }
+            if (Player.CanPon(lastDiscardedTile))
+                possibleCalls.Add(CallType.Pon);
+            if (Player.CanChi(lastDiscardedTile))
+                possibleCalls.Add(CallType.Chi);
+            if (Player.CanKan(lastDiscardedTile))
+                possibleCalls.Add(CallType.OpenKan);
+            if (Player.CanRon(lastDiscardedTile))
+                possibleCalls.Add(CallType.Ron);
 
-        public override void OpenKan()
-        {
-            throw new NotImplementedException();
-        }
+            if (possibleCalls.Count <= 1)
+                yield break;
 
-        public override void HiddenKan()
-        {
-            throw new NotImplementedException();
-        }
+            var actionButtons = new List<ActionButtonComponent>();
+            foreach (var possibleCall in possibleCalls)
+            {
+                var actionButton = Instantiate(PrefabCollection.Instance.ActionButtonTemplate,
+                    SceneObjectCollection.Instance.ActionButtonPanel).GetComponent<ActionButtonComponent>();
 
-        public override void Ron()
-        {
-            throw new NotImplementedException();
-        }
+                actionButton.Initialize(this, possibleCall);
+                actionButtons.Add(actionButton);
+            }
 
-        public override void Tsumo()
-        {
-            throw new NotImplementedException();
-        }
+            while (true)
+            {
+                if (actionButtons.Any(x => x.Submitted))
+                {
+                    foreach (var actionButton in actionButtons) Destroy(actionButton.gameObject);
+                    yield break;
+                }
 
-        public override void Riichi()
-        {
-            throw new NotImplementedException();
+                yield return null;
+            }
         }
     }
 }

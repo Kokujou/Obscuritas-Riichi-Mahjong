@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Components;
 using ObscuritasRiichiMahjong.Components.Interface;
+using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Core.Extensions;
-using ObscuritasRiichiMahjong.Data;
 using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace ObscuritasRiichiMahjong.Services
 {
@@ -43,6 +45,7 @@ namespace ObscuritasRiichiMahjong.Services
             {
                 _board.CurrentRound++;
                 var currentPlayer = CurrentPlayer;
+                _board.LastDiscardedTile = null;
 
                 yield return currentPlayer.DrawTile(.5f);
                 yield return new WaitForSeconds(.1f);
@@ -52,6 +55,13 @@ namespace ObscuritasRiichiMahjong.Services
 
                 var drawnTile = currentPlayer.HandParent.GetComponentsInChildren<MahjongTileComponent>().Last();
                 drawnTile.StartCoroutine(drawnTile.InsertTile(currentPlayer.HandParent, 1f));
+
+                if (!_board.LastDiscardedTile)
+                    throw new NotImplementedException(
+                        "The MakeTurn method must set the boards LastDiscardedTile property.");
+
+                foreach (var player in _initializedPlayerComponents.Values.Where(player => player != currentPlayer))
+                    yield return player.ReactOnDiscard(_board.LastDiscardedTile);
 
                 _board.CurrentRoundWind = _board.CurrentRoundWind.Next();
             }

@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ObscuritasRiichiMahjong.Components;
+using ObscuritasRiichiMahjong.Core.Extensions;
+using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Animations
@@ -37,6 +40,17 @@ namespace ObscuritasRiichiMahjong.Animations
             }
 
             yield return null;
+        }
+
+        public static IEnumerable<MahjongTileComponent> RandomSubsetSpawns(this IEnumerable<MahjongTile> tileSet,
+            int count, out List<MahjongTile> leftover)
+        {
+            return tileSet.TransformRandomSubset(count, mahjongTile =>
+            {
+                var mahjongTileComponent = MahjongTileComponent.FromTile(mahjongTile);
+                mahjongTileComponent.transform.GetComponent<Rigidbody>().isKinematic = true;
+                return mahjongTileComponent;
+            }, out leftover);
         }
 
         private static IEnumerator FadeIn(this Component target, float duration)

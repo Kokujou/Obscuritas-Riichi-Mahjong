@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using ObscuritasRiichiMahjong.Components.Interface;
-using Random = UnityEngine.Random;
+using ObscuritasRiichiMahjong.Models;
+using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Components
 {
@@ -15,39 +15,9 @@ namespace ObscuritasRiichiMahjong.Components
             yield return DiscardTile(selectedTile);
         }
 
-        public override void Pon()
+        public override IEnumerator ReactOnDiscard(MahjongTile lastDiscardedTile)
         {
-            throw new NotImplementedException();
-        }
-
-        public override void Chi()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void OpenKan()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void HiddenKan()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Ron()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Tsumo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Riichi()
-        {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

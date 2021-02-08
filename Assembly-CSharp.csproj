@@ -56,6 +56,7 @@
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio Tools for Unity\16.0\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\GradientEffect.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\SequenceMiddleWait.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\AllTerminalsAndHonors.cs" />
     <Compile Include="Assets\Scripts\Rules\ThreeHan\TerminalInEachSet.cs" />
@@ -81,6 +82,7 @@
     <Compile Include="Assets\Scripts\PointCalculation\Services\OpenKanSelectionService.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\ReadyHand.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\LittleThreeDragons.cs" />
+    <Compile Include="Assets\SuperSampling.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\ThirteenOrphans13Wait.cs" />
     <Compile Include="Assets\Scripts\Components\Interface\MahjongPlayerComponentBase.cs" />
     <Compile Include="Assets\Scripts\Animations\FlipDoraExtension.cs" />
@@ -93,7 +95,7 @@
     <Compile Include="Assets\Scripts\PointCalculation\Services\PonSelectionService.cs" />
     <Compile Include="Assets\Scripts\Rules\Interfaces\MahjongRule.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\ThreeChainedTriplets.cs" />
-    <Compile Include="Assets\Scripts\Data\MahjongTileType.cs" />
+    <Compile Include="Assets\Scripts\Core\Data\MahjongTileType.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\RoundWindSetterComponent.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\HonorPairWait.cs" />
     <Compile Include="Assets\Scripts\Rules\RuleProvider.cs" />
@@ -124,7 +126,7 @@
     <Compile Include="Assets\Scripts\Rules\Fu\HonorPair.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\WinningTypeSetterComponent.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\FourTriplets.cs" />
-    <Compile Include="Assets\Scripts\Data\WinningMoveType.cs" />
+    <Compile Include="Assets\Scripts\Core\Data\WinningMoveType.cs" />
     <Compile Include="Assets\Scripts\Models\MahjongTile.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\SelfPick.cs" />
     <Compile Include="Assets\Scripts\Models\MahjongBoard.cs" />
@@ -140,24 +142,28 @@
     <Compile Include="Assets\Scripts\Animations\InterpolationAnimationExtension.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\InputTypeSetterComponent.cs" />
     <Compile Include="Assets\Scripts\Core\Extensions\GetCombinationsExtension.cs" />
-    <Compile Include="Assets\Scripts\Data\CardinalPoint.cs" />
+    <Compile Include="Assets\Scripts\Core\Data\CardinalPoint.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\SelectableButton.cs" />
     <Compile Include="Assets\Scripts\Animations\MoveToParentExtension.cs" />
     <Compile Include="Assets\Scripts\Components\MahjongPlayerComponent.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\ClosedTriplet.cs" />
     <Compile Include="Assets\Scripts\Core\Extensions\EnumExtensions.cs" />
+    <Compile Include="Assets\Scripts\Components\ActionButtonComponent.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Services\NormalSelectionService.cs" />
     <Compile Include="Assets\Scripts\Rules\Extensions\HandSplittingExtension.cs" />
-    <Compile Include="Assets\Scripts\Data\RiichiType.cs" />
+    <Compile Include="Assets\Scripts\Core\Data\RiichiType.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\LastFromWall.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\LittleFourWinds.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\NineGates.cs" />
-    <Compile Include="Assets\Scripts\Data\MoveType.cs" />
+    <Compile Include="Assets\Scripts\Core\Data\MoveType.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\AllSimples.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\TripleTriplets.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\MixedTripleSequence.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\OpenQuad.cs" />
-    <Compile Include="Assets\SuperSampling.cs" />
+    <Compile Include="Assets\Scripts\Core\Data\CallType.cs" />
+    <Compile Include="Assets\Scripts\Global\PrefabCollection.cs" />
+    <Compile Include="Assets\Scripts\Global\SceneObjectCollection.cs" />
+    <Compile Include="Assets\Scripts\Animations\PonAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
      <None Include="Assets\Fonts\3DTextShader.shader" />

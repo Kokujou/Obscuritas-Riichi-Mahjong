@@ -1,4 +1,4 @@
-﻿using ObscuritasRiichiMahjong.Data;
+﻿using ObscuritasRiichiMahjong.Core.Data;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.PointCalculation.Components

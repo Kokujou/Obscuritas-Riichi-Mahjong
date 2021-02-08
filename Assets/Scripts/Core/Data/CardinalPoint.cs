@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ObscuritasRiichiMahjong.Data
+namespace ObscuritasRiichiMahjong.Core.Data
 {
     [Serializable]
     public enum CardinalPoint

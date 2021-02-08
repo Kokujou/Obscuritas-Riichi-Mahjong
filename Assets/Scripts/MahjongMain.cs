@@ -5,6 +5,7 @@ using ObscuritasRiichiMahjong.Animations;
 using ObscuritasRiichiMahjong.Components;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Extensions;
+using ObscuritasRiichiMahjong.Global;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Services;
 using UnityEngine;
@@ -13,16 +14,10 @@ namespace ObscuritasRiichiMahjong
 {
     public class MahjongMain : MonoBehaviour
     {
-        public List<Transform> HandSpawnPoints;
-        public List<MahjongPlayerComponentBase> MahjongPlayerComponents;
-        public List<MahjongTile> TileSet;
-        public GameObject MahjongTileTemplate;
-        public Transform UiPanel;
-
         private readonly MahjongBoard _board = new MahjongBoard();
         private GameInputLoopService _inputLoopService;
 
-        public List<MahjongTileComponent> KanDora { get; set; }
+        private readonly List<MahjongTileComponent> _kanDora
             = new List<MahjongTileComponent>(5);
 
         public static IEnumerable<MahjongTileComponent> GetSameTiles(MahjongTileComponent tile)
@@ -42,49 +37,42 @@ namespace ObscuritasRiichiMahjong
         private IEnumerator DealTiles(float duration)
         {
             var firstDuration = duration / 2f;
-            foreach (var handSpawnPoint in HandSpawnPoints)
+            var leftoverTiles = PrefabCollection.Instance.TileSet;
+            foreach (var handSpawnPoint in SceneObjectCollection.Instance.HandSpawnPoints)
             {
-                var handTiles = RandomSubsetSpawns(13).OrderBy(x => x.Tile.GetTileOrder());
+                var handTiles = leftoverTiles.RandomSubsetSpawns(13, out leftoverTiles)
+                    .OrderBy(x => x.Tile.GetTileOrder());
                 StartCoroutine(handTiles.SpawnAtParent(handSpawnPoint, firstDuration));
             }
 
             yield return new WaitForSeconds(firstDuration);
 
-            KanDora = RandomSubsetSpawns(KanDora.Capacity).ToList();
-            for (var i = 0; i < KanDora.Count; i++)
+            _kanDora.AddRange(leftoverTiles.RandomSubsetSpawns(_kanDora.Capacity, out leftoverTiles).ToList());
+            var kanDoraPanel = SceneObjectCollection.Instance.KanDoraPanel;
+            for (var i = 0; i < _kanDora.Count; i++)
             {
-                var tile = KanDora[i];
-                tile.transform.SetParent(UiPanel, true);
-                tile.transform.localScale = Vector3.Scale(tile.transform.localScale, UiPanel.localScale);
-                tile.transform.Rotate(UiPanel.localRotation.eulerAngles);
+                var tile = _kanDora[i];
+                tile.transform.SetParent(kanDoraPanel, true);
+                tile.transform.localScale = Vector3.Scale(tile.transform.localScale, kanDoraPanel.localScale);
+                tile.transform.Rotate(kanDoraPanel.localRotation.eulerAngles);
                 tile.transform.localPosition = (i * tile.transform.localScale.x / 2f
                                                 - tile.transform.localScale.x)
                                                * Vector3.right;
             }
 
-            _board.KanDora.AddRange(KanDora.Select(x => x.Tile));
-            _board.UraDora.AddRange(TileSet.RandomSubset(5));
-            _board.KanWall.AddRange(TileSet.RandomSubset(4));
-            _board.Wall.AddRange(TileSet.RandomSubset(70));
-        }
-
-        private IEnumerable<MahjongTileComponent> RandomSubsetSpawns(int count)
-        {
-            return TileSet.TransformRandomSubset(count, mahjongTile =>
-            {
-                var mahjongTileComponent = MahjongTileComponent.FromTile(mahjongTile);
-                mahjongTileComponent.transform.GetComponent<Rigidbody>().isKinematic = true;
-                return mahjongTileComponent;
-            });
+            _board.KanDora.AddRange(_kanDora.Select(x => x.Tile));
+            _board.UraDora.AddRange(leftoverTiles.RandomSubset(5, out leftoverTiles));
+            _board.KanWall.AddRange(leftoverTiles.RandomSubset(4, out leftoverTiles));
+            _board.Wall.AddRange(leftoverTiles.RandomSubset(70, out leftoverTiles));
         }
 
         private IEnumerator BuildBoard()
         {
             yield return DealTiles(6f);
             yield return new WaitForSeconds(1);
-            yield return KanDora[0].FlipDora();
+            yield return _kanDora[0].FlipDora();
 
-            foreach (var player in MahjongPlayerComponents)
+            foreach (var player in SceneObjectCollection.Instance.MahjongPlayerComponents)
                 player.ScanHand();
 
             StartCoroutine(_inputLoopService.PlayerInputLoop());
@@ -92,8 +80,9 @@ namespace ObscuritasRiichiMahjong
 
         public void Start()
         {
-            MahjongTileComponent.MahjongTileTemplate = MahjongTileTemplate;
-            _inputLoopService = new GameInputLoopService(_board, MahjongPlayerComponents);
+            MahjongTileComponent.MahjongTileTemplate = PrefabCollection.Instance.MahjongTileTemplate;
+            _inputLoopService =
+                new GameInputLoopService(_board, SceneObjectCollection.Instance.MahjongPlayerComponents);
 
             StartCoroutine(BuildBoard());
         }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
-using ObscuritasRiichiMahjong.Data;
+using System.Linq;
+using ObscuritasRiichiMahjong.Core.Data;
+using ObscuritasRiichiMahjong.Rules.Extensions;
 
 namespace ObscuritasRiichiMahjong.Models
 {
@@ -33,6 +35,54 @@ namespace ObscuritasRiichiMahjong.Models
         public MahjongPlayer(CardinalPoint cardinalPoint)
         {
             CardinalPoint = cardinalPoint;
+        }
+
+        public bool CanPon(MahjongTile lastDiscard)
+        {
+            if (Hand.Count(x => x == lastDiscard) >= 2)
+                return true;
+
+            return false;
+        }
+
+        public bool CanChi(MahjongTile lastDiscard)
+        {
+            var start = lastDiscard.Number - 2;
+            start = start >= 0 ? start : 0;
+
+            var longestSequence = 0;
+            var suit = Hand.Where(x => x.Type == lastDiscard.Type).ToList();
+            suit.Add(lastDiscard);
+            for (var i = start; i <= 9; i++)
+            {
+                if (suit.Any(x => x.Number == i))
+                    longestSequence++;
+                else
+                    longestSequence = 0;
+
+                if (longestSequence == 3)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public bool CanKan(MahjongTile lastDiscard)
+        {
+            if (Hand.Count(x => x == lastDiscard) >= 3)
+                return true;
+
+            return false;
+        }
+
+        public bool CanRon(MahjongTile lastDiscard)
+        {
+            var virtualHand = Hand.ToList();
+            virtualHand.Add(lastDiscard);
+
+            var handSplits = virtualHand.GetValidHands();
+            if (handSplits is null) return false;
+            return handSplits.Any(split => split.EnrichSplittedHand(this).Count == 5);
         }
 
         public bool IsTenpai()
