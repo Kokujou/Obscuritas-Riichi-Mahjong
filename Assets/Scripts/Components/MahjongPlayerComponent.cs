@@ -4,7 +4,6 @@ using System.Linq;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Global;
-using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Components
@@ -48,6 +47,7 @@ namespace ObscuritasRiichiMahjong.Components
                 HandlePlayerInput();
             }
 
+            LastDiscardedTile = _lastTile;
             Board.LastDiscardedTile = _lastTile.Tile;
             _lastTile = null;
         }
@@ -110,18 +110,18 @@ namespace ObscuritasRiichiMahjong.Components
             StartCoroutine(DiscardTile(_clickedTile));
         }
 
-        public override IEnumerator ReactOnDiscard(MahjongTile lastDiscardedTile)
+        public override IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile)
         {
             yield return null;
             var possibleCalls = new List<CallType> {CallType.Skip};
 
-            if (Player.CanPon(lastDiscardedTile))
+            if (Player.CanPon(lastDiscardedTile.Tile))
                 possibleCalls.Add(CallType.Pon);
-            if (Player.CanChi(lastDiscardedTile))
+            if (Player.CanChi(lastDiscardedTile.Tile))
                 possibleCalls.Add(CallType.Chi);
-            if (Player.CanKan(lastDiscardedTile))
+            if (Player.CanKan(lastDiscardedTile.Tile))
                 possibleCalls.Add(CallType.OpenKan);
-            if (Player.CanRon(lastDiscardedTile))
+            if (Player.CanRon(lastDiscardedTile.Tile))
                 possibleCalls.Add(CallType.Ron);
 
             if (possibleCalls.Count <= 1)
@@ -133,7 +133,7 @@ namespace ObscuritasRiichiMahjong.Components
                 var actionButton = Instantiate(PrefabCollection.Instance.ActionButtonTemplate,
                     SceneObjectCollection.Instance.ActionButtonPanel).GetComponent<ActionButtonComponent>();
 
-                actionButton.Initialize(this, possibleCall);
+                actionButton.Initialize(this, possibleCall, lastDiscardedTile);
                 actionButtons.Add(actionButton);
             }
 

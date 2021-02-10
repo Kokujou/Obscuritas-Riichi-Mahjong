@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using ObscuritasRiichiMahjong.Components.Interface;
-using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Components
@@ -15,7 +14,7 @@ namespace ObscuritasRiichiMahjong.Components
             yield return DiscardTile(selectedTile);
         }
 
-        public override IEnumerator ReactOnDiscard(MahjongTile lastDiscardedTile)
+        public override IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile)
         {
             return null;
         }

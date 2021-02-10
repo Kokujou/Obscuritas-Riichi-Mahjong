@@ -56,12 +56,12 @@ namespace ObscuritasRiichiMahjong.Services
                 var drawnTile = currentPlayer.HandParent.GetComponentsInChildren<MahjongTileComponent>().Last();
                 drawnTile.StartCoroutine(drawnTile.InsertTile(currentPlayer.HandParent, 1f));
 
-                if (!_board.LastDiscardedTile)
+                if (!_board.LastDiscardedTile || !currentPlayer.LastDiscardedTile)
                     throw new NotImplementedException(
                         "The MakeTurn method must set the boards LastDiscardedTile property.");
 
                 foreach (var player in _initializedPlayerComponents.Values.Where(player => player != currentPlayer))
-                    yield return player.ReactOnDiscard(_board.LastDiscardedTile);
+                    yield return player.ReactOnDiscard(currentPlayer.LastDiscardedTile);
 
                 _board.CurrentRoundWind = _board.CurrentRoundWind.Next();
             }

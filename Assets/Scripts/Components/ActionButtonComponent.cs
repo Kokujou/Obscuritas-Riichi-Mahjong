@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Data;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace ObscuritasRiichiMahjong.Components
     {
         public CallType MoveType;
         public MahjongPlayerComponentBase MahjongPlayer;
+        public MahjongTileComponent LastDiscardedTile;
 
         public Text ActionName;
 
@@ -23,13 +25,14 @@ namespace ObscuritasRiichiMahjong.Components
         public Color TsumoColor;
         public Color RonColor;
 
-        private Action _buttonAction = () => throw new NotImplementedException("undefined action");
+        private Func<IEnumerator> _buttonAction = () => throw new NotImplementedException("undefined action");
         public bool Submitted { get; private set; }
 
-        public void Initialize(MahjongPlayerComponentBase player, CallType moveType)
+        public void Initialize(MahjongPlayerComponentBase player, CallType moveType, MahjongTileComponent lastDiscard)
         {
             MahjongPlayer = player;
             MoveType = moveType;
+            LastDiscardedTile = lastDiscard;
 
             OnValidate();
         }
@@ -55,7 +58,7 @@ namespace ObscuritasRiichiMahjong.Components
             };
 
             var triggerAction = new EventTrigger.TriggerEvent();
-            triggerAction.AddListener(x => TriggerActionOnPlayer());
+            triggerAction.AddListener(x => StartCoroutine(TriggerActionOnPlayer()));
             var pointerClickEntry = new EventTrigger.Entry
             {
                 eventID = EventTriggerType.PointerClick,
@@ -72,10 +75,15 @@ namespace ObscuritasRiichiMahjong.Components
             InitializeByCallType();
         }
 
-        public void TriggerActionOnPlayer()
+        public IEnumerator TriggerActionOnPlayer()
         {
-            _buttonAction.Invoke();
+            yield return _buttonAction.Invoke();
             Submitted = true;
+        }
+
+        private static IEnumerator EmptyAnimation()
+        {
+            yield return null;
         }
 
         private void InitializeByCallType()
@@ -90,12 +98,12 @@ namespace ObscuritasRiichiMahjong.Components
                 case CallType.Skip:
                     image.color = SkipColor;
                     ActionName.color = SkipColor;
-                    _buttonAction = () => { };
+                    _buttonAction = () => null;
                     break;
                 case CallType.Pon:
                     image.color = PonColor;
                     ActionName.color = PonColor;
-                    _buttonAction = () => MahjongPlayer.Pon();
+                    _buttonAction = () => MahjongPlayer.Pon(LastDiscardedTile);
                     break;
                 case CallType.Chi:
                     image.color = ChiColor;

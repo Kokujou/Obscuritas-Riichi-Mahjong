@@ -10,6 +10,8 @@ namespace ObscuritasRiichiMahjong.Components.Interface
 {
     public abstract class MahjongPlayerComponentBase : MonoBehaviour
     {
+        public MahjongTileComponent LastDiscardedTile;
+
         public Transform HandParent;
         public Transform DiscardedTilesParent;
         public Transform ExposedTilesParent;
@@ -40,6 +42,7 @@ namespace ObscuritasRiichiMahjong.Components.Interface
             yield return tile.MoveToParent(DiscardedTilesParent, 1f);
             tile.transform.SetParent(DiscardedTilesParent, true);
             Board.LastDiscardedTile = tile.Tile;
+            LastDiscardedTile = tile;
         }
 
         public virtual IEnumerator DrawTile(float duration)
@@ -54,13 +57,13 @@ namespace ObscuritasRiichiMahjong.Components.Interface
             firstFromBank.transform.SetParent(HandParent, true);
         }
 
-        public abstract IEnumerator ReactOnDiscard(MahjongTile lastDiscardedTile);
+        public abstract IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile);
 
         public abstract IEnumerator MakeTurn();
 
-        public IEnumerator Pon()
+        public IEnumerator Pon(MahjongTileComponent lastDiscard)
         {
-            yield return DoPonAnimation();
+            yield return lastDiscard.DoPonAnimation(this, 1f);
         }
 
         public IEnumerator Chi()
