@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 8310123264063885229}
   - component: {fileID: 2651514897515676054}
   - component: {fileID: 1634805300186643223}
+  - component: {fileID: 8490182405309526520}
   m_Layer: 5
-  m_Name: MoveTypeButton
+  m_Name: Kan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,10 +31,11 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 171674485926928207}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -61,7 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7294118, g: 0.20392157, b: 0.20392157, a: 1}
+  m_Color: {r: 0.20392159, g: 0.7294118, b: 0.7294118, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -101,16 +103,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa1d0acd8ced3ea43abd41a9e58c03ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveType: 0
-  MahjongPlayer: {fileID: 0}
-  ActionName: {fileID: 6851652830817541944}
-  SkipColor: {r: 0.47058824, g: 0.47058824, b: 0.47058824, a: 1}
-  PonColor: {r: 0.20392157, g: 0.7294118, b: 0.20392157, a: 1}
-  ChiColor: {r: 0.7294118, g: 0.7294118, b: 0.20392157, a: 1}
-  KanColor: {r: 0.20392157, g: 0.7294118, b: 0.7294118, a: 1}
-  RiichiColor: {r: 0.7294118, g: 0.39215687, b: 0.20392157, a: 1}
-  TsumoColor: {r: 0.7294118, g: 0.20392157, b: 0.7294118, a: 1}
-  RonColor: {r: 0.7294118, g: 0.20392157, b: 0.20392157, a: 1}
+  MoveType: 4
+  _mahjongPlayer: {fileID: 0}
+  ForcePositionOffset: {x: 0, y: 1, z: 0}
+--- !u!114 &8490182405309526520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5633145636632313935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1634805300186643223}
+          m_TargetAssemblyTypeName: ObscuritasRiichiMahjong.Components.ActionButtonComponent,
+            Assembly-CSharp
+          m_MethodName: PointerExit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1634805300186643223}
+          m_TargetAssemblyTypeName: ObscuritasRiichiMahjong.Components.ActionButtonComponent,
+            Assembly-CSharp
+          m_MethodName: PointerEnter
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1634805300186643223}
+          m_TargetAssemblyTypeName: ObscuritasRiichiMahjong.Components.ActionButtonComponent,
+            Assembly-CSharp
+          m_MethodName: Click
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 1
 --- !u!1 &8510272365009207942
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +199,7 @@ RectTransform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3612177546577576473}
   m_RootOrder: 0
@@ -170,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7294118, g: 0.20392157, b: 0.20392157, a: 1}
+  m_Color: {r: 0.20392159, g: 0.7294118, b: 0.7294118, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -190,7 +250,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Ron
+  m_Text: Kan
 --- !u!114 &616183780348458415
 MonoBehaviour:
   m_ObjectHideFlags: 0

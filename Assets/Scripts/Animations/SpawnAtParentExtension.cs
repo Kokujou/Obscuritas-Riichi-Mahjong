@@ -28,7 +28,7 @@ namespace ObscuritasRiichiMahjong.Animations
                 component.transform.SetParent(parent, true);
 
                 component.transform.localRotation = Quaternion.Euler(Vector3.zero);
-                component.transform.localPosition = (index + globalOffset) * Vector3.right + Vector3.up;
+                component.transform.localPosition = (index + globalOffset) * Vector3.right * 1.1f + Vector3.up;
 
                 var subDuration = duration / componentCount;
                 component.StartCoroutine(component.FadeIn(subDuration));

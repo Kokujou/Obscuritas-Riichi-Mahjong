@@ -17,8 +17,6 @@ namespace ObscuritasRiichiMahjong.Components
 
         public override void ScanHand()
         {
-            HandParent.Rotate(45, 0, 0);
-
             foreach (Transform child in HandParent)
             {
                 var mahjongTile = child.GetComponent<MahjongTileComponent>();
@@ -130,10 +128,11 @@ namespace ObscuritasRiichiMahjong.Components
             var actionButtons = new List<ActionButtonComponent>();
             foreach (var possibleCall in possibleCalls)
             {
-                var actionButton = Instantiate(PrefabCollection.Instance.ActionButtonTemplate,
+                var actionButton = Instantiate(
+                    PrefabCollection.Instance.ActionButtonDictionary[possibleCall],
                     SceneObjectCollection.Instance.ActionButtonPanel).GetComponent<ActionButtonComponent>();
 
-                actionButton.Initialize(this, possibleCall, lastDiscardedTile);
+                actionButton.Initialize(this, lastDiscardedTile);
                 actionButtons.Add(actionButton);
             }
 

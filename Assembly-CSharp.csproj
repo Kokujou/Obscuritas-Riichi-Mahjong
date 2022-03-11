@@ -121,6 +121,7 @@
     <Compile Include="Assets\Scripts\PointCalculation\Data\TileSelectionType.cs" />
     <Compile Include="Assets\Scripts\Animations\SpawnAtParentExtension.cs" />
     <Compile Include="Assets\SuperSampling.cs" />
+    <Compile Include="Assets\Scripts\EditorPlugins\InspectorDictionary.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\BigThreeDragons.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\SequenceMiddleWait.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\FourTripletsSingleWait.cs" />
@@ -148,7 +149,7 @@
     <Compile Include="Assets\Scripts\Animations\FlipDoraExtension.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\DeadWallDraw.cs" />
     <Compile Include="Assets\Scripts\Services\GameInputLoopService.cs" />
-    <Compile Include="Assets\Scripts\Animations\PonAnimation.cs" />
+    <Compile Include="Assets\Scripts\Animations\CallAnimations.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\HandSplitResultComponent.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\InputTypeSetterComponent.cs" />
     <Compile Include="Assets\Scripts\Core\Data\CallType.cs" />

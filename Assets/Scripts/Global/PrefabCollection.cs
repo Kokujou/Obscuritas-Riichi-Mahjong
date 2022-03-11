@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
@@ -10,7 +12,16 @@ namespace ObscuritasRiichiMahjong.Global
 
         public GameObject MahjongTileTemplate;
         public List<MahjongTile> TileSet;
-        public GameObject ActionButtonTemplate;
+
+        public UDictionary<CallType, GameObject> ActionButtonDictionary;
+
+        [Serializable]
+        public struct ActionButton
+        {
+            public CallType Type;
+            public GameObject ActionButtonPrefab;
+        }
+
 
         public PrefabCollection()
         {
