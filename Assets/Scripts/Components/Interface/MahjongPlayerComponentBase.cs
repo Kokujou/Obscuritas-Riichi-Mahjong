@@ -61,9 +61,9 @@ namespace ObscuritasRiichiMahjong.Components.Interface
 
         public abstract IEnumerator MakeTurn();
 
-        public IEnumerator Pon(MahjongTileComponent lastDiscard)
+        public IEnumerator Pon(MahjongTileComponent lastDiscard, Vector3 forceOffset)
         {
-            yield return lastDiscard.DoPonAnimation(this, 1f);
+            yield return lastDiscard.DoPonAnimation(this, 1f, forceOffset);
         }
 
         public IEnumerator Chi()

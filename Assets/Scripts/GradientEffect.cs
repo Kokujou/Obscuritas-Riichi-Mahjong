@@ -26,8 +26,8 @@ namespace ObscuritasRiichiMahjong
 
         [SerializeField] [Range(-1, 1)] private float _offset;
 
-        [SerializeField] private Gradient _effectGradient = new Gradient
-            {colorKeys = new[] {new GradientColorKey(Color.black, 0), new GradientColorKey(Color.white, 1)}};
+        [SerializeField] private Gradient _effectGradient = new()
+            { colorKeys = new[] { new GradientColorKey(Color.black, 0), new GradientColorKey(Color.white, 1) } };
 
         public override void ModifyMesh(VertexHelper helper)
         {

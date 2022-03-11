@@ -12,17 +12,15 @@ namespace ObscuritasRiichiMahjong.Models
         public CardinalPoint CardinalPoint { get; set; }
         public bool HandOpen { get; set; } = false;
 
-        public List<MahjongTile> Hand { get; set; } = new List<MahjongTile>(14);
+        public List<MahjongTile> Hand { get; set; } = new(14);
 
-        public List<List<MahjongTile>> ExposedHand { get; set; }
-            = new List<List<MahjongTile>>(4);
+        public List<List<MahjongTile>> ExposedHand { get; set; } = new(4);
 
-        public List<List<MahjongTile>> HiddenKan { get; set; }
-            = new List<List<MahjongTile>>(4);
+        public List<List<MahjongTile>> HiddenKan { get; set; } = new(4);
 
-        public List<MahjongTile> DiscardedTiles { get; set; } = new List<MahjongTile>();
+        public List<MahjongTile> DiscardedTiles { get; set; } = new();
 
-        public List<MahjongTile> Wall { get; set; } = new List<MahjongTile>();
+        public List<MahjongTile> Wall { get; set; } = new();
 
         public MoveType LastMoveType { get; set; }
 

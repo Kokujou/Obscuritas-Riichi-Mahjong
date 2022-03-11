@@ -17,8 +17,7 @@ namespace ObscuritasRiichiMahjong.Services
     {
         private readonly MahjongBoard _board;
 
-        private readonly Dictionary<CardinalPoint, MahjongPlayerComponentBase> _initializedPlayerComponents =
-            new Dictionary<CardinalPoint, MahjongPlayerComponentBase>();
+        private readonly Dictionary<CardinalPoint, MahjongPlayerComponentBase> _initializedPlayerComponents = new();
 
         private MahjongPlayerComponentBase CurrentPlayer =>
             _initializedPlayerComponents[_board.CurrentRoundWind];
@@ -27,7 +26,7 @@ namespace ObscuritasRiichiMahjong.Services
         {
             _board = board;
 
-            var playerCardinal = (CardinalPoint) Random.Range(0, 4);
+            var playerCardinal = (CardinalPoint)Random.Range(0, 4);
             foreach (var player in playerComponents)
             {
                 player.Initialize(playerCardinal, _board);

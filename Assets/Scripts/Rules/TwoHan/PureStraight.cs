@@ -26,7 +26,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
             if (biggestSuitGroups == default)
                 return false;
 
-            var numberGroups = new List<string> {"123", "456", "789"};
+            var numberGroups = new List<string> { "123", "456", "789" };
             foreach (var sequence in biggestSuitGroups)
             {
                 var sequenceString = string.Join("", sequence.Select(x => x.Number.ToString()));

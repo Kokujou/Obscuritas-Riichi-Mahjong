@@ -15,6 +15,9 @@ namespace ObscuritasRiichiMahjong.Models
         public bool Red;
         public MahjongTileType Type;
 
+        public bool IsNumbered =>
+            Type == MahjongTileType.Bamboo || Type == MahjongTileType.Circle || Type == MahjongTileType.Kanji;
+
         public static bool operator ==(MahjongTile a, MahjongTile b)
         {
             return a?.Equals(b) ?? true;
@@ -37,7 +40,7 @@ namespace ObscuritasRiichiMahjong.Models
 
         public int GetTileOrder()
         {
-            return (int) Type * 20 + Number;
+            return (int)Type * 20 + Number;
         }
 
         public override bool Equals(object obj)
@@ -45,7 +48,7 @@ namespace ObscuritasRiichiMahjong.Models
             if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((MahjongTile) obj);
+            return Equals((MahjongTile)obj);
         }
 
         [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
@@ -74,6 +77,12 @@ namespace ObscuritasRiichiMahjong.Models
         {
             if (other is null) return false;
             if (ReferenceEquals(this, other)) return true;
+
+            if (Type != other.Type) return false;
+
+            if (IsNumbered)
+                return Number == other.Number;
+
             return base.Equals(other) && Name == other.Name;
         }
     }

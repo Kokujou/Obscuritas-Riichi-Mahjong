@@ -40,7 +40,7 @@ namespace ObscuritasRiichiMahjong.Rules.Extensions
             }
 
             if (hand.Count == 2 && hand[0] == hand[1])
-                validSplits.Add(new List<List<MahjongTile>> {hand});
+                validSplits.Add(new List<List<MahjongTile>> { hand });
 
             return validSplits.GroupBy(x => x.Stringify()).Select(x => x.First()).ToList();
         }

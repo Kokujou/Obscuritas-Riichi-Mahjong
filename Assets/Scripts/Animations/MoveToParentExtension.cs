@@ -11,7 +11,8 @@ namespace ObscuritasRiichiMahjong.Animations
             float duration, Vector3 offset = default, float spacing = default,
             bool useScale = false, int tileCount = -1, bool ignoreChildren = false)
         {
-            yield return new List<Transform> {child.transform}.MoveToParent(parent, duration, offset, spacing, useScale,
+            yield return new List<Transform> { child.transform }.MoveToParent(parent, duration, offset, spacing,
+                useScale,
                 false, tileCount);
         }
 
@@ -19,7 +20,7 @@ namespace ObscuritasRiichiMahjong.Animations
             float duration, Vector3 offset = default, float spacing = default,
             bool useScale = false, int tileCount = -1, bool ignoreChildren = false)
         {
-            yield return new List<Transform> {child}.MoveToParent(parent, duration, offset, spacing, useScale,
+            yield return new List<Transform> { child }.MoveToParent(parent, duration, offset, spacing, useScale,
                 false, tileCount);
         }
 

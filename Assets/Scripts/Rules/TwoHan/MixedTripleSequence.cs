@@ -24,7 +24,7 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
                     (numbers, tile) => numbers + tile.Number)).ToList();
 
             if (sequenceNumbers.Any(sequence => sequenceNumbers.Count(x =>
-                x[0] != sequence[0] && x.Substring(1) == sequence.Substring(1)) == 2))
+                    x[0] != sequence[0] && x.Substring(1) == sequence.Substring(1)) == 2))
                 return true;
 
             return false;

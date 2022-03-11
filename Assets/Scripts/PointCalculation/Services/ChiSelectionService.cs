@@ -32,7 +32,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Services
             CloneTileToTransform(thirdTile, handParent);
 
             Player.ExposedHand.Add(new List<MahjongTile>());
-            Player.ExposedHand.Last().AddRange(new[] {tile.Tile, secondTile.Tile, thirdTile.Tile});
+            Player.ExposedHand.Last().AddRange(new[] { tile.Tile, secondTile.Tile, thirdTile.Tile });
         }
 
         public static bool TileSequenceContains(MahjongTile2DComponent first,

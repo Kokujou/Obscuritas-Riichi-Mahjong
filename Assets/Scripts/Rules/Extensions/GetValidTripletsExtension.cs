@@ -41,7 +41,7 @@ namespace ObscuritasRiichiMahjong.Rules.Extensions
             for (var firstTileIndex = 0; firstTileIndex < subHand.Count; firstTileIndex++)
             {
                 var firstTile = subHand[firstTileIndex];
-                var matchingTiles = new List<MahjongTile> {firstTile};
+                var matchingTiles = new List<MahjongTile> { firstTile };
                 var tilesAfter = subHand.Skip(firstTileIndex).ToList();
 
                 var secondTileIndex =

@@ -35,7 +35,7 @@ namespace ObscuritasRiichiMahjong.Rules
             var totalPoints = TotalPoints;
 
             if (isDealer)
-                totalPoints = (int) (totalPoints * 1.5);
+                totalPoints = (int)(totalPoints * 1.5);
 
             if (ron)
                 return $"{totalPoints} pts.";
@@ -85,7 +85,7 @@ namespace ObscuritasRiichiMahjong.Rules
                 || Han == 3 && Fu >= 70)
                 return ManganPoints;
 
-            return Fu * (int) Math.Pow(2, 2 + Han);
+            return Fu * (int)Math.Pow(2, 2 + Han);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace ObscuritasRiichiMahjong.Rules.Yakuman
             var allTiles = handSplit.EnrichSplittedHand(player).SelectMany(x => x);
 
             if (allTiles.All(
-                x => x.Type == MahjongTileType.Dragon || x.Type == MahjongTileType.Wind))
+                    x => x.Type == MahjongTileType.Dragon || x.Type == MahjongTileType.Wind))
                 return true;
 
             return false;

@@ -19,7 +19,7 @@ namespace ObscuritasRiichiMahjong.Rules
                 .Where(myType =>
                     myType.IsClass && !myType.IsAbstract &&
                     myType.IsSubclassOf(typeof(MahjongRule)))
-                .Select(type => (MahjongRule) Activator.CreateInstance(type))
+                .Select(type => (MahjongRule)Activator.CreateInstance(type))
                 .ToList();
 
             var pointResult = new PointResult();

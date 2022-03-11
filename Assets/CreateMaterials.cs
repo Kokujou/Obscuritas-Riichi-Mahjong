@@ -24,7 +24,7 @@ namespace ObscuritasRiichiMahjong
 
                 var selected = o as Texture2D;
 
-                var material = new Material(Shader.Find("Standard")) {mainTexture = (Texture) o};
+                var material = new Material(Shader.Find("Standard")) { mainTexture = (Texture)o };
 
                 var savePath = AssetDatabase.GetAssetPath(selected);
                 savePath = savePath.Substring(0, savePath.LastIndexOf('/') + 1);

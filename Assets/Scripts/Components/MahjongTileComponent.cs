@@ -29,14 +29,14 @@ namespace ObscuritasRiichiMahjong.Components
         public void Hover()
         {
             foreach (var side in transform.GetComponentsInChildren<Transform>()
-                .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
+                         .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
                 side.gameObject.layer = LayerMask.NameToLayer("HoveredTile");
         }
 
         public void Unhover()
         {
             foreach (var side in transform.GetComponentsInChildren<Transform>()
-                .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
+                         .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
                 side.gameObject.layer = 0;
         }
 

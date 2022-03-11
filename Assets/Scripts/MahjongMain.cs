@@ -14,15 +14,14 @@ namespace ObscuritasRiichiMahjong
 {
     public class MahjongMain : MonoBehaviour
     {
-        private readonly MahjongBoard _board = new MahjongBoard();
+        private readonly MahjongBoard _board = new();
         private GameInputLoopService _inputLoopService;
 
-        private readonly List<MahjongTileComponent> _kanDora
-            = new List<MahjongTileComponent>(5);
+        private readonly List<MahjongTileComponent> _kanDora = new(5);
 
         public static IEnumerable<MahjongTileComponent> GetSameTiles(MahjongTileComponent tile)
         {
-            var referenceSet = new List<MahjongTileComponent> {tile};
+            var referenceSet = new List<MahjongTileComponent> { tile };
 
             var players = FindObjectsOfType<MahjongPlayerComponentBase>();
             foreach (var player in players)

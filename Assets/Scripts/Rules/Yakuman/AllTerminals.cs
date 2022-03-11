@@ -22,7 +22,7 @@ namespace ObscuritasRiichiMahjong.Rules.Yakuman
             var allTiles = handSplit.EnrichSplittedHand(player).SelectMany(x => x);
 
             if (allTiles.All(
-                x => x.Number == 1 || x.Number == 9))
+                    x => x.Number == 1 || x.Number == 9))
                 return true;
 
             return false;

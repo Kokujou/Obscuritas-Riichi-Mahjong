@@ -113,7 +113,7 @@ namespace ObscuritasRiichiMahjong.Components
         public override IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile)
         {
             yield return null;
-            var possibleCalls = new List<CallType> {CallType.Skip};
+            var possibleCalls = new List<CallType> { CallType.Skip };
 
             if (Player.CanPon(lastDiscardedTile.Tile))
                 possibleCalls.Add(CallType.Pon);

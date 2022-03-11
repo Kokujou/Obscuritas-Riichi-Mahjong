@@ -10,10 +10,10 @@ namespace ObscuritasRiichiMahjong.Core.Extensions
         {
             var items = target.ToList();
             return length == 1
-                ? items.Select(item => new[] {item})
+                ? items.Select(item => new[] { item })
                 : items.SelectMany((item, i) => items.Skip(i + 1)
                     .GetCombinations(length - 1)
-                    .Select(result => new[] {item}.Concat(result)));
+                    .Select(result => new[] { item }.Concat(result)));
         }
     }
 }

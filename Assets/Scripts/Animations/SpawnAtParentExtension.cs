@@ -12,7 +12,7 @@ namespace ObscuritasRiichiMahjong.Animations
     {
         public static IEnumerator SpawnAtParent(this MonoBehaviour component, Transform parent, float duration)
         {
-            yield return new[] {component}.SpawnAtParent(parent, duration);
+            yield return new[] { component }.SpawnAtParent(parent, duration);
         }
 
         public static IEnumerator SpawnAtParent<T>(this IEnumerable<T> components, Transform parent,

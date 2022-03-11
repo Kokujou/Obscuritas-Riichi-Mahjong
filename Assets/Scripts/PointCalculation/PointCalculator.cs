@@ -13,11 +13,11 @@ namespace ObscuritasRiichiMahjong.PointCalculation
 {
     public class PointCalculator : MonoBehaviour
     {
-        public static readonly Color TileBackColor = new Color(0.7450981f, 0.5686275f, 0.2117647f);
+        public static readonly Color TileBackColor = new(0.7450981f, 0.5686275f, 0.2117647f);
 
-        public MahjongPlayer Player = new MahjongPlayer(CardinalPoint.East);
+        public MahjongPlayer Player = new(CardinalPoint.East);
 
-        public MahjongBoard Board = new MahjongBoard();
+        public MahjongBoard Board = new();
 
         public ITileSelectionService TileSelectionService;
 

@@ -24,13 +24,13 @@ namespace ObscuritasRiichiMahjong.Rules.ThreeHan
             var allTiles = handSplit.EnrichSplittedHand(player).SelectMany(x => x).ToList();
 
             if (!allTiles.Any(x =>
-                x.Type == MahjongTileType.Wind || x.Type == MahjongTileType.Dragon))
+                    x.Type == MahjongTileType.Wind || x.Type == MahjongTileType.Dragon))
                 return false;
 
             if (allTiles
-                .Where(x => x.Type != MahjongTileType.Wind && x.Type != MahjongTileType.Dragon)
-                .GroupBy(x => x.Type)
-                .Count() <= 1)
+                    .Where(x => x.Type != MahjongTileType.Wind && x.Type != MahjongTileType.Dragon)
+                    .GroupBy(x => x.Type)
+                    .Count() <= 1)
                 return true;
 
             return false;
