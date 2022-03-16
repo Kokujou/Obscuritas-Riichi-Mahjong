@@ -37,7 +37,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation
 
         private void InitializeBoard()
         {
-            Player.Wall.Add(new MahjongTile());
+            Board.Wall.Add(new MahjongTile());
             Board.CurrentRound = 2;
             Board.WinningMoveType = WinningMoveType.Tsumo;
 

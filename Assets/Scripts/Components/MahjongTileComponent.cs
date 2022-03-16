@@ -11,6 +11,8 @@ namespace ObscuritasRiichiMahjong.Components
 
         public MahjongTile Tile;
 
+        public event EventHandler<Collision> CollisionExit = delegate { };
+
         public void Initialize(MahjongTile tile)
         {
             Tile = tile;
@@ -39,6 +41,12 @@ namespace ObscuritasRiichiMahjong.Components
                          .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
                 side.gameObject.layer = 0;
         }
+
+        private void OnCollisionExit(Collision other)
+        {
+            CollisionExit?.Invoke(this, other);
+        }
+
 
         public static MahjongTileComponent FromTile(MahjongTile tile)
         {

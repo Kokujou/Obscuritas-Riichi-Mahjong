@@ -16,7 +16,7 @@ namespace ObscuritasRiichiMahjong.Components
 
         public override IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile)
         {
-            return null;
+            yield return null;
         }
     }
 }

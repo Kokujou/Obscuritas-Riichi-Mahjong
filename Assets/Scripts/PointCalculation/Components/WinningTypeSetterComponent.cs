@@ -36,7 +36,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
 
         private bool IsHaiteiOrHoutei()
         {
-            return PointCalculator.Player.Wall.Count == 0 &&
+            return PointCalculator.Board.Wall.Count == 0 &&
                    PointCalculator.Board.CurrentRound > 1 &&
                    PointCalculator.Player.LastMoveType != MoveType.HiddenKan &&
                    PointCalculator.Player.LastMoveType != MoveType.OpenKan;
@@ -68,7 +68,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
             }
             else
             {
-                PointCalculator.Player.Wall.Add(new MahjongTile());
+                PointCalculator.Board.Wall.Add(new MahjongTile());
                 PointCalculator.Board.WinningMoveType = WinningMoveType.Tsumo;
                 PointCalculator.Player.LastMoveType = PointCalculator.Player.HiddenKan.Count > 0
                     ? MoveType.HiddenKan
@@ -80,7 +80,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
         {
             if (IsHaiteiOrHoutei())
             {
-                PointCalculator.Player.Wall.Add(new MahjongTile());
+                PointCalculator.Board.Wall.Add(new MahjongTile());
             }
             else
             {
@@ -88,7 +88,7 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
                     PointCalculator.Player.LastMoveType == MoveType.OpenKan)
                     PointCalculator.Player.LastMoveType = MoveType.Normal;
                 PointCalculator.Board.CurrentRound = 2;
-                PointCalculator.Player.Wall.Clear();
+                PointCalculator.Board.Wall.Clear();
             }
         }
     }

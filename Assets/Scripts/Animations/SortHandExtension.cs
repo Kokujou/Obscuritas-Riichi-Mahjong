@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Linq;
 using ObscuritasRiichiMahjong.Components;
-using ObscuritasRiichiMahjong.Core.Extensions;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Animations
@@ -18,18 +17,15 @@ namespace ObscuritasRiichiMahjong.Animations
                 var child = tilesByPosition[index];
 
                 if (child == tile) continue;
-                if (child.transform.localPosition.x.AboutEquals(index))
-                    continue;
 
-                var targetPosition = parent.position + parent.rotation * Vector3.right * index;
+                var targetPosition = parent.position + parent.rotation * Vector3.right * index * 1.1f;
                 child.StartCoroutine(child.InterpolationAnimation(duration / 2f, targetPosition));
             }
 
             yield return new WaitForSeconds(duration / 2f);
 
             var insertedTileIndex = tilesByPosition.IndexOf(tile);
-            if (tile.transform.localPosition.x.AboutEquals(insertedTileIndex)) yield break;
-            var insertedTargetPosition = parent.position + parent.rotation * Vector3.right * insertedTileIndex;
+            var insertedTargetPosition = parent.position + parent.rotation * Vector3.right * insertedTileIndex * 1.1f;
             yield return tile.gameObject.PickUpAndMove(duration / 2f, insertedTargetPosition);
         }
     }

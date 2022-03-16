@@ -19,10 +19,11 @@ namespace ObscuritasRiichiMahjong.Components
 
         public bool Submitted { get; private set; }
 
-        public void Initialize(MahjongPlayerComponentBase player, MahjongTileComponent lastDiscard)
+        public ActionButtonComponent Initialize(MahjongPlayerComponentBase player, MahjongTileComponent lastDiscard)
         {
             _mahjongPlayer = player;
             _lastDiscardedTile = lastDiscard;
+            return this;
         }
 
         public void PointerExit()
@@ -42,35 +43,21 @@ namespace ObscuritasRiichiMahjong.Components
 
         public IEnumerator TriggerActionOnPlayer()
         {
-            _lastDiscardedTile = _mahjongPlayer.HandParent.GetComponentsInChildren<MahjongTileComponent>()[0];
-
             yield return MoveType switch
             {
                 CallType.Skip => null,
-                CallType.Pon => _mahjongPlayer.Pon(_lastDiscardedTile,
-                    _lastDiscardedTile.transform.rotation * ForcePositionOffset),
-                CallType.Chi => _mahjongPlayer.Chi(),
-                CallType.OpenKan => _mahjongPlayer.OpenKan(),
-                CallType.HiddenKan => _mahjongPlayer.HiddenKan(),
+                CallType.Pon => _mahjongPlayer.Pon(_lastDiscardedTile),
+                CallType.Chi => _mahjongPlayer.Chi(_lastDiscardedTile),
+                CallType.OpenKan => _mahjongPlayer.OpenKan(_lastDiscardedTile),
+                CallType.HiddenKan => _mahjongPlayer.HiddenKan(_lastDiscardedTile),
                 CallType.Riichi => _mahjongPlayer.Riichi(),
                 CallType.Tsumo => _mahjongPlayer.Tsumo(),
                 CallType.Ron => _mahjongPlayer.Ron(),
                 _ => throw new ArgumentOutOfRangeException()
             };
 
-            Submitted = true;
-        }
 
-        private void OnDrawGizmos()
-        {
-            try
-            {
-                var discardedTileTransform =
-                    _mahjongPlayer.HandParent.GetComponentsInChildren<MahjongTileComponent>()[0].transform;
-                var direction = discardedTileTransform.rotation * Vector3.forward;
-                Gizmos.DrawRay(discardedTileTransform.position + transform.rotation * (Vector3.up * .1f), direction);
-            }
-            catch{}
+            Submitted = true;
         }
     }
 }

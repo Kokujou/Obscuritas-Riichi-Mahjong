@@ -17,6 +17,7 @@ namespace ObscuritasRiichiMahjong.Components
 
         public override void ScanHand()
         {
+            HandParent.localRotation = Quaternion.Euler(45, 0, 0);
             foreach (Transform child in HandParent)
             {
                 var mahjongTile = child.GetComponent<MahjongTileComponent>();
@@ -59,13 +60,15 @@ namespace ObscuritasRiichiMahjong.Components
 
         private void HandleTileHover()
         {
-            var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var viewportPoint = new Vector3(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height,
+                Input.mousePosition.z);
+            var ray = Camera.main.ViewportPointToRay(viewportPoint);
 
             var activeSameTiles = Enumerable.Empty<MahjongTileComponent>();
             if (_activeTile)
                 activeSameTiles = MahjongMain.GetSameTiles(_activeTile);
 
-            if (!Physics.Raycast(ray, out var hit, 1000f, ~LayerMask.NameToLayer("MahjongTile")))
+            if (!Physics.Raycast(ray, out var hit, 1000f, LayerMask.GetMask("MahjongTile")))
             {
                 if (!_activeTile)
                     return;
@@ -110,7 +113,6 @@ namespace ObscuritasRiichiMahjong.Components
 
         public override IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile)
         {
-            yield return null;
             var possibleCalls = new List<CallType> { CallType.Skip };
 
             if (Player.CanPon(lastDiscardedTile.Tile))
@@ -125,16 +127,11 @@ namespace ObscuritasRiichiMahjong.Components
             if (possibleCalls.Count <= 1)
                 yield break;
 
-            var actionButtons = new List<ActionButtonComponent>();
-            foreach (var possibleCall in possibleCalls)
-            {
-                var actionButton = Instantiate(
+            var actionButtons = possibleCalls.Select(possibleCall => Instantiate(
                     PrefabCollection.Instance.ActionButtonDictionary[possibleCall],
-                    SceneObjectCollection.Instance.ActionButtonPanel).GetComponent<ActionButtonComponent>();
+                    SceneObjectCollection.Instance.ActionButtonPanel).GetComponent<ActionButtonComponent>()
+                .Initialize(this, lastDiscardedTile)).ToList();
 
-                actionButton.Initialize(this, lastDiscardedTile);
-                actionButtons.Add(actionButton);
-            }
 
             while (true)
             {

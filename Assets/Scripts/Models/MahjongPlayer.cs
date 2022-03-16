@@ -20,8 +20,6 @@ namespace ObscuritasRiichiMahjong.Models
 
         public List<MahjongTile> DiscardedTiles { get; set; } = new();
 
-        public List<MahjongTile> Wall { get; set; } = new();
-
         public MoveType LastMoveType { get; set; }
 
         public int HandTileCount => Hand.Count
