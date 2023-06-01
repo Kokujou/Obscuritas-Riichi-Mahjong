@@ -11,11 +11,8 @@ namespace ObscuritasRiichiMahjong.Animations
             var rigidBody = target.GetComponent<Rigidbody>();
             var collider = target.GetComponent<Collider>();
 
-            rigidBody.isKinematic = true;
-
             var firstAnimationDuration = duration / 2f;
-            yield return target
-                .InterpolationAnimation(firstAnimationDuration,
+            yield return target.InterpolationAnimation(firstAnimationDuration,
                     target.transform.position + Vector3.up * 5);
 
             yield return target.InterpolationAnimation(duration / 2f, targetPosition,

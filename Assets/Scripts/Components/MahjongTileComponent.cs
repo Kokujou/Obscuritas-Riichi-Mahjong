@@ -1,17 +1,29 @@
-﻿using System;
+﻿using ObscuritasRiichiMahjong.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Components
 {
     public class MahjongTileComponent : MonoBehaviour
     {
+        private static readonly List<MahjongTileComponent> _hoveredTiles = new();
+        public const float SizeX = 1.1f;
+
+        private static Color InactiveColor => new Color(.75f, .75f, .75f);
+        private static Color ActiveColor => new Color(.75f, .75f, .75f);
+        private static Color HoverColor => new Color(.9f, .9f, .9f);
+
         public static GameObject MahjongTileTemplate;
-
         public MahjongTile Tile;
-
         public event EventHandler<Collision> CollisionExit = delegate { };
+
+        public static void UnhoverAll()
+        {
+            foreach (var tile in _hoveredTiles) tile.SetActive();
+            _hoveredTiles.Clear();
+        }
 
         public void Initialize(MahjongTile tile)
         {
@@ -28,18 +40,27 @@ namespace ObscuritasRiichiMahjong.Components
             gameObject.layer = LayerMask.NameToLayer("MahjongTile");
         }
 
-        public void Hover()
+        public void SetHovered()
         {
-            foreach (var side in transform.GetComponentsInChildren<Transform>()
-                         .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
-                side.gameObject.layer = LayerMask.NameToLayer("HoveredTile");
+            _hoveredTiles.Add(this);
+            var hoveredPropertyBlock = new MaterialPropertyBlock();
+            hoveredPropertyBlock.SetColor("_Color", HoverColor);
+            foreach (var side in transform.GetComponentsInChildren<MeshRenderer>().Where(x => x.tag != "TileBottom"))
+                side.SetPropertyBlock(hoveredPropertyBlock);
         }
 
-        public void Unhover()
+        public void SetInactive()
         {
-            foreach (var side in transform.GetComponentsInChildren<Transform>()
-                         .Where(x => x.GetInstanceID() != transform.GetInstanceID()))
-                side.gameObject.layer = 0;
+            var inactivePropertyBlock = new MaterialPropertyBlock();
+            inactivePropertyBlock.SetColor("_Color", InactiveColor);
+            foreach (var side in transform.GetComponentsInChildren<MeshRenderer>().Where(x => x.tag != "TileBottom"))
+                side.SetPropertyBlock(inactivePropertyBlock);
+
+        }
+
+        private void SetActive()
+        {
+            foreach (var side in transform.GetComponentsInChildren<MeshRenderer>()) side.SetPropertyBlock(null);
         }
 
         private void OnCollisionExit(Collision other)

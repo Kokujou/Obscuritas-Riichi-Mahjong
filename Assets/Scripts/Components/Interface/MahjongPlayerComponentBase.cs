@@ -1,26 +1,37 @@
-﻿using System;
+﻿using ObscuritasRiichiMahjong.Animations;
+using ObscuritasRiichiMahjong.Assets.Scripts.Core.Extensions;
+using ObscuritasRiichiMahjong.Core.Data;
+using ObscuritasRiichiMahjong.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ObscuritasRiichiMahjong.Animations;
-using ObscuritasRiichiMahjong.Core.Data;
-using ObscuritasRiichiMahjong.Models;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Components.Interface
 {
     public abstract class MahjongPlayerComponentBase : MonoBehaviour
     {
-        public MahjongTileComponent LastDiscardedTile;
+        private MahjongTileComponent _lastDiscardedTile;
+        public MahjongTileComponent LastDiscardedTile
+        {
+            get => _lastDiscardedTile;
+            set
+            {
+                Board.LastDiscardedTile = value.Tile;
+                _lastDiscardedTile = value;
+            }
+        }
 
         public Transform HandParent;
         public Transform DiscardedTilesParent;
         public Transform ExposedTilesParent;
+        public MeshRenderer ActiveTurnRenderer;
 
         public TextMesh SeatWindPanel;
 
-        public MahjongBoard Board { get; set; }
-        public MahjongPlayer Player { get; set; }
+        public MahjongBoard Board;
+        public MahjongPlayer Player;
 
         public virtual void Initialize(CardinalPoint wind, MahjongBoard board)
         {
@@ -42,20 +53,21 @@ namespace ObscuritasRiichiMahjong.Components.Interface
         {
             yield return tile.MoveToParent(DiscardedTilesParent, 1f);
             tile.transform.SetParent(DiscardedTilesParent, true);
-            Board.LastDiscardedTile = tile.Tile;
             LastDiscardedTile = tile;
+            Player.Hand.Remove(tile.Tile);
+            Player.DiscardedTiles.Add(tile.Tile);
         }
 
         public virtual IEnumerator DrawTile(float duration)
         {
             var firstFromBank = MahjongTileComponent.FromTile(Board.Wall.First());
-            firstFromBank.transform.GetComponent<Rigidbody>().isKinematic = true;
 
             Board.Wall.RemoveAt(0);
             Player.Hand.Add(firstFromBank.Tile);
 
             yield return firstFromBank.SpawnAtParent(HandParent, duration);
             firstFromBank.transform.SetParent(HandParent, true);
+            yield return null;
         }
 
         public abstract IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile);
@@ -64,32 +76,34 @@ namespace ObscuritasRiichiMahjong.Components.Interface
 
         public IEnumerator Pon(MahjongTileComponent lastDiscard)
         {
-            yield return lastDiscard.InterpolationAnimation(1,
-                HandParent.localPosition + Vector3.forward * 2 + Vector3.left,
-                Vector3.right * 90);
+            yield return lastDiscard.CollectDiscard(HandParent, 1f);
             TakeDiscard(lastDiscard);
 
             var exposedTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>()
                 .Where(x => x.Tile == lastDiscard.Tile).Take(3).ToList();
 
+            if (exposedTiles.Count < 3) throw new Exception("Pon was called while not having 3 tiles of the same type.");
 
-            foreach (var tile in exposedTiles)
-                StartCoroutine(tile.ExposeAndThrowTile(3));
+            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 3);
 
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(1);
 
             ExposeTiles(exposedTiles);
         }
 
-        public IEnumerator Chi(MahjongTileComponent lastDiscard)
+        public IEnumerator Chi(MahjongTileComponent lastDiscard,
+            Tuple<MahjongTileComponent, MahjongTileComponent, MahjongTileComponent> selectedTriplet = null)
         {
-            var exposedTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>()
-                .Where(x => x.Tile == lastDiscard.Tile).Take(3).ToList();
+            IEnumerable<MahjongTileComponent> exposedTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>();
+            var chis = exposedTiles.GetChisWithTile(lastDiscard).ToList();
 
-            foreach (var tile in exposedTiles)
-                StartCoroutine(tile.ExposeAndThrowTile(3));
+            if (chis.Count == 0) throw new Exception("You called chi while not having 3 consecutive tiles of the same type.");
+            if (chis.Count > 1 && selectedTriplet is null) throw new Exception("You have more than one triplet of consecutive tiles, " +
+                "so you need to specify an identifier");
+            if (selectedTriplet is not null) exposedTiles = selectedTriplet.ToList<MahjongTileComponent>();
+            else exposedTiles = chis[0];
 
-            yield return new WaitForSeconds(3);
+            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 3);
 
             ExposeTiles(exposedTiles);
         }
@@ -100,12 +114,9 @@ namespace ObscuritasRiichiMahjong.Components.Interface
                 .Where(x => x.Tile == lastDiscard.Tile).ToList();
 
             if (exposedTiles.Count() != 4)
-                throw new ArgumentException("Kan was called but the found count of matching tiles did not equal 4.");
+                throw new ArgumentException("Kan was called while not having 4 times the same tile.");
 
-            foreach (var tile in exposedTiles)
-                StartCoroutine(tile.ExposeAndThrowTile(3));
-
-            yield return new WaitForSeconds(3);
+            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 3);
 
             ExposeTiles(exposedTiles);
         }
@@ -116,12 +127,9 @@ namespace ObscuritasRiichiMahjong.Components.Interface
                 .Where(x => x.Tile == compareTile.Tile).ToList();
 
             if (exposedTiles.Count() != 4)
-                throw new ArgumentException("Kan was called but the found count of matching tiles did not equal 4.");
+                throw new ArgumentException("Kan was called while not having 4 times the same tile.");
 
-            foreach (var tile in exposedTiles)
-                StartCoroutine(tile.ExposeAndThrowTile(3));
-
-            yield return new WaitForSeconds(3);
+            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 3);
 
             ExposeTiles(exposedTiles);
         }
@@ -149,7 +157,7 @@ namespace ObscuritasRiichiMahjong.Components.Interface
             Player.Hand.Add(discard.Tile);
         }
 
-        private void ExposeTiles(List<MahjongTileComponent> tiles)
+        private void ExposeTiles(IEnumerable<MahjongTileComponent> tiles)
         {
             foreach (var tile in tiles)
             {

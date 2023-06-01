@@ -22,13 +22,13 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
 
         public void AddToHand()
         {
-            FindObjectOfType<PointCalculator>()
+            FindFirstObjectByType<PointCalculator>()
                 .AddToHand(gameObject.GetComponent<MahjongTile2DComponent>());
         }
 
         public void RemoveFromHand()
         {
-            FindObjectOfType<PointCalculator>()
+            FindFirstObjectByType<PointCalculator>()
                 .RemoveFromHand(gameObject.GetComponent<MahjongTile2DComponent>());
         }
 

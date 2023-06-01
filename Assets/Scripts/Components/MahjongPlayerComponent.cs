@@ -1,61 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using ObscuritasRiichiMahjong.Assets.Scripts.Core.Extensions;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Global;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Components
 {
     public class MahjongPlayerComponent : MahjongPlayerComponentBase
     {
-        private static MahjongTileComponent _activeTile;
-        private MahjongTileComponent _lastTile;
+        public MahjongTileComponent HoveredHandTile;
 
-        private MahjongTileComponent _clickedTile;
-
-        public override void ScanHand()
+        public void Update()
         {
-            HandParent.localRotation = Quaternion.Euler(45, 0, 0);
-            foreach (Transform child in HandParent)
+            if (!MahjongMain.IsPaused) HandleTileHover();
+            else
             {
-                var mahjongTile = child.GetComponent<MahjongTileComponent>();
-
-                if (!mahjongTile) continue;
-                Player.Hand.Add(mahjongTile.Tile);
+                HoveredHandTile = null;
+                MahjongTileComponent.UnhoverAll();
             }
-        }
-
-        public override IEnumerator DiscardTile(MahjongTileComponent tile)
-        {
-            _clickedTile = null;
-
-            _activeTile?.Unhover();
-            _activeTile = null;
-
-            yield return base.DiscardTile(tile);
-            _lastTile = tile;
-        }
-
-        public override IEnumerator MakeTurn()
-        {
-            while (!_lastTile)
-            {
-                yield return null;
-                HandlePlayerInput();
-            }
-
-            LastDiscardedTile = _lastTile;
-            Board.LastDiscardedTile = _lastTile.Tile;
-            _lastTile = null;
-        }
-
-        public void HandlePlayerInput()
-        {
-            HandleTileHover();
-
-            HandleTileClick();
         }
 
         private void HandleTileHover()
@@ -64,51 +29,33 @@ namespace ObscuritasRiichiMahjong.Components
                 Input.mousePosition.z);
             var ray = Camera.main.ViewportPointToRay(viewportPoint);
 
-            var activeSameTiles = Enumerable.Empty<MahjongTileComponent>();
-            if (_activeTile)
-                activeSameTiles = MahjongMain.GetSameTiles(_activeTile);
+            var isHit = Physics.Raycast(ray, out var hit, 1000f, LayerMask.GetMask("MahjongTile"));
+            var mahjongTileComponent = hit.transform?.GetComponent<MahjongTileComponent>();
+            if (HoveredHandTile == mahjongTileComponent) return;
 
-            if (!Physics.Raycast(ray, out var hit, 1000f, LayerMask.GetMask("MahjongTile")))
-            {
-                if (!_activeTile)
-                    return;
+            MahjongTileComponent.UnhoverAll();
+            HoveredHandTile = null;
 
-                foreach (var tile in activeSameTiles) tile.Unhover();
-                _clickedTile = null;
-                _activeTile = null;
-                return;
-            }
+            if (mahjongTileComponent?.transform?.parent != HandParent) return;
 
-            var objectHit = hit.transform;
-            var mahjongTileComponent = objectHit.GetComponent<MahjongTileComponent>();
             var currentSameTiles = MahjongMain.GetSameTiles(mahjongTileComponent);
-
-            if (_activeTile == mahjongTileComponent ||
-                mahjongTileComponent.transform.parent != HandParent) return;
-
-            foreach (var tile in activeSameTiles) tile.Unhover();
-            _clickedTile = null;
-
-            if (!mahjongTileComponent)
-                return;
-
-            foreach (var tile in currentSameTiles) tile.Hover();
-            _activeTile = mahjongTileComponent;
+            foreach (var tile in currentSameTiles) tile.SetHovered();
+            HoveredHandTile = mahjongTileComponent;
         }
 
-        private void HandleTileClick()
+        public override void ScanHand()
         {
-            if (Input.GetMouseButtonDown(0))
-                _clickedTile = _activeTile;
+            HandParent.localRotation = Quaternion.Euler(45, 0, 0);
+            Player.Hand.AddRange(HandParent.GetComponentsInChildren<MahjongTileComponent>().Select(x => x.Tile));
+        }
 
-            if (!_clickedTile || !Input.GetMouseButtonUp(0)) return;
+        public override IEnumerator MakeTurn()
+        {
+            while (!Input.GetMouseButtonDown(0) || !HoveredHandTile) yield return null;
 
-            var playerHand = GetComponentInParent<MahjongPlayerComponent>();
-
-            if (!playerHand)
-                return;
-
-            StartCoroutine(DiscardTile(_clickedTile));
+            MahjongTileComponent.UnhoverAll();
+            LastDiscardedTile = HoveredHandTile;
+            yield return DiscardTile(HoveredHandTile);
         }
 
         public override IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile)
@@ -124,9 +71,16 @@ namespace ObscuritasRiichiMahjong.Components
             if (Player.CanRon(lastDiscardedTile.Tile))
                 possibleCalls.Add(CallType.Ron);
 
+
+            /**
+             * 
+             */
+            possibleCalls.Add(CallType.Chi);
+
             if (possibleCalls.Count <= 1)
                 yield break;
 
+            MahjongMain.IsPaused = true;
             var actionButtons = possibleCalls.Select(possibleCall => Instantiate(
                     PrefabCollection.Instance.ActionButtonDictionary[possibleCall],
                     SceneObjectCollection.Instance.ActionButtonPanel).GetComponent<ActionButtonComponent>()
@@ -138,11 +92,39 @@ namespace ObscuritasRiichiMahjong.Components
                 if (actionButtons.Any(x => x.Submitted))
                 {
                     foreach (var actionButton in actionButtons) Destroy(actionButton.gameObject);
+                    MahjongMain.IsPaused = false;
                     yield break;
                 }
 
                 yield return null;
             }
         }
+
+        public IEnumerator Chi(MahjongTileComponent lastDiscard)
+        {
+            IEnumerable<MahjongTileComponent> exposedTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>();
+            var chis = exposedTiles.GetChisWithTile(lastDiscard)
+                .DistinctBy(chi => string.Join("|", chi.Select(component => component.Tile.ToString()))).ToList();
+
+            if (chis.Count == 1)
+            {
+                yield return base.Chi(lastDiscard);
+                yield break;
+            }
+
+            var tilesToHover = chis.SelectMany(x => x).DistinctBy(x => x.Tile.Name);
+            yield return RequestChiTripletSelection();
+        }
+
+        public IEnumerator RequestChiTripletSelection()
+        {
+            foreach (var tile in GetComponentsInChildren<MahjongTileComponent>()) tile.SetInactive();
+
+            while (true)
+            {
+
+            }
+        }
+
     }
 }

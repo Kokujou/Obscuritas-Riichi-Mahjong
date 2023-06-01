@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using ObscuritasRiichiMahjong.Animations;
+﻿using ObscuritasRiichiMahjong.Animations;
+using ObscuritasRiichiMahjong.Assets.Scripts.Animations;
 using ObscuritasRiichiMahjong.Components;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Core.Extensions;
 using ObscuritasRiichiMahjong.Models;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -38,6 +40,7 @@ namespace ObscuritasRiichiMahjong.Services
 
         public IEnumerator PlayerInputLoop()
         {
+            MahjongMain.IsPaused = false;
             _board.CurrentRoundWind = CardinalPoint.East;
 
             while (_board.CurrentRound <= _board.MaxRounds)
@@ -49,11 +52,13 @@ namespace ObscuritasRiichiMahjong.Services
                 yield return currentPlayer.DrawTile(.5f);
                 yield return new WaitForSeconds(.1f);
 
+                var cancellation = new CancellationTokenSource();
+                CurrentPlayer.StartCoroutine(CurrentPlayer.ActiveTurnRenderer.material.BlinkColor(1, cancellation.Token));
                 yield return currentPlayer.MakeTurn();
                 yield return new WaitForSeconds(.1f);
 
                 var drawnTile = currentPlayer.HandParent.GetComponentsInChildren<MahjongTileComponent>().Last();
-                drawnTile.StartCoroutine(drawnTile.InsertTile(currentPlayer.HandParent, 1f));
+                yield return (drawnTile.InsertTile(currentPlayer.HandParent, 1f));
 
                 if (!_board.LastDiscardedTile || !currentPlayer.LastDiscardedTile)
                     throw new NotImplementedException(
@@ -62,6 +67,7 @@ namespace ObscuritasRiichiMahjong.Services
                 foreach (var player in _initializedPlayerComponents.Values.Where(player => player != currentPlayer))
                     yield return player.ReactOnDiscard(currentPlayer.LastDiscardedTile);
 
+                cancellation.Cancel();
                 _board.CurrentRoundWind = _board.CurrentRoundWind.Next();
             }
         }

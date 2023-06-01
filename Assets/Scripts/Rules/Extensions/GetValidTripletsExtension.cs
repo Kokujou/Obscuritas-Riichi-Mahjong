@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using ObscuritasRiichiMahjong.Assets.Scripts.Core.Extensions;
 using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ObscuritasRiichiMahjong.Rules.Extensions
 {
@@ -13,7 +14,7 @@ namespace ObscuritasRiichiMahjong.Rules.Extensions
                 subHand.First().Type == MahjongTileType.Wind)
                 return GetPons(subHand);
 
-            return GetPons(subHand).Union(GetChis(subHand)).ToList();
+            return GetPons(subHand).Union(subHand.GetChis()).ToList();
         }
 
         private static List<List<MahjongTile>> GetPons(this List<MahjongTile> subHand)
@@ -32,32 +33,6 @@ namespace ObscuritasRiichiMahjong.Rules.Extensions
             }
 
             return pons;
-        }
-
-        private static List<List<MahjongTile>> GetChis(this List<MahjongTile> subHand)
-        {
-            var chis = new List<List<MahjongTile>>();
-
-            for (var firstTileIndex = 0; firstTileIndex < subHand.Count; firstTileIndex++)
-            {
-                var firstTile = subHand[firstTileIndex];
-                var matchingTiles = new List<MahjongTile> { firstTile };
-                var tilesAfter = subHand.Skip(firstTileIndex).ToList();
-
-                var secondTileIndex =
-                    tilesAfter.FirstOrDefault(x => x.Number == firstTile.Number + 1);
-                if (secondTileIndex) matchingTiles.Add(secondTileIndex);
-                else continue;
-
-                var thirdTileIndex =
-                    tilesAfter.FirstOrDefault(x => x.Number == firstTile.Number + 2);
-                if (thirdTileIndex) matchingTiles.Add(thirdTileIndex);
-                else continue;
-
-                chis.Add(matchingTiles);
-            }
-
-            return chis;
         }
     }
 }

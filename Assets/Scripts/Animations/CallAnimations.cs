@@ -1,63 +1,65 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
+﻿using ObscuritasRiichiMahjong.Assets.Scripts.Core.Extensions;
 using ObscuritasRiichiMahjong.Components;
+using ObscuritasRiichiMahjong.Extensions;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Animations
 {
     public static class CallAnimations
     {
-        public static IEnumerator ExposeAndThrowTile(this MahjongTileComponent tile, float duration)
-        {
-            tile.transform.localRotation = Quaternion.Euler(0, 0, 0);
-            yield return null;
-            var rigidBody = tile.GetComponent<Rigidbody>();
-            yield return rigidBody.ExposeTile(duration / 2);
-            yield return rigidBody.ThrowToRightHandSide(duration / 2);
+        public const float SlideEndZ = -9;
 
-            rigidBody.constraints = RigidbodyConstraints.None;
-            rigidBody.isKinematic = true;
+        public static IEnumerator CollectDiscard(this MahjongTileComponent discard, Transform targetHand, float duration)
+        {
+            var targetPosition = targetHand.position.ReplaceZ(SlideEndZ) + Vector3.left;
+            targetPosition = targetPosition.ReplaceY(-1);
+
+            yield return discard.gameObject.InterpolationAnimation(duration * 0.45f,
+                targetPosition + Vector3.up * 6,
+                Vector3.right * 90,
+                timingFunction: x => Mathf.Pow(x, 2)
+                );
+            yield return new WaitForSeconds(duration * 0.5f);
+            yield return discard.gameObject.InterpolationAnimation(duration * 0.05f, targetPosition);
         }
 
-        private static IEnumerator ExposeTile(this Rigidbody rigidBody, float duration)
+        public static IEnumerator ExposeAndThrowTiles(this IEnumerable<MahjongTileComponent> tiles, Transform exposedParent, float duration)
         {
-            var transform = rigidBody.transform;
-            rigidBody.isKinematic = false;
-            rigidBody.constraints = RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+            tiles = tiles.OrderByDescending(x => x.transform.localPosition.x).ToList();
 
-            rigidBody.AddForceAtPosition(transform.rotation * Vector3.forward * 30f,
-                transform.position + transform.rotation * Vector3.up * 1f, ForceMode.Impulse);
+            var routines = tiles.Select(x => x.StartCoroutine(x.ExposeTiles(duration / 3))).ToList();
+            foreach (var routine in routines) yield return routine;
 
-            yield return new WaitForSeconds(duration);
+            yield return new WaitForSeconds(duration / 3);
+
+            yield return tiles.ThrowTiles(duration / 3, exposedParent);
         }
 
-        public static IEnumerator ThrowToRightHandSide(this Rigidbody rigidBody, float duration)
+        private static IEnumerator ExposeTiles(this MahjongTileComponent tile, float duration)
         {
-            rigidBody.isKinematic = false;
-            rigidBody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ |
-                                    RigidbodyConstraints.FreezeRotation;
-            rigidBody.AddForce(Vector3.right * 300, ForceMode.Impulse);
+            var rotation = tile.transform.rotation.eulerAngles;
+            yield return tile.StartParallelCoroutines(
+                tile.gameObject.InterpolationAnimation(duration * 0.5f, targetRotation: new Vector3(90, rotation.y, rotation.z), timingFunction: x => 1f - Mathf.Pow(1f - x, 4f)),
+                tile.gameObject.InterpolationAnimation(duration, tile.transform.position.ReplaceZ(SlideEndZ)));
+        }
 
-            yield return null;
+        private static IEnumerator ThrowTiles(this IEnumerable<MahjongTileComponent> tiles, float duration, Transform exposedParent)
+        {
+            var lastX = exposedParent.position.x + exposedParent.localScale.x;
+            lastX -= (exposedParent.childCount + 1) * MahjongTileComponent.SizeX;
 
-            var tile = rigidBody.GetComponent<MahjongTileComponent>();
-
-            async void CollisionExitEvent(object sender, Collision other)
+            var routines = new List<Coroutine>();
+            foreach (var tile in tiles)
             {
-                if (other.gameObject.layer != LayerMask.NameToLayer("MahjongTile") &&
-                    other.gameObject.layer != LayerMask.NameToLayer("TableBorder")) return;
-
-                await Task.Delay(200);
-
-                rigidBody.velocity = Vector3.zero;
-                rigidBody.angularVelocity = Vector3.zero;
+                routines.Add(tile.StartCoroutine(tile.gameObject.InterpolationAnimation(duration,
+                tile.transform.position.ReplaceX(lastX), timingFunction: x => Mathf.Sqrt(x))));
+                lastX -= MahjongTileComponent.SizeX;
             }
 
-            tile.CollisionExit += CollisionExitEvent;
-
-            yield return new WaitForSeconds(duration);
-
-            tile.CollisionExit -= CollisionExitEvent;
+            foreach (var routine in routines) yield return routine;
         }
     }
 }

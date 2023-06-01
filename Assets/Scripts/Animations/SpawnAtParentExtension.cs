@@ -1,9 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using ObscuritasRiichiMahjong.Components;
+﻿using ObscuritasRiichiMahjong.Components;
 using ObscuritasRiichiMahjong.Core.Extensions;
 using ObscuritasRiichiMahjong.Models;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Animations
@@ -48,7 +48,6 @@ namespace ObscuritasRiichiMahjong.Animations
             return tileSet.TransformRandomSubset(count, mahjongTile =>
             {
                 var mahjongTileComponent = MahjongTileComponent.FromTile(mahjongTile);
-                mahjongTileComponent.transform.GetComponent<Rigidbody>().isKinematic = true;
                 return mahjongTileComponent;
             }, out leftover);
         }

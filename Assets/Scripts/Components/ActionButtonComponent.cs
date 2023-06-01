@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
-using ObscuritasRiichiMahjong.Components.Interface;
+﻿using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Data;
+using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +12,7 @@ namespace ObscuritasRiichiMahjong.Components
     {
         public CallType MoveType;
 
-        public MahjongPlayerComponentBase _mahjongPlayer;
+        public MahjongPlayerComponent _mahjongPlayer;
         private MahjongTileComponent _lastDiscardedTile;
 
         public Vector3 ForcePositionOffset = Vector3.up * 1;
@@ -21,7 +21,7 @@ namespace ObscuritasRiichiMahjong.Components
 
         public ActionButtonComponent Initialize(MahjongPlayerComponentBase player, MahjongTileComponent lastDiscard)
         {
-            _mahjongPlayer = player;
+            _mahjongPlayer = (MahjongPlayerComponent)player;
             _lastDiscardedTile = lastDiscard;
             return this;
         }
@@ -55,7 +55,6 @@ namespace ObscuritasRiichiMahjong.Components
                 CallType.Ron => _mahjongPlayer.Ron(),
                 _ => throw new ArgumentOutOfRangeException()
             };
-
 
             Submitted = true;
         }

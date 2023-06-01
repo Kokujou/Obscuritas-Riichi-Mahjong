@@ -1,13 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using ObscuritasRiichiMahjong.Animations;
+﻿using ObscuritasRiichiMahjong.Animations;
+using ObscuritasRiichiMahjong.Assets.Scripts.Core.Extensions;
 using ObscuritasRiichiMahjong.Components;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Extensions;
 using ObscuritasRiichiMahjong.Global;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Services;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong
@@ -19,11 +20,13 @@ namespace ObscuritasRiichiMahjong
 
         private readonly List<MahjongTileComponent> _kanDora = new(5);
 
+        public static bool IsPaused = true;
+
         public static IEnumerable<MahjongTileComponent> GetSameTiles(MahjongTileComponent tile)
         {
             var referenceSet = new List<MahjongTileComponent> { tile };
 
-            var players = FindObjectsOfType<MahjongPlayerComponentBase>();
+            var players = FindObjectsByType<MahjongPlayerComponentBase>(FindObjectsSortMode.None);
             foreach (var player in players)
             {
                 referenceSet.AddRange(player.ExposedTilesParent.GetComponentsInChildren<MahjongTileComponent>());
@@ -33,16 +36,21 @@ namespace ObscuritasRiichiMahjong
             return referenceSet.Where(x => x.Tile == tile.Tile);
         }
 
+
+
         private IEnumerator DealTiles(float duration)
         {
             var firstDuration = duration / 2f;
             var leftoverTiles = PrefabCollection.Instance.TileSet;
+
+            var coroutines = new List<IEnumerator>();
             foreach (var handSpawnPoint in SceneObjectCollection.Instance.HandSpawnPoints)
             {
                 var handTiles = leftoverTiles.RandomSubsetSpawns(13, out leftoverTiles)
                     .OrderBy(x => x.Tile.GetTileOrder());
-                StartCoroutine(handTiles.SpawnAtParent(handSpawnPoint, firstDuration));
+                coroutines.Add(handTiles.SpawnAtParent(handSpawnPoint, firstDuration));
             }
+            yield return this.StartParallelCoroutines(coroutines.ToArray());
 
             yield return new WaitForSeconds(firstDuration);
 
