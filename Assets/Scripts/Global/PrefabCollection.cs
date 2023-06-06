@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using ObscuritasRiichiMahjong.Core.Data;
+﻿using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Models;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Global

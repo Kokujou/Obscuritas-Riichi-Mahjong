@@ -1,0 +1,7 @@
+{
+    "plugins": ["@prettier/plugin-xml"],
+    "tabWidth": 4,
+    "singleQuote": true,
+    "printWidth": 130,
+    "xmlWhitespaceSensitivity": "ignore"
+}

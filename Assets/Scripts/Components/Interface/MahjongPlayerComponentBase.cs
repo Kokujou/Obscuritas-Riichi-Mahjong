@@ -1,4 +1,5 @@
 ﻿using ObscuritasRiichiMahjong.Animations;
+using ObscuritasRiichiMahjong.Assets.Scripts.Animations;
 using ObscuritasRiichiMahjong.Assets.Scripts.Core.Extensions;
 using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Models;
@@ -18,7 +19,8 @@ namespace ObscuritasRiichiMahjong.Components.Interface
             get => _lastDiscardedTile;
             set
             {
-                Board.LastDiscardedTile = value.Tile;
+                Board.LastDiscardedTile = value?.Tile;
+                MahjongMain.LastDiscard = value;
                 _lastDiscardedTile = value;
             }
         }
@@ -32,6 +34,10 @@ namespace ObscuritasRiichiMahjong.Components.Interface
 
         public MahjongBoard Board;
         public MahjongPlayer Player;
+
+        public CallType LastCallType = CallType.Skip;
+
+        public bool RiichiMode = false;
 
         public virtual void Initialize(CardinalPoint wind, MahjongBoard board)
         {
@@ -74,62 +80,84 @@ namespace ObscuritasRiichiMahjong.Components.Interface
 
         public abstract IEnumerator MakeTurn();
 
-        public IEnumerator Pon(MahjongTileComponent lastDiscard)
+        public IEnumerator Tsumo()
         {
-            yield return lastDiscard.CollectDiscard(HandParent, 1f);
-            TakeDiscard(lastDiscard);
+            throw new NotImplementedException();
+        }
+
+        protected IEnumerator Riichi(MahjongTileComponent nonTenpaiDiscard)
+        {
+            yield return this.DoRiichiAnimation(nonTenpaiDiscard, 1);
+            nonTenpaiDiscard.transform.SetParent(DiscardedTilesParent, true);
+            LastDiscardedTile = nonTenpaiDiscard;
+            Player.Hand.Remove(nonTenpaiDiscard.Tile);
+            Player.DiscardedTiles.Add(nonTenpaiDiscard.Tile);
+            RiichiMode = true;
+        }
+
+        public IEnumerator Pon()
+        {
+            yield return MahjongMain.LastDiscard.CollectDiscard(HandParent, 1f);
+            TakeDiscard(MahjongMain.LastDiscard);
 
             var exposedTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>()
-                .Where(x => x.Tile == lastDiscard.Tile).Take(3).ToList();
+                .Where(x => x.Tile == Board.LastDiscardedTile).Take(3).ToList();
 
             if (exposedTiles.Count < 3) throw new Exception("Pon was called while not having 3 tiles of the same type.");
 
-            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 3);
-
-            yield return new WaitForSeconds(1);
+            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 1.5f);
 
             ExposeTiles(exposedTiles);
         }
 
-        public IEnumerator Chi(MahjongTileComponent lastDiscard,
-            Tuple<MahjongTileComponent, MahjongTileComponent, MahjongTileComponent> selectedTriplet = null)
+        public IEnumerator Chi(ValueTuple<MahjongTileComponent, MahjongTileComponent> selectedTriplet = default)
         {
-            IEnumerable<MahjongTileComponent> exposedTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>();
-            var chis = exposedTiles.GetChisWithTile(lastDiscard).ToList();
+            yield return MahjongMain.LastDiscard.CollectDiscard(HandParent, 1f);
+            TakeDiscard(MahjongMain.LastDiscard);
+
+            IEnumerable<MahjongTileComponent> handTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>();
+            var chis = handTiles.GetChisWithTile(MahjongMain.LastDiscard).ToList();
 
             if (chis.Count == 0) throw new Exception("You called chi while not having 3 consecutive tiles of the same type.");
-            if (chis.Count > 1 && selectedTriplet is null) throw new Exception("You have more than one triplet of consecutive tiles, " +
-                "so you need to specify an identifier");
-            if (selectedTriplet is not null) exposedTiles = selectedTriplet.ToList<MahjongTileComponent>();
-            else exposedTiles = chis[0];
+            if (chis.Count > 1 && selectedTriplet is (null, null))
+                throw new Exception("You have more than one triplet of consecutive tiles, so you need to specify an identifier");
 
-            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 3);
+            var exposedTiles = Enumerable.Empty<MahjongTileComponent>();
+            chis[0].Remove(Board.LastDiscardedTile);
+            if (selectedTriplet is not (null, null)) exposedTiles = selectedTriplet.ToList<MahjongTileComponent>();
+            else exposedTiles = chis[0].Select(tile => handTiles.FirstOrDefault(component => tile == component.Tile));
+            exposedTiles = exposedTiles.Append(MahjongMain.LastDiscard);
 
-            ExposeTiles(exposedTiles);
-        }
-
-        public IEnumerator OpenKan(MahjongTileComponent lastDiscard)
-        {
-            var exposedTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>()
-                .Where(x => x.Tile == lastDiscard.Tile).ToList();
-
-            if (exposedTiles.Count() != 4)
-                throw new ArgumentException("Kan was called while not having 4 times the same tile.");
-
-            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 3);
+            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 1.5f);
 
             ExposeTiles(exposedTiles);
         }
 
-        public IEnumerator HiddenKan(MahjongTileComponent compareTile)
+        public IEnumerator OpenKan()
         {
+            yield return MahjongMain.LastDiscard.CollectDiscard(HandParent, 1f);
+            TakeDiscard(MahjongMain.LastDiscard);
+
             var exposedTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>()
-                .Where(x => x.Tile == compareTile.Tile).ToList();
+                .Where(x => x.Tile == Board.LastDiscardedTile).ToList();
 
             if (exposedTiles.Count() != 4)
                 throw new ArgumentException("Kan was called while not having 4 times the same tile.");
 
-            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 3);
+            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 1.5f);
+
+            ExposeTiles(exposedTiles);
+        }
+
+        public IEnumerator HiddenKan()
+        {
+            var exposedTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>()
+                .Where(x => x.Tile == Board.LastDiscardedTile).ToList();
+
+            if (exposedTiles.Count() != 4)
+                throw new ArgumentException("Kan was called while not having 4 times the same tile.");
+
+            yield return exposedTiles.ExposeAndThrowTiles(ExposedTilesParent, 1.5f);
 
             ExposeTiles(exposedTiles);
         }
@@ -139,15 +167,7 @@ namespace ObscuritasRiichiMahjong.Components.Interface
             throw new NotImplementedException();
         }
 
-        public IEnumerator Tsumo()
-        {
-            throw new NotImplementedException();
-        }
 
-        public IEnumerator Riichi()
-        {
-            throw new NotImplementedException();
-        }
 
         private void TakeDiscard(MahjongTileComponent discard)
         {

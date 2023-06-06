@@ -1,0 +1,33 @@
+<UXML
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="UnityEngine.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
+    xsi:schemaLocation="UnityEngine.UIElements ../../UIElementsSchema/UnityEngine.UIElements.xsd"
+    editor-extension-mode="False"
+>
+    <Style src="chi-selection-ui.uss" />
+    <VisualElement name="chi-selection-ui">
+        <VisualElement name="background-wrapper">
+            <VisualElement name="background-wrapper-2">
+                <VisualElement name="background" />
+            </VisualElement>
+            <VisualElement name="heading">
+                <TextElement name="heading-text" text="Choose a triplet" />
+            </VisualElement>
+            <VisualElement name="back-button" style="background-color: rgb(28, 40, 80);" />
+            <VisualElement name="tile-area">
+                <!-- <VisualElement class="chi">
+                    <VisualElement class="tile" />
+                    <VisualElement class="tile" />
+                </VisualElement>
+                <VisualElement class="chi">
+                    <VisualElement class="tile" />
+                    <VisualElement class="tile" />
+                </VisualElement> -->
+            </VisualElement>
+            <VisualElement name="flowerA" class="flower" />
+            <VisualElement name="flowerB" class="flower" />
+            <VisualElement name="flowerC" class="flower" />
+        </VisualElement>
+    </VisualElement>
+</UXML>

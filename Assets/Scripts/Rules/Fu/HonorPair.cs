@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ObscuritasRiichiMahjong.Core.Data;
+﻿using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ObscuritasRiichiMahjong.Rules.Fu
 {

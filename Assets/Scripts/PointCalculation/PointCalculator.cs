@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ObscuritasRiichiMahjong.Core.Data;
+﻿using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.PointCalculation.Components;
 using ObscuritasRiichiMahjong.PointCalculation.Services;
 using ObscuritasRiichiMahjong.PointCalculation.Services.Interfaces;
 using ObscuritasRiichiMahjong.Rules.Extensions;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 

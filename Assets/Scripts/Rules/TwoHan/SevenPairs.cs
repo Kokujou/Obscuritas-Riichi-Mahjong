@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ObscuritasRiichiMahjong.Models;
+﻿using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
 {
@@ -17,7 +17,12 @@ namespace ObscuritasRiichiMahjong.Rules.TwoHan
         public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
             MahjongPlayer player)
         {
-            var groupedHand = player.Hand.GroupBy(x => x.name);
+            return Fulfilled(player.Hand);
+        }
+
+        public static bool Fulfilled(List<MahjongTile> hand)
+        {
+            var groupedHand = hand.GroupBy(x => x.name);
 
             if (groupedHand.Any(x => x.Count() != 2))
                 return false;

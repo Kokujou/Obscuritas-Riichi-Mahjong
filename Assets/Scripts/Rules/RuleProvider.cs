@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ObscuritasRiichiMahjong.Core.Data;
+using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ObscuritasRiichiMahjong.Core.Data;
-using ObscuritasRiichiMahjong.Models;
-using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules
 {

@@ -11,9 +11,9 @@ namespace ObscuritasRiichiMahjong.Components
         private static readonly List<MahjongTileComponent> _hoveredTiles = new();
         public const float SizeX = 1.1f;
 
-        private static Color InactiveColor => new Color(.75f, .75f, .75f);
-        private static Color ActiveColor => new Color(.75f, .75f, .75f);
-        private static Color HoverColor => new Color(.9f, .9f, .9f);
+        private static Color InactiveColor => new Color(.5f, .5f, .5f);
+        private static Color HoverColor => new Color(1, 1, 1);
+        private static Color SelectedColor => new Color(1, 1, 0);
 
         public static GameObject MahjongTileTemplate;
         public MahjongTile Tile;
@@ -43,24 +43,32 @@ namespace ObscuritasRiichiMahjong.Components
         public void SetHovered()
         {
             _hoveredTiles.Add(this);
-            var hoveredPropertyBlock = new MaterialPropertyBlock();
-            hoveredPropertyBlock.SetColor("_Color", HoverColor);
-            foreach (var side in transform.GetComponentsInChildren<MeshRenderer>().Where(x => x.tag != "TileBottom"))
-                side.SetPropertyBlock(hoveredPropertyBlock);
+            AssignColoredPropertyBlock(HoverColor);
+
         }
 
         public void SetInactive()
         {
-            var inactivePropertyBlock = new MaterialPropertyBlock();
-            inactivePropertyBlock.SetColor("_Color", InactiveColor);
-            foreach (var side in transform.GetComponentsInChildren<MeshRenderer>().Where(x => x.tag != "TileBottom"))
-                side.SetPropertyBlock(inactivePropertyBlock);
+            AssignColoredPropertyBlock(InactiveColor);
 
         }
 
-        private void SetActive()
+        public void SetSelected()
+        {
+            AssignColoredPropertyBlock(SelectedColor);
+        }
+
+        public void SetActive()
         {
             foreach (var side in transform.GetComponentsInChildren<MeshRenderer>()) side.SetPropertyBlock(null);
+        }
+
+        private void AssignColoredPropertyBlock(Color color)
+        {
+            var propertyBlock = new MaterialPropertyBlock();
+            propertyBlock.SetColor("_Color", color);
+            foreach (var side in transform.GetComponentsInChildren<MeshRenderer>().Where(x => x.tag != "TileBottom"))
+                side.SetPropertyBlock(propertyBlock);
         }
 
         private void OnCollisionExit(Collision other)

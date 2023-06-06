@@ -40,7 +40,7 @@ namespace ObscuritasRiichiMahjong.Services
 
         public IEnumerator PlayerInputLoop()
         {
-            MahjongMain.IsPaused = false;
+            MahjongMain.CanHover = true;
             _board.CurrentRoundWind = CardinalPoint.East;
 
             while (_board.CurrentRound <= _board.MaxRounds)
@@ -54,18 +54,26 @@ namespace ObscuritasRiichiMahjong.Services
 
                 var cancellation = new CancellationTokenSource();
                 CurrentPlayer.StartCoroutine(CurrentPlayer.ActiveTurnRenderer.material.BlinkColor(1, cancellation.Token));
+                CurrentPlayer.LastDiscardedTile = null;
                 yield return currentPlayer.MakeTurn();
                 yield return new WaitForSeconds(.1f);
 
                 var drawnTile = currentPlayer.HandParent.GetComponentsInChildren<MahjongTileComponent>().Last();
-                yield return (drawnTile.InsertTile(currentPlayer.HandParent, 1f));
+                drawnTile.StartCoroutine(drawnTile.InsertTile(currentPlayer.HandParent, 1f));
 
                 if (!_board.LastDiscardedTile || !currentPlayer.LastDiscardedTile)
                     throw new NotImplementedException(
                         "The MakeTurn method must set the boards LastDiscardedTile property.");
 
                 foreach (var player in _initializedPlayerComponents.Values.Where(player => player != currentPlayer))
+                {
                     yield return player.ReactOnDiscard(currentPlayer.LastDiscardedTile);
+                    if (player.LastCallType == CallType.Skip) continue;
+
+                    _board.CurrentRoundWind = _initializedPlayerComponents.First(x => x.Value == player).Key;
+                    player.LastCallType = CallType.Skip;
+                    break;
+                }
 
                 cancellation.Cancel();
                 _board.CurrentRoundWind = _board.CurrentRoundWind.Next();

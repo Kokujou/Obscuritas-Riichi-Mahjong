@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ObscuritasRiichiMahjong.Core.Data;
+﻿using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ObscuritasRiichiMahjong.Rules.Yakuman
 {
@@ -20,17 +20,25 @@ namespace ObscuritasRiichiMahjong.Rules.Yakuman
         public override bool Fulfilled(List<List<MahjongTile>> handSplit, MahjongBoard board,
             MahjongPlayer player)
         {
-            if (board.WinningMoveType == WinningMoveType.Ron)
-                return false;
+            return Fulfilled(player.Hand);
+        }
 
-            var handByName = player.Hand.Where(x => x.IsTerminal()).GroupBy(x => x.Name).ToList();
-
-            if (handByName.Count != 13 || handByName.Count(x => x.Count() > 1) != 1)
-                return false;
-
-            var pair = handByName.First(x => x.Count() == 2);
-            if (board.WinningTile == pair.First())
-                return false;
+        public static bool Fulfilled(List<MahjongTile> hand)
+        {
+            if (!hand.Any(X => X.Number == 1 && X.Type == MahjongTileType.Circle)) return false;
+            if (!hand.Any(X => X.Number == 9 && X.Type == MahjongTileType.Circle)) return false;
+            if (!hand.Any(X => X.Number == 1 && X.Type == MahjongTileType.Bamboo)) return false;
+            if (!hand.Any(X => X.Number == 9 && X.Type == MahjongTileType.Bamboo)) return false;
+            if (!hand.Any(X => X.Number == 1 && X.Type == MahjongTileType.Kanji)) return false;
+            if (!hand.Any(X => X.Number == 9 && X.Type == MahjongTileType.Kanji)) return false;
+            if (!hand.Any(X => X.Name == "West")) return false;
+            if (!hand.Any(X => X.Name == "South")) return false;
+            if (!hand.Any(X => X.Name == "North")) return false;
+            if (!hand.Any(X => X.Name == "East")) return false;
+            if (!hand.Any(X => X.Name == "White Dragon")) return false;
+            if (!hand.Any(X => X.Name == "Red Dragon")) return false;
+            if (!hand.Any(X => X.Name == "Green Dragon")) return false;
+            if (!hand.GroupBy(x => x.Name).Any(x => x.Count() == 2)) return false;
 
             return true;
         }

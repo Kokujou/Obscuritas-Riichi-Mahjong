@@ -6,8 +6,8 @@ namespace ObscuritasRiichiMahjong.Core.Data
     public enum CardinalPoint
     {
         East,
-        South,
+        North,
         West,
-        North
+        South
     }
 }

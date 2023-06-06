@@ -24,10 +24,11 @@ namespace ObscuritasRiichiMahjong
 
         [SerializeField] private Blend _blendMode = Blend.Multiply;
 
-        [SerializeField] [Range(-1, 1)] private float _offset;
+        [SerializeField][Range(-1, 1)] private float _offset;
 
-        [SerializeField] private Gradient _effectGradient = new()
-            { colorKeys = new[] { new GradientColorKey(Color.black, 0), new GradientColorKey(Color.white, 1) } };
+        [SerializeField]
+        private Gradient _effectGradient = new()
+        { colorKeys = new[] { new GradientColorKey(Color.black, 0), new GradientColorKey(Color.white, 1) } };
 
         public override void ModifyMesh(VertexHelper helper)
         {
@@ -42,61 +43,61 @@ namespace ObscuritasRiichiMahjong
             switch (GradientType)
             {
                 case Type.Horizontal:
-                {
-                    var left = vertexList[0].position.x;
-                    var right = vertexList[0].position.x;
-                    var x = 0f;
-
-                    for (var i = nCount - 1; i >= 1; --i)
                     {
-                        x = vertexList[i].position.x;
+                        var left = vertexList[0].position.x;
+                        var right = vertexList[0].position.x;
+                        var x = 0f;
 
-                        if (x > right) right = x;
-                        else if (x < left) left = x;
+                        for (var i = nCount - 1; i >= 1; --i)
+                        {
+                            x = vertexList[i].position.x;
+
+                            if (x > right) right = x;
+                            else if (x < left) left = x;
+                        }
+
+                        var width = 1f / (right - left);
+                        var vertex = new UIVertex();
+
+                        for (var i = 0; i < helper.currentVertCount; i++)
+                        {
+                            helper.PopulateUIVertex(ref vertex, i);
+
+                            vertex.color = BlendColor(vertex.color,
+                                EffectGradient.Evaluate((vertex.position.x - left) * width - Offset));
+
+                            helper.SetUIVertex(vertex, i);
+                        }
                     }
-
-                    var width = 1f / (right - left);
-                    var vertex = new UIVertex();
-
-                    for (var i = 0; i < helper.currentVertCount; i++)
-                    {
-                        helper.PopulateUIVertex(ref vertex, i);
-
-                        vertex.color = BlendColor(vertex.color,
-                            EffectGradient.Evaluate((vertex.position.x - left) * width - Offset));
-
-                        helper.SetUIVertex(vertex, i);
-                    }
-                }
                     break;
 
                 case Type.Vertical:
-                {
-                    var bottom = vertexList[0].position.y;
-                    var top = vertexList[0].position.y;
-                    var y = 0f;
-
-                    for (var i = nCount - 1; i >= 1; --i)
                     {
-                        y = vertexList[i].position.y;
+                        var bottom = vertexList[0].position.y;
+                        var top = vertexList[0].position.y;
+                        var y = 0f;
 
-                        if (y > top) top = y;
-                        else if (y < bottom) bottom = y;
+                        for (var i = nCount - 1; i >= 1; --i)
+                        {
+                            y = vertexList[i].position.y;
+
+                            if (y > top) top = y;
+                            else if (y < bottom) bottom = y;
+                        }
+
+                        var height = 1f / (top - bottom);
+                        var vertex = new UIVertex();
+
+                        for (var i = 0; i < helper.currentVertCount; i++)
+                        {
+                            helper.PopulateUIVertex(ref vertex, i);
+
+                            vertex.color = BlendColor(vertex.color,
+                                EffectGradient.Evaluate(vertex.position.y / top - Offset));
+
+                            helper.SetUIVertex(vertex, i);
+                        }
                     }
-
-                    var height = 1f / (top - bottom);
-                    var vertex = new UIVertex();
-
-                    for (var i = 0; i < helper.currentVertCount; i++)
-                    {
-                        helper.PopulateUIVertex(ref vertex, i);
-
-                        vertex.color = BlendColor(vertex.color,
-                            EffectGradient.Evaluate(vertex.position.y / top - Offset));
-
-                        helper.SetUIVertex(vertex, i);
-                    }
-                }
                     break;
             }
         }

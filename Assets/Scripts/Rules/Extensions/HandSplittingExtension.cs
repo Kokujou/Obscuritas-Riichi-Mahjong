@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ObscuritasRiichiMahjong.Core.Extensions;
+﻿using ObscuritasRiichiMahjong.Core.Extensions;
 using ObscuritasRiichiMahjong.Models;
+using ObscuritasRiichiMahjong.Rules.TwoHan;
+using ObscuritasRiichiMahjong.Rules.Yakuman;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ObscuritasRiichiMahjong.Rules.Extensions
 {
@@ -15,6 +17,10 @@ namespace ObscuritasRiichiMahjong.Rules.Extensions
 
         public static List<List<List<MahjongTile>>> GetValidHands(this List<MahjongTile> hand)
         {
+            if (ThirteenOrphans.Fulfilled(hand))
+                return new List<List<List<MahjongTile>>> { hand.GroupBy(x => x.Name).Select(x => x.ToList()).ToList() };
+            if (SevenPairs.Fulfilled(hand))
+                return new List<List<List<MahjongTile>>> { hand.GroupBy(x => x.Name).Select(x => x.ToList()).ToList() };
             if (hand.Count < 2 || (hand.Count - 2) % 3 != 0)
                 return null;
 

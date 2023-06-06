@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using ObscuritasRiichiMahjong.Models;
+using System.Collections.Generic;
 using System.Linq;
-using ObscuritasRiichiMahjong.Models;
 
 namespace ObscuritasRiichiMahjong.Rules.Extensions
 {

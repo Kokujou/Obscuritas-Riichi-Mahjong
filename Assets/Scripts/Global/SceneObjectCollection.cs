@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ObscuritasRiichiMahjong.Components.Interface;
+﻿using ObscuritasRiichiMahjong.Components.Interface;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Global

@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using ObscuritasRiichiMahjong.Models;
+﻿using ObscuritasRiichiMahjong.Models;
 using ObscuritasRiichiMahjong.Rules.Extensions;
 using ObscuritasRiichiMahjong.Rules.Interfaces;
+using System.Collections.Generic;
 
 namespace ObscuritasRiichiMahjong.Rules.TwoHan
 {

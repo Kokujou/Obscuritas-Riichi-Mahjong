@@ -1,0 +1,146 @@
+:root {
+    --border-color: rgb(216, 162, 102);
+}
+
+#chi-selection-ui {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scale: 0.75;
+}
+
+#background-wrapper {
+    position: relative;
+
+    border-width: 5px;
+    border-color: var(--border-color);
+    border-radius: 20px;
+}
+
+#background-wrapper-2 {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#background {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: black;
+    background-image: url('project://database/Assets/Textures/japanese-wave-pattern-background-16475066038GQ.jpg?fileID=2800000&guid=f862c0a4f01c0524ea61b1ca2f0099a6&type=3#japanese-wave-pattern-background-16475066038GQ');
+    -unity-background-image-tint-color: rgb(28, 54, 103);
+    background-repeat: repeat-x;
+    background-size: contain;
+}
+
+#heading {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    border-radius: 10px;
+    border-width: 2px;
+    border-color: var(--border-color);
+    background-color: rgb(94, 32, 40);
+    translate: -50% -50%;
+    padding: 3px 50px;
+    background-image: url('project://database/Assets/UI/Backgrounds/flowers3.png?fileID=2800000&guid=8977fc2e75d58b64db3b6a1949035d24&type=3#flowers3');
+    -unity-background-scale-mode: scale-and-crop;
+    -unity-background-image-tint-color: rgb(99, 0, 0);
+}
+
+#heading-text {
+    color: rgba(255, 186, 0, 0.53);
+    font-size: 20px;
+    -unity-font-definition: url('project://database/Assets/Fonts/edo.ttf?fileID=12800000&guid=d5042aba50af22c4db76ff47f545d052&type=3#edo');
+}
+
+#back-button {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    border-width: 5px;
+    border-color: var(--border-color);
+    right: -25px;
+    top: -25px;
+    background-color: black;
+    background-image: url('project://database/Assets/UI/BackArrow.svg?fileID=6192944022281365145&guid=8446b44ea842cd84cac369f01b66a3ec&type=3#BackArrow');
+    background-size: 50%;
+    -unity-background-image-tint-color: var(--border-color);
+}
+
+#tile-area {
+    display: flex;
+    flex-direction: row;
+    padding: 20px 50px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    background-color: rgb(72, 76, 90);
+    background-size: 50%;
+    background-image: url('project://database/Assets/UI/Backgrounds/cloud21.png?fileID=2800000&guid=b74c4747048f23948a1677fae6894d2f&type=3#cloud21');
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-image-tint-color: rgb(92, 96, 105);
+    background-repeat: repeat;
+}
+
+.chi {
+    display: flex;
+    flex-direction: row;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-width: 3px;
+}
+
+.chi:hover {
+    border-color: var(--border-color);
+}
+
+.tile {
+    width: 60px;
+    height: 80px;
+    margin: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    background-color: white;
+}
+
+.flower {
+    position: absolute;
+    translate: -50% -50%;
+    background-image: url('project://database/Assets/UI/flowerA.png?fileID=2800000&guid=362b0eeb9fe0c64419ddff76feb19b0a&type=3#flowerA');
+    -unity-background-image-tint-color: var(--border-color);
+}
+
+#flowerA {
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+}
+
+#flowerB {
+    top: 30px;
+    left: -10px;
+    width: 25px;
+    height: 25px;
+}
+
+#flowerC {
+    translate: -50% 50%;
+    bottom: 0;
+    left: 100%;
+    width: 40px;
+    height: 40px;
+}

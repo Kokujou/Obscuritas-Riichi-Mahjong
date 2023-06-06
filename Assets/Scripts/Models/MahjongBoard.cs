@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ObscuritasRiichiMahjong.Core.Data;
+﻿using ObscuritasRiichiMahjong.Core.Data;
+using System.Collections.Generic;
 
 namespace ObscuritasRiichiMahjong.Models
 {

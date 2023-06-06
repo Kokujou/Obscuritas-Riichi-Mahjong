@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ObscuritasRiichiMahjong.Models;
+using System;
 using System.Linq;
-using ObscuritasRiichiMahjong.Models;
 using UnityEditor;
 using UnityEngine;
 

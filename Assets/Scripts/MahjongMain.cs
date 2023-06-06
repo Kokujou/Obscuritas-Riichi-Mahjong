@@ -15,12 +15,14 @@ namespace ObscuritasRiichiMahjong
 {
     public class MahjongMain : MonoBehaviour
     {
+        public static MahjongTileComponent LastDiscard { get; set; } = null;
+
         private readonly MahjongBoard _board = new();
         private GameInputLoopService _inputLoopService;
 
         private readonly List<MahjongTileComponent> _kanDora = new(5);
 
-        public static bool IsPaused = true;
+        public static bool CanHover = false;
 
         public static IEnumerable<MahjongTileComponent> GetSameTiles(MahjongTileComponent tile)
         {
@@ -36,8 +38,6 @@ namespace ObscuritasRiichiMahjong
             return referenceSet.Where(x => x.Tile == tile.Tile);
         }
 
-
-
         private IEnumerator DealTiles(float duration)
         {
             var firstDuration = duration / 2f;
@@ -51,8 +51,6 @@ namespace ObscuritasRiichiMahjong
                 coroutines.Add(handTiles.SpawnAtParent(handSpawnPoint, firstDuration));
             }
             yield return this.StartParallelCoroutines(coroutines.ToArray());
-
-            yield return new WaitForSeconds(firstDuration);
 
             _kanDora.AddRange(leftoverTiles.RandomSubsetSpawns(_kanDora.Capacity, out leftoverTiles).ToList());
             var kanDoraPanel = SceneObjectCollection.Instance.KanDoraPanel;

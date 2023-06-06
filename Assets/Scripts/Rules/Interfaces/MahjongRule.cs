@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using ObscuritasRiichiMahjong.Models;
+﻿using ObscuritasRiichiMahjong.Models;
+using System.Collections.Generic;
 
 namespace ObscuritasRiichiMahjong.Rules.Interfaces
 {

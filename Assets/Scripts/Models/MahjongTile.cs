@@ -1,7 +1,6 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using ObscuritasRiichiMahjong.Core.Data;
+using System;
 using System.Linq;
-using ObscuritasRiichiMahjong.Core.Data;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Models
@@ -13,6 +12,7 @@ namespace ObscuritasRiichiMahjong.Models
         public string Name;
         public byte Number;
         public bool Red;
+        public bool Exposed;
         public MahjongTileType Type;
 
         public bool IsNumbered =>
@@ -43,6 +43,18 @@ namespace ObscuritasRiichiMahjong.Models
             return (int)Type * 20 + Number;
         }
 
+        public byte GetTilesLeftInGame(MahjongBoard board)
+        {
+            var visibleTiles = board.Players.Values
+                .SelectMany(x => x.ExposedHand
+                    .SelectMany(x => x)
+                    .Concat(x.DiscardedTiles))
+                .Concat(board.KanDora
+                .Where(x => x.Exposed));
+
+            return (byte)visibleTiles.Count(x => x == this);
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is null) return false;
@@ -51,7 +63,6 @@ namespace ObscuritasRiichiMahjong.Models
             return Equals((MahjongTile)obj);
         }
 
-        [SuppressMessage("ReSharper", "NonReadonlyMemberInGetHashCode")]
         public override int GetHashCode()
         {
             unchecked

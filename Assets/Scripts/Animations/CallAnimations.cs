@@ -15,7 +15,7 @@ namespace ObscuritasRiichiMahjong.Animations
         public static IEnumerator CollectDiscard(this MahjongTileComponent discard, Transform targetHand, float duration)
         {
             var targetPosition = targetHand.position.ReplaceZ(SlideEndZ) + Vector3.left;
-            targetPosition = targetPosition.ReplaceY(-1);
+            targetPosition = targetPosition.ReplaceY(-0.56f);
 
             yield return discard.gameObject.InterpolationAnimation(duration * 0.45f,
                 targetPosition + Vector3.up * 6,
@@ -28,7 +28,7 @@ namespace ObscuritasRiichiMahjong.Animations
 
         public static IEnumerator ExposeAndThrowTiles(this IEnumerable<MahjongTileComponent> tiles, Transform exposedParent, float duration)
         {
-            tiles = tiles.OrderByDescending(x => x.transform.localPosition.x).ToList();
+            tiles = tiles.OrderByDescending(x => x.transform.position.x).ToList();
 
             var routines = tiles.Select(x => x.StartCoroutine(x.ExposeTiles(duration / 3))).ToList();
             foreach (var routine in routines) yield return routine;
@@ -43,7 +43,7 @@ namespace ObscuritasRiichiMahjong.Animations
             var rotation = tile.transform.rotation.eulerAngles;
             yield return tile.StartParallelCoroutines(
                 tile.gameObject.InterpolationAnimation(duration * 0.5f, targetRotation: new Vector3(90, rotation.y, rotation.z), timingFunction: x => 1f - Mathf.Pow(1f - x, 4f)),
-                tile.gameObject.InterpolationAnimation(duration, tile.transform.position.ReplaceZ(SlideEndZ)));
+                tile.gameObject.InterpolationAnimation(duration, new Vector3(tile.transform.position.x, -0.56f, SlideEndZ)));
         }
 
         private static IEnumerator ThrowTiles(this IEnumerable<MahjongTileComponent> tiles, float duration, Transform exposedParent)

@@ -67,6 +67,7 @@
     <Compile Include="Assets\Scripts\Rules\Yakuman\FourQuads.cs" />
     <Compile Include="Assets\Scripts\Core\Data\MoveType.cs" />
     <Compile Include="Assets\Scripts\MahjongMain.cs" />
+    <Compile Include="Assets\Scripts\Components\ChiSelectionComponent.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\ThirteenOrphans13Wait.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\AllGreen.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\OneShot.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Assets\Scripts\PointCalculation\PointCalculator.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\PureStraight.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\ClosedTriplet.cs" />
+    <Compile Include="Assets\Scripts\Animations\RiichiAnimation.cs" />
     <Compile Include="Assets\Scripts\Rules\PointResult.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\AllTriplets.cs" />
     <Compile Include="Assets\Scripts\Rules\Extensions\HandSplittingExtension.cs" />
@@ -172,10 +174,17 @@
     <Compile Include="Assets\Scripts\Rules\TwoHan\SevenPairs.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\DiscardPick.cs" />
     <Compile Include="Assets\Scripts\Rules\RuleProvider.cs" />
+    <Compile Include="Assets\Scripts\Components\MahjongPlayerHoverEffectsComponent.cs" />
     <Compile Include="Assets\Scripts\Rules\Extensions\GetValidTripletsExtension.cs" />
     <Compile Include="Assets\Scripts\Components\MahjongTileComponent.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\UI\left-to-yaku-ui.uss" />
+    <None Include="Assets\UI\chi-selection-ui.uss" />
+    <None Include="Assets\UI\left-to-yaku-ui.uxml" />
+    <None Include="Assets\node_modules\@xml-tools\parser\LICENSES\Apache-2.0.txt" />
+    <None Include="Assets\UI\chi-selection-ui.uxml" />
+    <None Include="Assets\node_modules\chevrotain\LICENSE.txt" />
     <None Include="Assets\Fonts\3DTextShader.shader" />
   </ItemGroup>
   <ItemGroup>

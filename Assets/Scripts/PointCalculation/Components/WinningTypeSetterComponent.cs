@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
-using ObscuritasRiichiMahjong.Core.Data;
+﻿using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Models;
+using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.PointCalculation.Components

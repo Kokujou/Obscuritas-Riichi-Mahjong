@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using ObscuritasRiichiMahjong.Components.Interface;
+﻿using ObscuritasRiichiMahjong.Components.Interface;
+using System.Collections;
 using UnityEngine;
 
 namespace ObscuritasRiichiMahjong.Components

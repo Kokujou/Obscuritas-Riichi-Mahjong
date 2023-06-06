@@ -1,0 +1,37 @@
+:root {
+    scale: 0.75;
+}
+
+#single-tiles-wrapper {
+    display: flex;
+    flex-direction: row;
+    margin-left: 60px;
+    margin-right: 40px;
+}
+
+.single-tile-wrapper {
+    display: flex;
+    flex-direction: column;
+
+    margin-right: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.single-tile {
+    width: 60px;
+    height: 80px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: white;
+}
+
+.single-tile-label {
+    background-color: #465781;
+    color: white;
+    width: 100%;
+    border-radius: 5px;
+    -unity-text-align: middle-center;
+    font-family: Arial;
+    font-size: 18px;
+}

@@ -32,46 +32,24 @@ namespace ObscuritasRiichiMahjong.Animations
             var startPos = target.position;
             var startRot = target.rotation;
             var startScale = target.localScale;
-            for (var elapsed = 0f; elapsed < duration; elapsed = Time.time - startTime)
+
+            float elapsedTime = 0f;
+            while (elapsedTime < duration)
             {
-                var progress = Mathf.Clamp(timingFunction(elapsed / duration), 0, 1);
+                float t = timingFunction(elapsedTime / duration);
 
-                if (targetPosition is not null) target.TransformPosition(startPos, targetPosition.Value, progress);
-                if (targetRotation is not null)
-                    target.rotation = Quaternion.Slerp(startRot, Quaternion.Euler(targetRotation.Value), progress);
-                if (targetScale is not null) target.TransformScale(startScale, targetScale.Value, progress);
+                if (targetPosition is not null) target.position = Vector3.Lerp(startPos, targetPosition.Value, t);
+                if (targetRotation is not null) target.rotation = Quaternion.Slerp(Quaternion.Euler(startRot.eulerAngles), Quaternion.Euler(targetRotation.Value), t);
+                if (targetScale is not null) target.localScale = Vector3.Lerp(startScale, targetScale.Value, t);
 
+                elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
-            if (targetPosition is not null)
-                target.position = targetPosition.Value;
+            if (targetPosition is not null) target.position = targetPosition.Value;
             if (targetRotation is not null) target.rotation = Quaternion.Euler(targetRotation.Value);
             if (targetScale is not null) target.localScale = targetScale.Value;
-            yield return null;
         }
 
-        public static void TransformPosition(this Transform transform, Vector3 startPos, Vector3 targetPos, float progress)
-        {
-            var posStep = (targetPos - startPos) * progress;
-            if (transform.position == targetPos) return;
-
-            if (Vector3.Distance(transform.position, targetPos) < Vector3.Distance(startPos + posStep, targetPos))
-                transform.position = targetPos;
-            else
-                transform.position = startPos + posStep;
-        }
-
-        public static void TransformScale(this Transform transform, Vector3 startScale, Vector3 targetScale, float progress)
-        {
-            var scaleStep = (targetScale - startScale) * progress;
-            if (transform.localScale == targetScale)
-                return;
-
-            if (Vector3.Distance(transform.localScale, targetScale) < Vector3.Distance(startScale + scaleStep, targetScale))
-                transform.localScale = targetScale;
-            else
-                transform.localScale = startScale + scaleStep;
-        }
     }
 }

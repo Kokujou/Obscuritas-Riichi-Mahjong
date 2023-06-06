@@ -1,6 +1,6 @@
-﻿using System;
+﻿using ObscuritasRiichiMahjong.Rules.Interfaces;
+using System;
 using System.Collections.Generic;
-using ObscuritasRiichiMahjong.Rules.Interfaces;
 
 namespace ObscuritasRiichiMahjong.Rules
 {
