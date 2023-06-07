@@ -25,8 +25,8 @@ namespace ObscuritasRiichiMahjong.Assets.Scripts.Animations
         private static IEnumerator DiscardRiichiTile(MahjongTileComponent riichiTile, Transform discardedTilesParent, float duration)
         {
             var lastExposedTile = discardedTilesParent.Cast<Transform>().OrderBy(x => x.localPosition.x).LastOrDefault();
-            var lastTileX = lastExposedTile?.localPosition.x ?? 0f;
-            var targetPosition = discardedTilesParent.position + Vector3.right * lastTileX;
+            var lastTileX = lastExposedTile ? lastExposedTile.localPosition.x + 1f : 0f;
+            var targetPosition = discardedTilesParent.position + Vector3.right * (lastTileX + 0.3f);
             var targetRotation = discardedTilesParent.rotation.eulerAngles.ReplaceZ(90);
 
             yield return riichiTile.gameObject.PickUpAndMove(duration, targetPosition, targetRotation);
