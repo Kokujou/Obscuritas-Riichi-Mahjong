@@ -46,32 +46,32 @@ namespace ObscuritasRiichiMahjong.Services
             while (_board.CurrentRound <= _board.MaxRounds)
             {
                 _board.CurrentRound++;
-                var currentPlayer = CurrentPlayer;
                 _board.LastDiscardedTile = null;
 
-                yield return currentPlayer.DrawTile(.5f);
+                var lastDrawn = MahjongTileComponent.FromTile(_board.Wall.First());
+                yield return CurrentPlayer.DrawTile(lastDrawn, .5f);
                 yield return new WaitForSeconds(.1f);
 
                 var cancellation = new CancellationTokenSource();
                 CurrentPlayer.StartCoroutine(CurrentPlayer.ActiveTurnRenderer.material.BlinkColor(1, cancellation.Token));
                 CurrentPlayer.LastDiscardedTile = null;
-                yield return currentPlayer.MakeTurn();
+                yield return CurrentPlayer.MakeTurn(lastDrawn);
                 yield return new WaitForSeconds(.1f);
 
-                var drawnTile = currentPlayer.HandParent.GetComponentsInChildren<MahjongTileComponent>().Last();
-                drawnTile.StartCoroutine(drawnTile.InsertTile(currentPlayer.HandParent, 1f));
+                if (_board.LastDiscardedTile != lastDrawn.Tile)
+                    CurrentPlayer.StartCoroutine(lastDrawn.InsertTile(CurrentPlayer.HandParent, 1f));
 
-                if (!_board.LastDiscardedTile || !currentPlayer.LastDiscardedTile)
+                if (!_board.LastDiscardedTile || !CurrentPlayer.LastDiscardedTile)
                     throw new NotImplementedException(
                         "The MakeTurn method must set the boards LastDiscardedTile property.");
 
-                foreach (var player in _initializedPlayerComponents.Values.Where(player => player != currentPlayer))
+                foreach (var player in _initializedPlayerComponents.Values.Where(player => player != CurrentPlayer))
                 {
-                    yield return player.ReactOnDiscard(currentPlayer.LastDiscardedTile);
+                    player.LastCallType = CallType.Skip;
+                    yield return player.ReactOnDiscard(CurrentPlayer.LastDiscardedTile);
                     if (player.LastCallType == CallType.Skip) continue;
 
                     _board.CurrentRoundWind = _initializedPlayerComponents.First(x => x.Value == player).Key;
-                    player.LastCallType = CallType.Skip;
                     break;
                 }
 

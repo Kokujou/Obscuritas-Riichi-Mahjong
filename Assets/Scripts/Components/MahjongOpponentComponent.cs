@@ -6,7 +6,7 @@ namespace ObscuritasRiichiMahjong.Components
 {
     public class MahjongOpponentComponent : MahjongPlayerComponentBase
     {
-        public override IEnumerator MakeTurn()
+        public override IEnumerator MakeTurn(MahjongTileComponent lastDrawn)
         {
             var hand = HandParent.GetComponentsInChildren<MahjongTileComponent>();
             var selectedTile = hand[Random.Range(0, hand.Length)];

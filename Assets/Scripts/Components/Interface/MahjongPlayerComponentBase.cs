@@ -64,21 +64,19 @@ namespace ObscuritasRiichiMahjong.Components.Interface
             Player.DiscardedTiles.Add(tile.Tile);
         }
 
-        public virtual IEnumerator DrawTile(float duration)
+        public virtual IEnumerator DrawTile(MahjongTileComponent tile, float duration)
         {
-            var firstFromBank = MahjongTileComponent.FromTile(Board.Wall.First());
-
             Board.Wall.RemoveAt(0);
-            Player.Hand.Add(firstFromBank.Tile);
+            Player.Hand.Add(tile.Tile);
 
-            yield return firstFromBank.SpawnAtParent(HandParent, duration);
-            firstFromBank.transform.SetParent(HandParent, true);
+            yield return tile.SpawnAtParent(HandParent, duration);
+            tile.transform.SetParent(HandParent, true);
             yield return null;
         }
 
         public abstract IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile);
 
-        public abstract IEnumerator MakeTurn();
+        public abstract IEnumerator MakeTurn(MahjongTileComponent lastDrawn);
 
         public IEnumerator Tsumo()
         {

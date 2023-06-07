@@ -33,10 +33,10 @@ namespace ObscuritasRiichiMahjong.Animations
             if (tileCount == -1)
                 tileCount = children.Count;
 
-            var existingTilesOffset =
-                1 + parent.Cast<Transform>().OrderBy(x => x.localPosition.x).LastOrDefault()?.localPosition.x ?? 0;
-            if (ignoreChildren)
-                existingTilesOffset = 0;
+            var existingTilesOffset = 0f;
+
+            if (!ignoreChildren)
+                existingTilesOffset = 1 + parent.Cast<Transform>().OrderBy(x => x.localPosition.x).LastOrDefault()?.localPosition.x ?? 0;
 
             for (var handIndex = 0; handIndex < tileCount; handIndex++)
             {
@@ -60,8 +60,7 @@ namespace ObscuritasRiichiMahjong.Animations
                     targetScale.Scale(parent.localScale);
                 }
 
-                var targetPosition =
-                    parent.position + globalOffset + tileOffset + spacingVector
+                var targetPosition = parent.position + globalOffset + tileOffset + spacingVector
                     + existingTilesOffset * parentDirection;
 
                 yield return tile.gameObject.PickUpAndMove(duration / tileCount,

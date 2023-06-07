@@ -21,20 +21,26 @@ namespace ObscuritasRiichiMahjong.Components
         private bool ShouldRequestChiSelection = false;
         private bool ShouldRequestRiichiSelection = false;
 
+        private bool TurnCancelled = false;
+
         public override void ScanHand()
         {
             HandParent.localRotation = Quaternion.Euler(45, 0, 0);
             Player.Hand.AddRange(HandParent.GetComponentsInChildren<MahjongTileComponent>().Select(x => x.Tile));
         }
 
-        public override IEnumerator MakeTurn()
+        public override IEnumerator MakeTurn(MahjongTileComponent lastDrawn)
         {
+            TurnCancelled = false;
             yield return CheckForRiichi();
             yield return CheckForTsumo();
 
-            while (!Input.GetMouseButtonDown(0) || !HoveredHandTile) yield return null;
+            while (!TurnCancelled && !RiichiMode && (!Input.GetMouseButtonDown(0) || !HoveredHandTile))
+                yield return null;
+            if (TurnCancelled) yield break;
 
             MahjongTileComponent.UnhoverAll();
+            if (RiichiMode) HoveredHandTile = lastDrawn;
             LastDiscardedTile = HoveredHandTile;
             yield return DiscardTile(HoveredHandTile);
         }
@@ -49,7 +55,7 @@ namespace ObscuritasRiichiMahjong.Components
 
         public IEnumerator CheckForRiichi()
         {
-            if (!Player.CanRiichi) yield break;
+            if (!Player.CanRiichi || RiichiMode) yield break;
 
             MahjongMain.CanHover = false;
 
@@ -64,14 +70,13 @@ namespace ObscuritasRiichiMahjong.Components
         public override IEnumerator ReactOnDiscard(MahjongTileComponent lastDiscardedTile)
         {
             var possibleCalls = Player.GetAvailableCallTypes(lastDiscardedTile.Tile);
-            if (possibleCalls.Count <= 1)
-                yield break;
+            if (possibleCalls.Count <= 1) yield break;
+            if (RiichiMode && !possibleCalls.Any(x => x == CallType.Ron || x == CallType.HiddenKan)) yield break;
 
             MahjongMain.CanHover = false;
             yield return SpawnActionButtons(possibleCalls.ToArray());
 
-            if (ShouldRequestChiSelection)
-                yield return RequestChiSelection(lastDiscardedTile);
+            if (ShouldRequestChiSelection) yield return RequestChiSelection(lastDiscardedTile);
 
             MahjongMain.CanHover = true;
         }
@@ -97,11 +102,11 @@ namespace ObscuritasRiichiMahjong.Components
 
         public IEnumerator Riichi()
         {
+            TurnCancelled = true;
             var handTiles = HandParent.GetComponentsInChildren<MahjongTileComponent>();
             var nonTenpaiTiles = new List<MahjongTileComponent>();
 
-            if (nonTenpaiTiles.Count == 1)
-                yield return base.Riichi(nonTenpaiTiles[0]);
+            if (nonTenpaiTiles.Count == 1) yield return base.Riichi(nonTenpaiTiles[0]);
             else ShouldRequestRiichiSelection = true;
         }
 
@@ -149,15 +154,12 @@ namespace ObscuritasRiichiMahjong.Components
             foreach (var tile in handTiles.Where(x => nonTenpaiTiles.Contains(x.Tile))) tile.SetActive();
 
             var hoverComponent = GetComponent<MahjongPlayerHoverEffectsComponent>();
-            hoverComponent.CanHover = (tile) => nonTenpaiTiles.Any(x => x == tile.Tile);
+            hoverComponent.CanHover = (tile) => nonTenpaiTiles.Any(x => x == tile?.Tile);
 
             while (!Input.GetMouseButtonDown(0) || !HoveredHandTile) yield return null;
-
-            var selectedTile = HoveredHandTile;
-
-            yield return base.Riichi(selectedTile);
             hoverComponent.CanHover = tile => tile?.transform?.parent == HandParent.transform;
 
+            yield return base.Riichi(HoveredHandTile);
         }
     }
 }
