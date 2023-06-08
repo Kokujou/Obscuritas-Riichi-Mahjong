@@ -3,7 +3,6 @@ using ObscuritasRiichiMahjong.Assets.Scripts.Core.Extensions;
 using ObscuritasRiichiMahjong.Components.Interface;
 using ObscuritasRiichiMahjong.Core.Data;
 using ObscuritasRiichiMahjong.Global;
-using ObscuritasRiichiMahjong.Rules.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,8 +46,7 @@ namespace ObscuritasRiichiMahjong.Components
 
         public IEnumerator CheckForTsumo()
         {
-            var validHands = Player.Hand.GetValidHands();
-            if (validHands is null or { Count: 0 }) yield break;
+            if (!Player.CanTsumo) yield break;
 
             yield return SpawnActionButtons(CallType.Tsumo, CallType.Skip);
         }

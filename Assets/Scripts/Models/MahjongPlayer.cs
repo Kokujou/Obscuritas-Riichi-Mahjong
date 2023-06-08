@@ -28,7 +28,8 @@ namespace ObscuritasRiichiMahjong.Models
 
         public int Points { get; set; } = 20000;
 
-        public bool CanRiichi => true; //!HandOpen && IsTenpai();
+        public bool CanRiichi => !HandOpen && IsTenpai(Hand);
+        public bool CanTsumo => true; // CanTsumoWith(Hand);
 
         public MahjongPlayer(CardinalPoint cardinalPoint)
         {
@@ -66,6 +67,8 @@ namespace ObscuritasRiichiMahjong.Models
 
             return nonTenpaiTiles;
         }
+
+
 
         public bool CanPon(MahjongTile lastDiscard)
         {
@@ -108,10 +111,12 @@ namespace ObscuritasRiichiMahjong.Models
 
         public bool CanRon(MahjongTile lastDiscard)
         {
-            var virtualHand = Hand.ToList();
-            virtualHand.Add(lastDiscard);
+            return CanTsumoWith(Hand.Append(lastDiscard));
+        }
 
-            var handSplits = virtualHand.GetValidHands();
+        private bool CanTsumoWith(IEnumerable<MahjongTile> hand)
+        {
+            var handSplits = hand.ToList().GetValidHands();
             if (handSplits is null || handSplits.Count == 0) return false;
             return handSplits.Any(split => split.EnrichSplittedHand(this).Count == 5);
         }

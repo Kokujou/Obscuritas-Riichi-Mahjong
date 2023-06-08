@@ -10,7 +10,7 @@ namespace ObscuritasRiichiMahjong.Rules
 {
     public static class RuleProvider
     {
-        public static PointResult CalculatePoints(List<List<MahjongTile>> handSplit,
+        public static PointResult CalculatePoints(this List<List<MahjongTile>> handSplit,
             MahjongPlayer player,
             MahjongBoard board)
         {
@@ -22,24 +22,19 @@ namespace ObscuritasRiichiMahjong.Rules
                 .Select(type => (MahjongRule)Activator.CreateInstance(type))
                 .ToList();
 
-            var pointResult = new PointResult();
-            foreach (var yaku in rules)
-            {
-                var han = yaku.GetHan(handSplit, board, player);
-                yaku.Han = han;
+            var fuRules = Assembly.GetAssembly(typeof(IMahjongFuRule))
+                .GetTypes()
+                .Where(myType =>
+                    myType.IsClass && !myType.IsAbstract &&
+                    myType.IsSubclassOf(typeof(IMahjongFuRule)))
+                .Select(type => (IMahjongFuRule)Activator.CreateInstance(type))
+                .ToList();
 
-                if (han <= 0) continue;
-
-                pointResult.CollectedYaku.Add(yaku);
-
-                if (yaku.Yakuman > 0)
-                    pointResult.Yakuman += yaku.Yakuman;
-                else
-                    pointResult.Han += han;
-            }
-
-            if (board.WinningMoveType == WinningMoveType.Tsumo)
-                pointResult.FromAll = true;
+            var fulfilledYaku = rules.Where(x => x.Fulfilled(handSplit, board, player)).ToList();
+            var fu = fuRules.Sum(x => x.GetFu(handSplit, board, player));
+            var han = fulfilledYaku.Sum(x => x.GetHan(handSplit, board, player));
+            var pointResult = new PointResult(fulfilledYaku.ToList(),
+                fu, han, board.WinningMoveType == WinningMoveType.Tsumo);
 
             return pointResult;
         }

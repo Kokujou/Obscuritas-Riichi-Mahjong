@@ -1,0 +1,99 @@
+<UXML
+    xmlns:uie="UnityEditor.UIElements"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="UnityEngine.UIElements"
+    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
+    xsi:schemaLocation="UnityEngine.UIElements ../../UIElementsSchema/UnityEngine.UIElements.xsd"
+    editor-extension-mode="False"
+>
+    <Style src="game-end-ui.uss" />
+    <VisualElement name="overlay-background" />
+    <VisualElement name="background" />
+    <VisualElement name="wrapper">
+        <VisualElement name="winning-hand">
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement class="tile" />
+            <VisualElement name="winning-tile" class="tile" />
+        </VisualElement>
+        <TextElement name="winning-type-button" text="Tsumo" />
+        <VisualElement name="content-container">
+            <VisualElement name="left-hand-side">
+                <VisualElement name="kan-dora-view" class="dora-view">
+                    <TextElement name="kan-dora-text" text="Dora" />
+                    <VisualElement class="dora-tile" />
+                    <VisualElement class="dora-tile" />
+                    <VisualElement class="dora-tile" />
+                    <VisualElement class="dora-tile" />
+                    <VisualElement class="dora-tile" />
+                </VisualElement>
+                <VisualElement name="ura-dora-view" class="dora-view">
+                    <TextElement name="ura-dora-text" text="Hidden&#10;&#x9;Dora" />
+                    <VisualElement class="dora-tile" />
+                    <VisualElement class="dora-tile" />
+                    <VisualElement class="dora-tile" />
+                    <VisualElement class="dora-tile" />
+                    <VisualElement class="dora-tile" />
+                </VisualElement>
+                <TextElement name="romaji-points-view" text="7900" />
+            </VisualElement>
+            <VisualElement name="right-hand-side">
+                <VisualElement name="first-yaku" class="yaku">
+                    <TextElement text="Random Yaku 1" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="second-yaku" class="yaku">
+                    <TextElement text="Random Yaku 2" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="third-yaku" class="yaku">
+                    <TextElement text="Random Yaku 3" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="fourth-yaku" class="yaku">
+                    <TextElement text="Random Yaku 4" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="fifth-yaku" class="yaku">
+                    <TextElement text="Random Yaku 5" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="sixth-yaku" class="yaku">
+                    <TextElement text="Random Yaku 6" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="seventh-yaku" class="yaku">
+                    <TextElement text="Random Yaku 7" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="eighth-yaku" class="yaku">
+                    <TextElement text="Random Yaku 8" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="ninth-yaku" class="yaku">
+                    <TextElement text="Random Yaku 9" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="tenth-yaku" class="yaku">
+                    <TextElement text="Random Yaku 10" class="yaku-name" />
+                    <TextElement text="1 Han" class="yaku-points" />
+                </VisualElement>
+                <VisualElement name="point-description">
+                    <TextElement name="primary-points" text="Yakuman" />
+                    <TextElement name="secondary-points" text="60 Fu" />
+                </VisualElement>
+            </VisualElement>
+        </VisualElement>
+        <TextElement name="special-yakuman-name" text="Triple Yakuman" />
+    </VisualElement>
+</UXML>

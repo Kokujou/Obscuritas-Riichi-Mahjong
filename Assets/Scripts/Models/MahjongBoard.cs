@@ -6,6 +6,7 @@ namespace ObscuritasRiichiMahjong.Models
     public class MahjongBoard
     {
         public Dictionary<CardinalPoint, MahjongPlayer> Players { get; set; } = new(4);
+        public MahjongPlayer Winner { get; set; }
 
         public List<MahjongTile> Wall { get; set; } = new(70);
         public List<MahjongTile> KanDora { get; set; } = new(5);

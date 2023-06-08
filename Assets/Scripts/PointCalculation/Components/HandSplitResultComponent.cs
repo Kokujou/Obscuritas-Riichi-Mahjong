@@ -42,9 +42,8 @@ namespace ObscuritasRiichiMahjong.PointCalculation.Components
             }
 
             var pointResult = RuleProvider.CalculatePoints(handSplit, player, board);
-            ResultName.text = pointResult.PointsDescription;
-            ResultPoints.text =
-                pointResult.GetTotalPointsString(
+            ResultName.text = pointResult.PointsDescriptionText;
+            ResultPoints.text = pointResult.GetTotalPointsString(
                     board.WinningMoveType == WinningMoveType.Ron, player.Dealer);
 
             var yakuman = pointResult.CollectedYaku.Where(x => x.Yakuman > 0).ToList();

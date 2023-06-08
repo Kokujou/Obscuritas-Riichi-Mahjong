@@ -87,14 +87,7 @@ namespace ObscuritasRiichiMahjong.Models
         public bool Equals(MahjongTile other)
         {
             if (other is null) return false;
-            if (ReferenceEquals(this, other)) return true;
-
-            if (Type != other.Type) return false;
-
-            if (IsNumbered)
-                return Number == other.Number;
-
-            return base.Equals(other) && Name == other.Name;
+            return Name == other.Name;
         }
     }
 }

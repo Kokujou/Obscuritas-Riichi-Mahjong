@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ObscuritasRiichiMahjong.Core.Extensions;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -6,15 +7,8 @@ namespace ObscuritasRiichiMahjong.Animations
 {
     public static class MoveToParentExtension
     {
-        public static IEnumerator MoveToParent(this MonoBehaviour child, Transform parent,
+        public static IEnumerator MoveToParent(this Transform tile, Transform parent,
             float duration)
-        {
-            yield return child.transform.MoveToParent(parent, duration);
-        }
-
-
-
-        public static IEnumerator MoveToParent(this Transform tile, Transform parent, float duration)
         {
             var lastChild = parent.Cast<Transform>().OrderBy(x => x.localPosition.x).LastOrDefault();
             var newPosition = parent.position;
@@ -30,17 +24,6 @@ namespace ObscuritasRiichiMahjong.Animations
 
             yield return tile.gameObject.PickUpAndMove(duration, newPosition, targetRotation);
             tile.SetParent(parent, true);
-        }
-
-        public static Bounds CalculateGlobalBounds(this GameObject gameObject)
-        {
-            var renderers = gameObject.GetComponentsInChildren<Renderer>();
-            if (renderers.Length == 0) return new Bounds();
-
-            var bounds = renderers[0].bounds;
-            foreach (var renderer in renderers) bounds.Encapsulate(renderer.bounds);
-
-            return bounds;
         }
     }
 }

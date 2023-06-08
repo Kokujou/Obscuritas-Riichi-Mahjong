@@ -1,0 +1,256 @@
+:root {
+    display: flex;
+    flex-direction: row;
+    --important-text-color: goldenrod;
+    --text-color: white;
+}
+
+#overlay-background {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+TextElement {
+    color: white;
+    -unity-font-definition: url('project://database/Assets/Fonts/edo.ttf?fileID=12800000&guid=d5042aba50af22c4db76ff47f545d052&type=3#edo');
+    text-shadow: 5px 5px 1px black;
+    white-space: nowrap;
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 90%;
+    align-self: center;
+}
+
+#background {
+    position: absolute;
+    width: 100%;
+    height: 65%;
+    top: 25%;
+    background-color: rgb(78, 78, 149);
+    border-top-width: 7px;
+    border-top-color: sandybrown;
+    border-bottom-width: 7px;
+    border-bottom-color: sandybrown;
+    align-self: center;
+    background-image: url('project://database/Assets/UI/Backgrounds/flowers3.png?fileID=2800000&guid=8977fc2e75d58b64db3b6a1949035d24&type=3#flowers3');
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0.1);
+    background-size: 50%;
+    background-repeat: repeat;
+}
+
+#winning-hand {
+    display: flex;
+    flex-direction: row;
+    align-self: center;
+    margin-bottom: 30px;
+}
+
+.tile {
+    width: 40px;
+    height: 60px;
+    margin: 1px;
+    border-radius: 10px;
+    background-color: #be9136;
+}
+
+#winning-tile {
+    margin-left: 10px;
+}
+
+#winning-type-button {
+    position: absolute;
+    top: 1%;
+    right: 5%;
+    width: 50px;
+    height: 50px;
+    -unity-text-align: middle-center;
+    color: var(--important-text-color);
+    font-size: 24px;
+    background-image: url('project://database/Assets/UI/flowerA.png?fileID=2800000&guid=362b0eeb9fe0c64419ddff76feb19b0a&type=3#flowerA');
+    -unity-background-image-tint-color: rgb(202, 45, 45);
+}
+
+#content-container {
+    display: flex;
+    flex-direction: row;
+}
+
+#left-hand-side {
+    display: flex;
+    flex-direction: column;
+}
+
+.dora-view {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+#kan-dora-text,
+#ura-dora-text {
+    background-image: url('project://database/Assets/UI/Backgrounds/tint-stroke.png?fileID=2800000&guid=35acbaf3430570348a25f04a8bce541b&type=3#tint-stroke');
+    -unity-background-image-tint-color: rgb(202, 45, 45);
+    width: 75px;
+    height: 30px;
+
+    color: var(--important-text-color);
+    -unity-text-align: middle-center;
+}
+
+.dora-tile {
+    width: 30px;
+    height: 45px;
+    margin: 1px;
+    border-radius: 5px;
+    background-color: #be9136;
+}
+
+#romaji-points-view {
+    font-size: 72px;
+    margin-left: 40px;
+}
+
+#right-hand-side {
+    position: relative;
+    flex: auto;
+}
+
+.yaku {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    width: 200px;
+}
+
+.yaku-name {
+    flex: auto;
+    border-bottom-width: 5px;
+    border-bottom-color: rgb(51, 51, 51);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.yaku-points {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    color: var(--important-text-color);
+    font-size: 18px;
+    -unity-text-align: middle-left;
+}
+
+#first-yaku {
+    top: 0;
+    right: 55%;
+}
+
+#second-yaku {
+    top: 35px;
+    right: 60%;
+}
+
+#third-yaku {
+    top: 70px;
+    right: 65%;
+}
+
+#fourth-yaku {
+    top: 105px;
+    right: 60%;
+}
+
+#fifth-yaku {
+    top: 140px;
+    right: 55%;
+}
+
+#sixth-yaku {
+    top: 0;
+    left: 55%;
+}
+
+#seventh-yaku {
+    top: 35px;
+    left: 60%;
+}
+
+#eighth-yaku {
+    top: 75px;
+    left: 65%;
+}
+
+#ninth-yaku {
+    top: 105px;
+    left: 60%;
+}
+
+#tenth-yaku {
+    top: 140px;
+    left: 55%;
+}
+
+#primary-points {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#secondary-points {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#point-description {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    border-radius: 50%;
+}
+
+#point-description,
+.yaku-points {
+    background-image: url('project://database/Assets/UI/Backgrounds/tint-stroke.png?fileID=2800000&guid=35acbaf3430570348a25f04a8bce541b&type=3#tint-stroke');
+    -unity-background-image-tint-color: black;
+    background-size: 100% 150%;
+}
+
+#primary-points {
+    color: var(--important-text-color);
+    font-size: 40px;
+    -unity-text-align: middle-left;
+}
+
+#secondary-points {
+    font-size: 24px;
+    -unity-text-align: upper-left;
+}
+
+#special-yakuman-name {
+    font-size: 50px;
+    -unity-text-align: middle-center;
+    position: absolute;
+    width: 100%;
+    bottom: 2%;
+    color: goldenrod;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: #cc3333;
+    text-shadow: 5px 5px 1px black;
+}

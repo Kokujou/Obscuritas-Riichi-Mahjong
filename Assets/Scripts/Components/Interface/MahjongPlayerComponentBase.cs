@@ -57,7 +57,7 @@ namespace ObscuritasRiichiMahjong.Components.Interface
 
         public virtual IEnumerator DiscardTile(MahjongTileComponent tile)
         {
-            yield return tile.MoveToParent(DiscardedTilesParent, 1f);
+            yield return tile.transform.MoveToParent(DiscardedTilesParent, 1f);
             tile.transform.SetParent(DiscardedTilesParent, true);
             LastDiscardedTile = tile;
             Player.Hand.Remove(tile.Tile);
@@ -80,7 +80,26 @@ namespace ObscuritasRiichiMahjong.Components.Interface
 
         public IEnumerator Tsumo()
         {
-            throw new NotImplementedException();
+            Board.WinningMoveType = WinningMoveType.Tsumo;
+            yield return EndGameWithTile(HandParent.GetComponentsInChildren<MahjongTileComponent>().Last());
+        }
+
+        public IEnumerator Ron()
+        {
+            TakeDiscard(MahjongMain.LastDiscard);
+            Board.WinningMoveType = WinningMoveType.Ron;
+            yield return EndGameWithTile(MahjongMain.LastDiscard);
+        }
+
+        private IEnumerator EndGameWithTile(MahjongTileComponent tile)
+        {
+            MahjongMain.CanHover = false;
+            yield return tile.ThrowLastTile(HandParent, 1f);
+            yield return HandParent.ExposeHand(.5f);
+            Board.WinningTile = tile.Tile;
+            Board.Winner = Player;
+
+            FindAnyObjectByType<GameEndComponent>().Initialize(Board);
         }
 
         protected IEnumerator Riichi(MahjongTileComponent nonTenpaiDiscard)
@@ -159,13 +178,6 @@ namespace ObscuritasRiichiMahjong.Components.Interface
 
             ExposeTiles(exposedTiles);
         }
-
-        public IEnumerator Ron()
-        {
-            throw new NotImplementedException();
-        }
-
-
 
         private void TakeDiscard(MahjongTileComponent discard)
         {

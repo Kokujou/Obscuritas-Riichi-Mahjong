@@ -98,6 +98,7 @@
     <Compile Include="Assets\Scripts\Rules\TwoHan\AllTriplets.cs" />
     <Compile Include="Assets\Scripts\Rules\Extensions\HandSplittingExtension.cs" />
     <Compile Include="Assets\Scripts\Core\Data\CardinalPoint.cs" />
+    <Compile Include="Assets\Scripts\Core\Data\PointDescription.cs" />
     <Compile Include="Assets\Scripts\Rules\TwoHan\TripleTriplets.cs" />
     <Compile Include="Assets\Scripts\Animations\SortHandExtension.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\OpenQuad.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Assets\Scripts\Core\Data\CallType.cs" />
     <Compile Include="Assets\Scripts\Rules\SixHan\FullFlush.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\NineGates9Wait.cs" />
+    <Compile Include="Assets\Scripts\Animations\FinisherAnimationExtensions.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\ClosedRon.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\RoundWindSetterComponent.cs" />
     <Compile Include="Assets\Scripts\Rules\Interfaces\IMahjongFuRule.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Assets\Scripts\Core\Data\WinningMoveType.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\ReadyHand.cs" />
     <Compile Include="Assets\Scripts\EditorPlugins\InspectorDictionary.cs" />
+    <Compile Include="Assets\Scripts\Core\Extensions\GameObjectExtensions.cs" />
     <Compile Include="Assets\Scripts\Core\Data\MahjongTileType.cs" />
     <Compile Include="Assets\Scripts\Rules\Fu\TerminalSequenceOuterWait.cs" />
     <Compile Include="Assets\Scripts\Global\PrefabCollection.cs" />
@@ -140,6 +143,7 @@
     <Compile Include="Assets\Scripts\Animations\FlipDoraExtension.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\FourTripletsSingleWait.cs" />
     <Compile Include="Assets\Scripts\PointCalculation\Components\InputTypeSetterComponent.cs" />
+    <Compile Include="Assets\Scripts\Components\GameEndComponent.cs" />
     <Compile Include="Assets\Scripts\Animations\PickUpAndMoveAnimationExtension.cs" />
     <Compile Include="Assets\Scripts\Rules\OneHan\NoPointsHand.cs" />
     <Compile Include="Assets\Scripts\Rules\Yakuman\AllHonors.cs" />
@@ -179,7 +183,9 @@
     <Compile Include="Assets\Scripts\Components\MahjongTileComponent.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\UI\game-end-ui.uxml" />
     <None Include="Assets\UI\left-to-yaku-ui.uss" />
+    <None Include="Assets\UI\game-end-ui.uss" />
     <None Include="Assets\UI\chi-selection-ui.uss" />
     <None Include="Assets\UI\left-to-yaku-ui.uxml" />
     <None Include="Assets\node_modules\@xml-tools\parser\LICENSES\Apache-2.0.txt" />

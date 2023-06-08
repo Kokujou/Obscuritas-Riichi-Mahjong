@@ -1,6 +1,8 @@
-﻿using ObscuritasRiichiMahjong.Rules.Interfaces;
+﻿using ObscuritasRiichiMahjong.Assets.Scripts.Core.Data;
+using ObscuritasRiichiMahjong.Rules.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ObscuritasRiichiMahjong.Rules
 {
@@ -12,80 +14,92 @@ namespace ObscuritasRiichiMahjong.Rules
         public const int HanemanPoints = 12000;
         public const int ManganPoints = 8000;
 
-        public int Yakuman { get; set; }
-        public int Han { get; set; }
-        public int Fu { get; set; }
+        public int Yakuman { get; }
+        public int Han { get; }
+        public int Fu { get; }
+        public bool FromAll { get; }
+
         public int TotalPoints => CalculateTotalPoints();
-        public bool FromAll { get; set; }
+        public string PointsDescriptionText => GetPointsDescriptionText();
 
         public List<MahjongRule> CollectedYaku { get; set; }
-        public List<IMahjongFuRule> CollectedFu { get; set; }
 
-        // Missing: Fu Calculation List
 
-        public string PointsDescription => GetPointsDescription();
-
-        public PointResult()
+        public PointResult(List<MahjongRule> fulfilledYaku, int han, int fu, bool fromAll)
         {
-            CollectedYaku = new List<MahjongRule>();
+            CollectedYaku = fulfilledYaku;
+            FromAll = fromAll;
+            Han = han;
+            Fu = fu;
+
+            var yakuman = fulfilledYaku.Where(x => x.Yakuman > 0).ToList();
+            if (yakuman.Count <= 0) return;
+
+            CollectedYaku = yakuman;
+            Yakuman = yakuman.Sum(x => x.Yakuman);
+            CollectedYaku = yakuman;
         }
 
         public string GetTotalPointsString(bool ron, bool isDealer)
         {
             var totalPoints = TotalPoints;
-
-            if (isDealer)
-                totalPoints = (int)(totalPoints * 1.5);
-
-            if (ron)
-                return $"{totalPoints} pts.";
-
-            if (isDealer)
-                return $"{TotalPoints / 3} pts.\nfrom All";
-
+            if (isDealer) totalPoints = (int)(totalPoints * 1.5);
+            if (ron) return $"{totalPoints} pts.";
+            if (isDealer) return $"{TotalPoints / 3} pts.\nfrom All";
             return $"{TotalPoints / 4} / {TotalPoints / 2} pts.";
         }
 
-        private string GetPointsDescription()
+        private string GetPointsDescriptionText()
         {
-            var description = $"{Han} Han / {Fu} Fu";
+            var pointsDescription = GetPointsDescription();
+            if (pointsDescription == PointDescription.Yakuman) return GetYakumanName();
+            if (pointsDescription == PointDescription.None) return null;
+            else return pointsDescription.ToString();
+        }
 
-            if (Yakuman > 0)
-                return $"{Yakuman}x Yakuman";
+        public string GetYakumanName()
+        {
+            if (Yakuman == 0 && Han < 13) return null;
 
+            return Yakuman switch
+            {
+                0 => "Calculated Yakuman",
+                1 => "Yakuman",
+                2 => "Double Yakuman",
+                3 => "Triple Yakuman",
+                4 => "Quadruple Yakuman",
+                5 => "Quintuple Yakuman",
+                6 => "Sixtuple Yakuman",
+                _ => null
+            };
+        }
+
+        public PointDescription GetPointsDescription()
+        {
             var totalPoints = CalculateTotalPoints();
-            if (totalPoints == YakumanPoints)
-                description += "\nCalculated Yakuman";
-            else if (totalPoints == SanbaimanPoints)
-                description += "\nSanbaiman";
-            else if (totalPoints == BaimanPoints)
-                description += "\nBaiman";
-            else if (totalPoints == HanemanPoints)
-                description += "\nHaneman";
-            else if (totalPoints == ManganPoints)
-                description += "\nMangan";
-
-            return description;
+            if (Han >= 13 || Yakuman > 0) return PointDescription.Yakuman;
+            if (Han >= 11) return PointDescription.Sanbaiman;
+            if (Han >= 8) return PointDescription.Baiman;
+            if (Han >= 6) return PointDescription.Haneman;
+            if (Han == 5 || Han == 4 && Fu >= 40 || Han == 3 && Fu >= 70) return PointDescription.Mangan;
+            return PointDescription.None;
         }
 
         private int CalculateTotalPoints()
         {
-            if (Yakuman > 0)
-                return YakumanPoints * Yakuman;
-            if (Han >= 13)
-                return YakumanPoints;
-            if (Han >= 11)
-                return SanbaimanPoints;
-            if (Han >= 8)
-                return BaimanPoints;
-            if (Han >= 6)
-                return HanemanPoints;
-            if (Han == 5
-                || Han == 4 && Fu >= 40
-                || Han == 3 && Fu >= 70)
-                return ManganPoints;
+            if (Yakuman > 0) return YakumanPoints * Yakuman;
 
-            return Fu * (int)Math.Pow(2, 2 + Han);
+            var pointDescription = GetPointsDescription();
+            return pointDescription switch
+            {
+                PointDescription.Yakuman => YakumanPoints,
+                PointDescription.Sanbaiman => SanbaimanPoints,
+                PointDescription.Baiman => BaimanPoints,
+                PointDescription.Haneman => HanemanPoints,
+                PointDescription.Mangan => ManganPoints,
+                PointDescription.None => Fu * (int)Math.Pow(2, 2 + Han),
+                _ => 0
+            };
         }
     }
 }

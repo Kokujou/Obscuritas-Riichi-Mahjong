@@ -39,7 +39,7 @@ namespace ObscuritasRiichiMahjong.Rules.Extensions
             foreach (var combination in possibleCombinations)
             {
                 if (!hand.TryApplyTriplets(combination, out var leftTiles)) continue;
-                if (leftTiles.Count != 2 || leftTiles[0] != leftTiles[1]) continue;
+                if (leftTiles.Count != 2 || leftTiles[0].Name != leftTiles[1].Name) continue;
 
                 combination.Add(leftTiles);
                 validSplits.Add(combination);
