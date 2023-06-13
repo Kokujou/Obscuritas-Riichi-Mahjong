@@ -78,11 +78,13 @@ namespace ObscuritasRiichiMahjong.Assets.Scripts.Components
         {
             if (HoverUiInstance) Destroy(HoverUiInstance.gameObject);
 
-            var targetPosition = Camera.main.WorldToScreenPoint(Player.HoveredHandTile.transform.position);
+            var targetPosition = Camera.main.WorldToViewportPoint(Player.HoveredHandTile.transform.position);
+            Debug.Log(targetPosition);
             var ui = Instantiate(LeftToYakuUi).GetComponent<UIDocument>();
             HoverUiInstance = ui;
-            ui.rootVisualElement.style.left = targetPosition.x;
-            ui.rootVisualElement.style.top = Screen.height - targetPosition.y;
+            var root = ui.rootVisualElement.Q("left-to-yaku-ui");
+            root.style.left = new Length(targetPosition.x * 100, LengthUnit.Percent);
+            root.style.bottom = new Length(targetPosition.y * 100 + 10, LengthUnit.Percent);
         }
     }
 

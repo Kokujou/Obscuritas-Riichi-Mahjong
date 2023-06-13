@@ -1,5 +1,7 @@
-:root {
-    scale: 0.75;
+#left-to-yaku-ui {
+    position: absolute;
+    scale: 0.5;
+    transform-origin: -50% 100%;
 }
 
 #single-tiles-wrapper {

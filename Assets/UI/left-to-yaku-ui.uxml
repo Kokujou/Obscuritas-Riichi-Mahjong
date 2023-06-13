@@ -8,22 +8,24 @@
 >
     <Style src="left-to-yaku-ui.uss" />
     <Style src="chi-selection-ui.uss" />
-    <ui:VisualElement name="background-wrapper">
-        <ui:VisualElement name="background-wrapper-2">
-            <ui:VisualElement name="background" />
-        </ui:VisualElement>
-        <ui:VisualElement name="single-tiles-wrapper">
-            <ui:VisualElement class="single-tile-wrapper">
-                <ui:VisualElement class="single-tile" />
-                <ui:TextElement class="single-tile-label" text="2 Left" />
+    <ui:VisualElement name="left-to-yaku-ui">
+        <ui:VisualElement name="background-wrapper">
+            <ui:VisualElement name="background-wrapper-2">
+                <ui:VisualElement name="background" />
             </ui:VisualElement>
-            <ui:VisualElement class="single-tile-wrapper">
-                <ui:VisualElement class="single-tile" />
-                <ui:TextElement class="single-tile-label" text="2 Left" />
+            <ui:VisualElement name="single-tiles-wrapper">
+                <ui:VisualElement class="single-tile-wrapper">
+                    <ui:VisualElement class="single-tile" />
+                    <ui:TextElement class="single-tile-label" text="2 Left" />
+                </ui:VisualElement>
+                <ui:VisualElement class="single-tile-wrapper">
+                    <ui:VisualElement class="single-tile" />
+                    <ui:TextElement class="single-tile-label" text="2 Left" />
+                </ui:VisualElement>
             </ui:VisualElement>
+            <ui:VisualElement name="flowerA" class="flower" />
+            <ui:VisualElement name="flowerB" class="flower" />
+            <ui:VisualElement name="flowerC" class="flower" />
         </ui:VisualElement>
-        <ui:VisualElement name="flowerA" class="flower" />
-        <ui:VisualElement name="flowerB" class="flower" />
-        <ui:VisualElement name="flowerC" class="flower" />
     </ui:VisualElement>
 </ui:UXML>
